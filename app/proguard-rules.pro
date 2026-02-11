@@ -95,3 +95,8 @@
 
 # Keep your specific API interfaces
 -keep,allowobfuscation interface com.anonforge.data.remote.**Api
+
+# Tink crypto - missing optional dependencies
+-dontwarn com.google.api.client.http.**
+-dontwarn com.google.api.client.http.javanet.**
+-dontwarn org.joda.time.**
