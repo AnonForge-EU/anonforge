@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/anonforge_icon.png" alt="AnonForge Logo" width="120" height="120">
+  <img src="docs/assets/anonforge_icon.svg" alt="AnonForge Logo" width="120" height="120">
 </p>
 
 <h1 align="center">AnonForge</h1>
