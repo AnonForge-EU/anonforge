@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         PERMISSIONS
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Network for SimpleLogin API calls -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Biometric authentication -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <!-- Expiry cleanup notifications (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         HARDWARE FEATURES (optional)
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <uses-feature
+        android:name="android.hardware.fingerprint"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.biometrics"
+        android:required="false" />
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         APPLICATION
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <application
+        android:name=".AnonForgeApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="false"
+        android:icon="@drawable/anonforge_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/anonforge_icon"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AnonForge"
+        android:usesCleartextTraffic="false"
+        tools:targetApi="34">
+
+        <!-- ════════════════════════════════════════════════════════════════
+             WORKMANAGER - ON-DEMAND INITIALIZATION (Hilt)
+
+             Disable the default WorkManagerInitializer to use custom
+             Hilt-based initialization via AnonForgeApplication.
+
+             Reference: https://developer.android.com/topic/libraries/architecture/workmanager/advanced/custom-configuration
+             ════════════════════════════════════════════════════════════════ -->
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <!-- Remove WorkManager's default initializer -->
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
+        <!-- ════════════════════════════════════════════════════════════════
+             MAIN ACTIVITY
+             ════════════════════════════════════════════════════════════════ -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AnonForge"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- Launcher intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- ════════════════════════════════════════════════════════════
+                 SKILL 17: Donation Deep Links (Stripe callbacks)
+
+                 Handles:
+                 - anonforge://donation/success (payment completed)
+                 - anonforge://donation/cancel (payment cancelled)
+
+                 Setup in Stripe Dashboard → Payment Links:
+                 - Success URL: anonforge://donation/success
+                 - Cancel URL: anonforge://donation/cancel
+                 ════════════════════════════════════════════════════════════ -->
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="donation"
+                    android:scheme="anonforge" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>

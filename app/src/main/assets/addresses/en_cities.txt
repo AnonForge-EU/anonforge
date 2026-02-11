@@ -1,0 +1,244 @@
+# UK Cities - ONS Top 300 by Population
+# Format: City|PostcodeArea
+London|SW1A
+Birmingham|B1
+Leeds|LS1
+Glasgow|G1
+Sheffield|S1
+Manchester|M1
+Edinburgh|EH1
+Liverpool|L1
+Bristol|BS1
+Cardiff|CF10
+Leicester|LE1
+Coventry|CV1
+Bradford|BD1
+Belfast|BT1
+Nottingham|NG1
+Kingston upon Hull|HU1
+Newcastle upon Tyne|NE1
+Stoke-on-Trent|ST1
+Southampton|SO14
+Derby|DE1
+Portsmouth|PO1
+Brighton|BN1
+Plymouth|PL1
+Northampton|NN1
+Reading|RG1
+Luton|LU1
+Wolverhampton|WV1
+Bolton|BL1
+Aberdeen|AB10
+Bournemouth|BH1
+Norwich|NR1
+Swindon|SN1
+Swansea|SA1
+Milton Keynes|MK9
+Southend-on-Sea|SS1
+Middlesbrough|TS1
+Peterborough|PE1
+Sunderland|SR1
+Warrington|WA1
+Huddersfield|HD1
+Oxford|OX1
+York|YO1
+Poole|BH15
+Ipswich|IP1
+Telford|TF1
+Cambridge|CB1
+Gloucester|GL1
+Blackpool|FY1
+Birkenhead|CH41
+Watford|WD17
+Sale|M33
+Colchester|CO1
+High Wycombe|HP11
+Newport|NP20
+Dundee|DD1
+Solihull|B91
+Rotherham|S60
+Exeter|EX1
+Sutton Coldfield|B72
+Chelmsford|CM1
+Crawley|RH10
+Basildon|SS14
+Maidstone|ME14
+Cheltenham|GL50
+Basingstoke|RG21
+Worthing|BN11
+Eastbourne|BN21
+Doncaster|DN1
+Stockport|SK1
+Chester|CH1
+Lincoln|LN1
+Bath|BA1
+Worcester|WR1
+Oldham|OL1
+St Albans|AL1
+Rochdale|OL16
+Preston|PR1
+Grimsby|DN31
+Hastings|TN34
+Blackburn|BB1
+Salford|M5
+Barnsley|S70
+Wigan|WN1
+Halifax|HX1
+Wakefield|WF1
+Stevenage|SG1
+Harlow|CM20
+Hemel Hempstead|HP1
+Bracknell|RG12
+Woking|GU21
+Redditch|B97
+Slough|SL1
+Guildford|GU1
+Ashford|TN24
+Bedford|MK40
+Hove|BN3
+Farnborough|GU14
+Northwich|CW9
+Stockton-on-Tees|TS18
+High Peak|SK17
+Aylesbury|HP19
+Chesterfield|S40
+Weston-super-Mare|BS23
+Gosport|PO12
+Rugby|CV21
+Shrewsbury|SY1
+Burton upon Trent|DE14
+Nuneaton|CV11
+Cannock|WS11
+Folkestone|CT20
+Margate|CT9
+Ramsgate|CT11
+Carlisle|CA1
+Canterbury|CT1
+Gateshead|NE8
+South Shields|NE33
+Hartlepool|TS24
+Darlington|DL1
+Durham|DH1
+Scarborough|YO11
+Harrogate|HG1
+Scunthorpe|DN15
+Lancaster|LA1
+Burnley|BB11
+Crewe|CW1
+Ellesmere Port|CH65
+Chester-le-Street|DH3
+Macclesfield|SK10
+Stafford|ST16
+Tamworth|B79
+Kettering|NN15
+Corby|NN17
+Wellingborough|NN8
+Leamington Spa|CV31
+Kidderminster|DY10
+Hereford|HR1
+Loughborough|LE11
+Hinckley|LE10
+Mansfield|NG18
+Newark-on-Trent|NG24
+Boston|PE21
+Spalding|PE11
+Grantham|NG31
+Skegness|PE25
+Newbury|RG14
+Thatcham|RG18
+Didcot|OX11
+Abingdon|OX14
+Witney|OX28
+Banbury|OX16
+Bicester|OX26
+Trowbridge|BA14
+Chippenham|SN14
+Salisbury|SP1
+Devizes|SN10
+Frome|BA11
+Stroud|GL5
+Cirencester|GL7
+Dursley|GL11
+Tewkesbury|GL20
+Evesham|WR11
+Pershore|WR10
+Droitwich|WR9
+Bromsgrove|B60
+Redditch|B98
+Leek|ST13
+Newcastle-under-Lyme|ST5
+Stone|ST15
+Lichfield|WS13
+Uttoxeter|ST14
+Rugeley|WS15
+Oswestry|SY11
+Whitchurch|SY13
+Market Drayton|TF9
+Bridgnorth|WV16
+Ludlow|SY8
+Leominster|HR6
+Ross-on-Wye|HR9
+Monmouth|NP25
+Abergavenny|NP7
+Brecon|LD3
+Builth Wells|LD2
+Llandrindod Wells|LD1
+Newtown|SY16
+Welshpool|SY21
+Machynlleth|SY20
+Aberystwyth|SY23
+Cardigan|SA43
+Fishguard|SA65
+Haverfordwest|SA61
+Pembroke|SA71
+Milford Haven|SA73
+Tenby|SA70
+Carmarthen|SA31
+Llanelli|SA15
+Neath|SA10
+Port Talbot|SA13
+Bridgend|CF31
+Barry|CF62
+Pontypridd|CF37
+Merthyr Tydfil|CF47
+Aberdare|CF44
+Treorchy|CF42
+Ebbw Vale|NP23
+Tredegar|NP22
+Pontypool|NP4
+Cwmbran|NP44
+Caerphilly|CF83
+Bargoed|CF81
+Blackwood|NP12
+Newport|NP19
+Chepstow|NP16
+Caldicot|NP26
+Inverness|IV1
+Fort William|PH33
+Oban|PA34
+Stirling|FK7
+Perth|PH1
+Dunfermline|KY11
+Kirkcaldy|KY1
+St Andrews|KY16
+Falkirk|FK1
+Livingston|EH54
+Motherwell|ML1
+Hamilton|ML3
+East Kilbride|G74
+Paisley|PA1
+Greenock|PA15
+Ayr|KA7
+Kilmarnock|KA1
+Irvine|KA12
+Dumfries|DG1
+Stranraer|DG9
+Galashiels|TD1
+Hawick|TD9
+Peebles|EH45
+Berwick-upon-Tweed|TD15
+Kelso|TD5
+Jedburgh|TD8
+Dumbarton|G82
+Clydebank|G81
+Helensburgh|G84

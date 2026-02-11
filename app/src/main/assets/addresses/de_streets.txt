@@ -1,0 +1,198 @@
+# German Street Names - Common patterns
+# Format: StreetName (without number)
+Hauptstraße
+Bahnhofstraße
+Schulstraße
+Gartenstraße
+Dorfstraße
+Kirchstraße
+Bergstraße
+Waldstraße
+Lindenstraße
+Mühlstraße
+Ringstraße
+Friedhofstraße
+Brunnenstraße
+Schillerstraße
+Goethestraße
+Beethovenstraße
+Mozartstraße
+Lessingstraße
+Bismarckstraße
+Kaiserstraße
+Königstraße
+Friedrichstraße
+Wilhelmstraße
+Marktstraße
+Poststraße
+Rathausstraße
+Schlossstraße
+Burgstraße
+Turmstraße
+Mühlenstraße
+Feldstraße
+Wiesenstraße
+Blumenstraße
+Rosenstraße
+Lilienstraße
+Tulpenstraße
+Veilchenstraße
+Nelkenstraße
+Buchenstraße
+Eichenstraße
+Birkenstraße
+Ahornstraße
+Kastanienstraße
+Tannenstraße
+Fichtenstraße
+Kiefernstraße
+Eschenstraße
+Ulmenstraße
+Erlenstraße
+Pappelstraße
+Weidenstraße
+Rosenweg
+Birkenweg
+Lindenweg
+Eichenweg
+Tannenweg
+Buchenweg
+Ahornweg
+Waldweg
+Gartenweg
+Feldweg
+Wiesenweg
+Mühlenweg
+Kirchweg
+Schulweg
+Bahnweg
+Bergweg
+Talweg
+Dorfweg
+Ringweg
+Am Markt
+Am Bahnhof
+Am Rathaus
+Am Kirchplatz
+Am Sportplatz
+Am Friedhof
+Am Mühlbach
+Am Wald
+Am Berg
+Am See
+An der Kirche
+An der Schule
+An der Bahn
+An der Post
+An der Mühle
+In der Au
+Im Winkel
+Im Grund
+Im Tal
+Unter den Linden
+Kurfürstendamm
+Alexanderplatz
+Potsdamer Platz
+Friedrichstraße
+Unter den Eichen
+Steinstraße
+Sandstraße
+Feldweg
+Hinter dem Rathaus
+Vor dem Tor
+Am Stadtpark
+Neue Straße
+Alte Straße
+Lange Straße
+Kurze Straße
+Breite Straße
+Schmale Straße
+Hohe Straße
+Niedere Straße
+Obere Straße
+Untere Straße
+Vordere Straße
+Hintere Straße
+Nördliche Straße
+Südliche Straße
+Östliche Straße
+Westliche Straße
+Industriestraße
+Gewerbestraße
+Handwerkerstraße
+Fabrikstraße
+Werkstraße
+Hafenstraße
+Flughafenstraße
+Autobahnstraße
+Bundesstraße
+Landstraße
+Kreisstraße
+Ortsstraße
+Stadtstraße
+Gemeindstraße
+Privatstraße
+Sackgasse
+Durchgangsstraße
+Einbahnstraße
+Fußgängerzone
+Einkaufsstraße
+Geschäftsstraße
+Wohnstraße
+Spielstraße
+Tempo-30-Zone
+Anliegerstraße
+Zufahrtsstraße
+Erschließungsstraße
+Sammelstraße
+Verkehrsberuhigter Bereich
+Promenadenstraße
+Allee
+Boulevard
+Promenade
+Uferstraße
+Seestraße
+Flussstraße
+Bachstraße
+Teichstraße
+Quellenstraße
+Brunnenplatz
+Marktplatz
+Kirchplatz
+Rathausplatz
+Bahnhofsplatz
+Schlossplatz
+Theaterplatz
+Museumsplatz
+Universitätsplatz
+Schulplatz
+Sportplatz
+Spielplatz
+Festplatz
+Parkplatz
+Domplatz
+Münsterplatz
+Kaiserplatz
+Königsplatz
+Friedensplatz
+Freiheitsplatz
+Siegesplatz
+Heldenplatz
+Europastraße
+Amerikastraße
+Englandstraße
+Frankreichstraße
+Italienstraße
+Spanienstraße
+Polenstraße
+Österreichstraße
+Schweizer Straße
+Belgische Straße
+Holländische Straße
+Dänische Straße
+Schwedische Straße
+Norwegische Straße
+Finnische Straße
+Russische Straße
+Griechische Straße
+Türkische Straße

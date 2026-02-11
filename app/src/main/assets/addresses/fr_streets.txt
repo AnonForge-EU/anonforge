@@ -1,0 +1,208 @@
+# French Street Names - Common patterns
+# Format: StreetName (without number)
+Rue de la République
+Rue de la Paix
+Rue du Commerce
+Rue Victor Hugo
+Rue Jean Jaurès
+Rue Gambetta
+Rue Pasteur
+Rue du Général de Gaulle
+Avenue de la Gare
+Avenue de la Liberté
+Boulevard de la République
+Boulevard Jean Jaurès
+Place de la Mairie
+Place du Marché
+Rue des Écoles
+Rue de l'Église
+Rue du Château
+Rue de la Fontaine
+Rue du Moulin
+Rue du Pont
+Rue de la Poste
+Rue de l'Hôtel de Ville
+Rue du Stade
+Rue des Jardins
+Rue des Fleurs
+Rue du Parc
+Rue de la Plage
+Rue du Port
+Rue de la Mer
+Rue du Soleil
+Rue des Roses
+Rue des Lilas
+Rue des Acacias
+Rue des Chênes
+Rue des Pins
+Rue des Tilleuls
+Rue des Platanes
+Rue des Peupliers
+Rue des Saules
+Rue des Érables
+Rue de la Forêt
+Rue du Bois
+Rue des Prés
+Rue des Champs
+Rue de la Vigne
+Rue du Vignoble
+Rue des Vergers
+Avenue des Alliés
+Avenue de Verdun
+Avenue du 8 Mai 1945
+Avenue du 11 Novembre
+Avenue Foch
+Avenue Clemenceau
+Avenue Thiers
+Boulevard Carnot
+Boulevard Voltaire
+Boulevard Diderot
+Boulevard Haussmann
+Boulevard Saint-Germain
+Boulevard Saint-Michel
+Boulevard Raspail
+Boulevard Montparnasse
+Boulevard de Sébastopol
+Boulevard Magenta
+Boulevard de Strasbourg
+Rue de Rivoli
+Rue du Faubourg Saint-Honoré
+Rue de la Chaussée d'Antin
+Rue Lafayette
+Rue de Rennes
+Rue de Vaugirard
+Rue de la Convention
+Rue Lecourbe
+Rue de Belleville
+Rue de Ménilmontant
+Rue Oberkampf
+Rue du Chemin Vert
+Rue Saint-Maur
+Rue de la Roquette
+Rue de Charonne
+Rue du Faubourg Saint-Antoine
+Rue de Lyon
+Rue de Bercy
+Rue de Tolbiac
+Rue de Choisy
+Rue d'Italie
+Rue de la Glacière
+Rue Daguerre
+Rue d'Alésia
+Rue de la Tombe Issoire
+Rue Raymond Losserand
+Rue de Gergovie
+Rue Didot
+Rue de la Santé
+Rue Monge
+Rue Mouffetard
+Rue du Cardinal Lemoine
+Rue Descartes
+Rue de la Montagne Sainte-Geneviève
+Rue Saint-Jacques
+Rue Gay-Lussac
+Rue Claude Bernard
+Rue d'Ulm
+Rue des Fossés Saint-Bernard
+Quai de la Tournelle
+Quai Saint-Bernard
+Quai de Montebello
+Quai Saint-Michel
+Quai des Grands Augustins
+Quai de Conti
+Quai Malaquais
+Quai Voltaire
+Quai d'Orsay
+Quai Branly
+Quai de Grenelle
+Quai André Citroën
+Quai de Javel
+Quai d'Issy
+Rue de Sèvres
+Rue du Bac
+Rue de Grenelle
+Rue de Varenne
+Rue de Babylone
+Rue Saint-Dominique
+Rue de l'Université
+Rue de Bourgogne
+Rue de Constantine
+Rue Cler
+Rue de la Comète
+Rue Malar
+Rue Amélie
+Rue Bosquet
+Avenue de la Motte-Picquet
+Avenue de Suffren
+Avenue de Ségur
+Avenue de Breteuil
+Avenue Duquesne
+Avenue de Saxe
+Boulevard des Invalides
+Boulevard de Latour-Maubourg
+Rue Fabert
+Rue de Solférino
+Rue de Bellechasse
+Rue de Lille
+Rue de Verneuil
+Rue du Pré aux Clercs
+Rue Jacob
+Rue de Seine
+Rue Mazarine
+Rue Dauphine
+Rue de Buci
+Rue de l'Ancienne Comédie
+Rue Saint-André des Arts
+Place Saint-Michel
+Boulevard du Palais
+Quai de l'Horloge
+Quai des Orfèvres
+Rue de Lutèce
+Place du Parvis Notre-Dame
+Rue du Cloître Notre-Dame
+Rue Chanoinesse
+Rue de la Colombe
+Quai aux Fleurs
+Pont Neuf
+Rue Dauphine
+Rue Christine
+Rue Gît-le-Cœur
+Rue du Chat qui Pêche
+Rue de la Huchette
+Rue de la Harpe
+Boulevard Saint-Michel
+Rue Soufflot
+Rue Cujas
+Rue Malebranche
+Rue Le Goff
+Rue Pierre Nicole
+Rue du Val de Grâce
+Rue Henri Barbusse
+Rue de l'Abbé de l'Épée
+Rue Saint-Jacques
+Avenue de l'Observatoire
+Boulevard du Montparnasse
+Rue Vavin
+Rue Notre-Dame des Champs
+Rue de Fleurus
+Rue d'Assas
+Rue de Vaugirard
+Rue Madame
+Rue de Rennes
+Rue du Cherche-Midi
+Rue de Sèvres
+Rue du Four
+Rue Bonaparte
+Rue des Saints-Pères
+Rue du Dragon
+Rue de Grenelle
+Carrefour de l'Odéon
+Place Saint-Sulpice
+Rue de l'Abbaye
+Rue Guisarde
+Rue Princesse
+Rue Mabillon
+Rue du Four
+Rue de Buci
+Rue de l'Échaudé
+Rue de Seine

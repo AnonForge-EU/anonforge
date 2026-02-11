@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- WorkManager: faux positif, on-demand init correctement configuré -->
+    <issue id="RemoveWorkManagerInitializer" severity="ignore" />
+
+    <!-- SQLCipher 4.5.4 pas 16KB aligned - attendre mise à jour upstream -->
+    <issue id="Aligned16KB" severity="ignore" />
+
+    <!-- Mises à jour AGP/Gradle reportées post-MVP -->
+    <issue id="AndroidGradlePluginVersion" severity="ignore" />
+    <issue id="GradleVersion" severity="ignore" />
+
+    <!-- Mises à jour dépendances reportées post-MVP -->
+    <issue id="GradleDependency" severity="ignore" />
+
+    <!-- targetSdk 34 conforme Google Play -->
+    <issue id="OldTargetApi" severity="ignore" />
+
+    <!-- Pluralisation avancée post-MVP -->
+    <issue id="PluralsCandidate" severity="ignore" />
+    <!-- Ressources préparées pour features futures - audit post-MVP -->
+    <issue id="UnusedResources" severity="ignore" />
+
+    <issue id="SpellCheckingInspection" severity="ignore" />
+</lint>

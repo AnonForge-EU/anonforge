@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- APP INFO                                                                 -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="app_name">AnonForge</string>
+    <string name="app_tagline">Secure identity generator</string>
+    <string name="app_version">Version %1$s</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SPLASH / DISCLAIMER                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="disclaimer_title">Legal Disclaimer</string>
+    <string name="disclaimer">This application generates fictional identities for testing purposes only. Any resemblance to real persons is purely coincidental. Use responsibly and in compliance with applicable laws.</string>
+    <string name="disclaimer_accept">I understand and accept</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- UNLOCK SCREEN                                                            -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="unlock_title">Welcome back</string>
+    <string name="unlock_subtitle">Authenticate to access your identities</string>
+    <string name="unlock_use_biometric">Use fingerprint</string>
+    <string name="unlock_use_pin">Use PIN</string>
+    <string name="unlock_no_auth_configured">No authentication configured</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- BIOMETRIC PROMPT                                                         -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="biometric_prompt_title">Unlock AnonForge</string>
+    <string name="biometric_prompt_subtitle">Verify your identity</string>
+    <string name="biometric_use_pin">Use PIN</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- BIOMETRIC SETUP                                                          -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="biometric_not_enrolled_title">Fingerprint not configured</string>
+    <string name="biometric_setup_title">Set up fingerprint</string>
+    <string name="biometric_setup_message">No fingerprint registered on this device. Would you like to set up biometric authentication?</string>
+    <string name="biometric_setup_go_to_settings">Go to settings</string>
+    <string name="biometric_tap_to_enable">Tap to enable fingerprint unlock</string>
+    <string name="biometric_setup_path">Settings → Security → Fingerprint</string>
+    <string name="biometric_enabled_title">Fingerprint enabled</string>
+    <string name="biometric_enabled_message">You can now use your fingerprint to unlock AnonForge.</string>
+    <string name="biometric_disable_title">Disable fingerprint?</string>
+    <string name="biometric_disable_message">You will need to use the PIN code to unlock the app. Are you sure you want to disable fingerprint unlock?</string>
+    <string name="disable">Disable</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PIN DIALOG                                                               -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="pin_dialog_title">Enter PIN</string>
+    <string name="pin_dialog_label">PIN code</string>
+    <string name="pin_show">Show PIN</string>
+    <string name="pin_hide">Hide PIN</string>
+    <string name="pin_verify">Verify</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PIN SETUP                                                                -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="pin_setup_title">Set up PIN</string>
+    <string name="pin_setup_enter">Enter PIN</string>
+    <string name="pin_setup_confirm">Confirm PIN</string>
+    <string name="pin_setup_hint">PIN must contain %1$d–%2$d digits</string>
+    <string name="pin_setup_save">Save PIN</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- LOCKOUT                                                                  -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="lockout_title">Too many attempts</string>
+    <string name="lockout_message">You entered the wrong PIN too many times. Please wait before trying again.</string>
+    <string name="lockout_wait">Please wait before trying again</string>
+    <string name="lockout_close_app">Close app</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- NAVIGATION                                                               -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="nav_vault">Vault</string>
+    <string name="nav_generator">Generator</string>
+    <string name="nav_settings">Settings</string>
+    <string name="navigate_back">Back</string>
+    <string name="back">Back</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- VAULT SCREEN                                                             -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="vault_title">Identity Vault</string>
+    <string name="vault_empty_title">No identities</string>
+    <string name="vault_empty_subtitle">Generate your first identity to get started</string>
+    <string name="vault_generate">Generate</string>
+    <string name="vault_generate_first">Generate my first identity</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- GENERATOR SCREEN                                                         -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="generator_title">Generate identity</string>
+    <string name="generator_save">Save</string>
+    <string name="generator_temporary">Temporary identity</string>
+    <string name="generator_include_address">Include address</string>
+    <string name="generator_custom_days">Custom duration (days)</string>
+    <string name="generator_gender">Gender</string>
+    <string name="generator_preview">Preview</string>
+    <string name="generator_refresh">Refresh</string>
+    <string name="generator_nationality">Nationality</string>
+    <string name="generator_age_range">Age range</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- EXPIRY OPTIONS                                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="expiry_1d">1 day</string>
+    <string name="expiry_1w">1 week</string>
+    <string name="expiry_1m">1 month</string>
+    <string name="expiry_3m">3 months</string>
+    <string name="expiry_permanent">Permanent</string>
+    <string name="expiry_description">Identity will be automatically deleted after expiration</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- IDENTITY CARD                                                            -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="identity_expired">Expired</string>
+    <string name="identity_expires_soon">Expires soon</string>
+    <string name="field_name">Name</string>
+    <string name="field_email">Email</string>
+    <string name="field_phone">Phone</string>
+    <string name="field_dob">Date of birth</string>
+    <string name="field_address">Address</string>
+    <string name="field_age">Age</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_copy_all">Copy all</string>
+    <string name="action_reveal">Show details</string>
+    <string name="action_hide">Hide details</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="delete_identity_title">Delete identity?</string>
+    <string name="delete_identity_message">This action cannot be undone.</string>
+    <string name="clipboard_cleared">Clipboard cleared</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- RENAME DIALOG                                                            -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="rename_dialog_title">Rename identity</string>
+    <string name="rename_dialog_message">Enter a custom name for this identity. 30 characters max.</string>
+    <string name="rename_dialog_label">Custom name</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS SCREEN                                                          -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_security_section">Security</string>
+    <string name="settings_biometric">Fingerprint unlock</string>
+    <string name="settings_biometric_title">Fingerprint unlock</string>
+    <string name="settings_biometric_subtitle">Use fingerprint to unlock</string>
+    <string name="settings_biometric_summary">Use fingerprint to unlock the app</string>
+    <string name="settings_biometric_not_enrolled">No fingerprint registered</string>
+    <string name="settings_biometric_not_available">Biometrics not available on this device</string>
+    <string name="settings_generation">Generation</string>
+    <string name="settings_about">About</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - PIN                                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_pin_title">PIN lock</string>
+    <string name="settings_pin_configured">PIN configured</string>
+    <string name="settings_pin_not_configured">No PIN configured</string>
+    <string name="settings_setup_pin">Set up</string>
+    <string name="settings_change_pin">Change</string>
+    <string name="settings_pin_summary">Use PIN to unlock the app</string>
+    <string name="settings_pin_change">Change PIN</string>
+    <string name="settings_pin_remove">Remove PIN</string>
+    <string name="settings_pin_instructions">Enter a 6–8 digit PIN to protect your identities.</string>
+    <string name="settings_enter_pin">Enter PIN</string>
+    <string name="settings_confirm_pin">Confirm PIN</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - AUTO-LOCK                                                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_autolock">Auto-lock</string>
+    <string name="settings_autolock_title">Lock timeout</string>
+    <string name="settings_autolock_dialog_title">Choose timeout</string>
+    <string name="settings_autolock_immediate">Immediately</string>
+    <string name="settings_autolock_1min">1 minute</string>
+    <string name="settings_autolock_5min">5 minutes</string>
+    <string name="settings_autolock_15min">15 minutes</string>
+    <string name="settings_autolock_never">Never (during session)</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - APPEARANCE (Skill 18)                                         -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_appearance">Appearance</string>
+
+    <!-- Theme -->
+    <string name="settings_theme_title">Theme</string>
+    <string name="settings_theme_subtitle">Choose display mode</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
+    <!-- Language -->
+    <string name="settings_language_title">Language</string>
+    <string name="settings_language_subtitle">Choose app language</string>
+    <string name="settings_language_restart_hint">App will restart to apply change</string>
+    <string name="language_system">System</string>
+    <string name="language_en">English</string>
+    <string name="language_fr">French</string>
+
+    <!-- Appearance Accessibility -->
+    <string name="theme_system_description">Follow system theme</string>
+    <string name="theme_light_description">Light mode enabled</string>
+    <string name="theme_dark_description">Dark mode enabled</string>
+    <string name="language_change_success">Language changed</string>
+    <string name="theme_change_success">Theme changed</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - GENDER                                                        -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_gender">Gender</string>
+    <string name="settings_gender_title">Gender preference</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_random">Random</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - AGE RANGE                                                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_age_range_title">Age range</string>
+    <string name="settings_age_range">Age range</string>
+    <string name="settings_age_range_value">%1$d–%2$d years</string>
+    <string name="settings_age_range_dialog_title">Choose age range</string>
+    <string name="settings_age_range_dialog_subtitle">Choose a preset range or random</string>
+    <string name="settings_age_range_random">Random (18–85)</string>
+    <string name="years">years</string>
+    <string name="years_old">years old</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - NATIONALITY                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_nationality_title">Nationality</string>
+    <string name="settings_nationality">Nationality</string>
+    <string name="settings_nationality_subtitle">Select preferred nationality for generated identities</string>
+    <string name="nationality_fr">French 🇫🇷</string>
+    <string name="nationality_us">American 🇺🇸</string>
+    <string name="nationality_en">British 🇬🇧</string>
+    <string name="nationality_de">German 🇩🇪</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - EMAIL ALIAS                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_email_alias">Email Alias</string>
+    <string name="settings_simplelogin">SimpleLogin Integration</string>
+    <string name="settings_alias_title">SimpleLogin Configuration</string>
+    <string name="settings_alias_subtitle">Configure SimpleLogin integration</string>
+    <string name="settings_alias_configured">Configured ✓</string>
+    <string name="settings_alias_not_configured">Not configured</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - PHONE ALIAS                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_phone_alias">Virtual Numbers</string>
+    <string name="settings_phone_alias_title">Virtual Numbers</string>
+    <string name="settings_phone_alias_subtitle">Manage your virtual numbers</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SETTINGS - RESET &amp; EXPORT                                            -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="settings_reset_generation_title">Reset preferences</string>
+    <string name="settings_reset_generation_subtitle">Restore default settings</string>
+    <string name="settings_expiry_notif_title">Expiry notifications</string>
+    <string name="settings_expiry_notif_subtitle">Get notified before identities expire</string>
+    <string name="settings_export_title">Export database</string>
+    <string name="settings_export_subtitle">Create an encrypted backup</string>
+    <string name="settings_import_title">Import database</string>
+    <string name="settings_import_subtitle">Restore from a backup</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- IMPORT/EXPORT DIALOGS                                                    -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="import_confirm_title">Replace existing data?</string>
+    <string name="import_confirm_warning">All current data will be permanently lost.</string>
+    <string name="import_confirm_button">Continue</string>
+    <string name="import_passphrase_title">Enter password</string>
+    <string name="import_passphrase_message">Enter the password used when creating this backup to decrypt and import it.</string>
+    <string name="import_passphrase_label">Password</string>
+    <string name="import_confirm_final">Delete and import</string>
+    <string name="import_success_title">Import complete</string>
+    <string name="import_success_message">Database imported successfully. The app will restart to apply changes.</string>
+    <string name="import_success_restart">Restart app</string>
+
+    <string name="export_passphrase_title">Set a password</string>
+    <string name="export_passphrase_message">Your backup will be encrypted with this password. You will need it to restore.</string>
+    <string name="export_passphrase_label">Password</string>
+    <string name="export_passphrase_confirm_label">Confirm password</string>
+    <string name="export_button">Export</string>
+    <string name="export_success_title">Backup ready</string>
+    <string name="export_success_message">Your encrypted backup has been saved.</string>
+    <string name="export_share">Share backup</string>
+
+    <string name="import_error_file_not_found">File not found</string>
+    <string name="import_error_invalid_format">Invalid backup format</string>
+    <string name="import_error_invalid_passphrase">Incorrect password</string>
+    <string name="import_error_corrupted">Backup file is corrupted</string>
+    <string name="import_error_version_mismatch">Incompatible backup version</string>
+    <string name="export_error_write_failed">Failed to create backup</string>
+    <string name="export_error_encryption_failed">Encryption failed</string>
+
+    <string name="password_mismatch">Passwords do not match</string>
+    <string name="password_too_short">Password must be at least 8 characters</string>
+    <string name="password_strength_weak">Weak</string>
+    <string name="password_strength_medium">Medium</string>
+    <string name="password_strength_strong">Strong</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- ABOUT / LEGAL                                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="about_title">About</string>
+    <string name="about_version">Version</string>
+    <string name="about_build">Build</string>
+    <string name="about_description">AnonForge generates realistic fictional identities for privacy testing. All data is stored locally and encrypted.</string>
+    <string name="about_privacy_policy">Privacy Policy</string>
+    <string name="about_terms">Terms of Service</string>
+    <string name="about_licenses">Open source licenses</string>
+    <string name="about_rate">Rate the app</string>
+    <string name="about_feedback">Send feedback</string>
+    <string name="about_developer">Developer</string>
+    <string name="about_developer_name">Privacy First Labs</string>
+    <string name="about_website">Website</string>
+    <string name="about_github">GitHub</string>
+    <string name="about_support">Support</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- DATA MANAGEMENT                                                         -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="data_management_title">Data Management</string>
+    <string name="data_wipe_title">Wipe all data</string>
+    <string name="data_wipe_subtitle">Permanently delete all identities and settings</string>
+    <string name="data_wipe_confirm_title">Delete everything?</string>
+    <string name="data_wipe_confirm_message">This will permanently delete all your identities, settings, and security configuration. This action cannot be undone.</string>
+    <string name="data_wipe_confirm_button">Delete all data</string>
+    <string name="data_wipe_success">All data has been deleted</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SIMPLELOGIN CONFIG SCREEN                                               -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="simplelogin_title">SimpleLogin</string>
+    <string name="simplelogin_info_title">What is SimpleLogin?</string>
+    <string name="simplelogin_info_description">SimpleLogin creates email aliases that forward to your real inbox. When you need a disposable email, AnonForge will generate one via SimpleLogin.</string>
+    <string name="simplelogin_key_title">API Key</string>
+    <string name="simplelogin_key_hint">Enter your SimpleLogin API key</string>
+    <string name="simplelogin_key_get">Get your API key</string>
+    <string name="simplelogin_key_instructions">To get your API key:\n1. Log in to SimpleLogin\n2. Go to Settings → API Keys\n3. Create a new key and paste it here</string>
+    <string name="simplelogin_test_button">Test connection</string>
+    <string name="simplelogin_test_success">Connection successful!</string>
+    <string name="simplelogin_test_failed">Connection failed. Check your API key.</string>
+    <string name="simplelogin_save">Save configuration</string>
+    <string name="simplelogin_remove">Remove configuration</string>
+    <string name="simplelogin_remove_confirm_title">Remove SimpleLogin?</string>
+    <string name="simplelogin_remove_confirm_message">Generated aliases will not be deleted from SimpleLogin, but you won\'t be able to create new ones without reconfiguring.</string>
+    <string name="simplelogin_enable_label">Enable email aliases</string>
+    <string name="simplelogin_enable_description">Automatically generate email aliases for new identities</string>
+    <string name="simplelogin_security_note">Your API key is stored locally and encrypted. It is never shared.</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- EMAIL NOT CONFIGURED (Generator Screen)                                  -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="email_not_configured_title">Email not configured</string>
+    <string name="email_not_configured_message">Configure SimpleLogin to generate real email aliases</string>
+    <string name="email_configure_button">Configure email</string>
+    <string name="email_tap_to_select">Tap to create or choose an alias</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PHONE NOT CONFIGURED (Generator Screen)                                  -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="phone_not_configured_title">Phone not configured</string>
+    <string name="phone_not_configured_message">Add virtual numbers in Settings</string>
+    <string name="phone_configure_button">Configure phone</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- ALIAS IMPORT SCREEN (AliasImportScreen.kt)                              -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="import_dialog_title">Import aliases</string>
+    <string name="import_tab_email">Email</string>
+    <string name="import_button">Import</string>
+    <string name="import_select_all">Select all</string>
+    <string name="import_deselect_all">Deselect all</string>
+    <string name="import_forward_count">%1$d forwards</string>
+    <string name="import_loading">Loading aliases…</string>
+    <string name="import_empty_email">No email aliases found</string>
+    <string name="import_empty_hint">Create aliases on SimpleLogin then come back here</string>
+    <string name="import_not_configured_email">Email not configured</string>
+    <string name="import_configure_hint">Configure SimpleLogin to import your aliases</string>
+    <string name="import_rate_limited">Too many requests</string>
+    <string name="import_error">Loading error</string>
+    <string name="import_retry_after">Retry in %1$d seconds</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- ALIAS IMPORT - Results                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="import_result_summary">%1$d imported, %2$d duplicate(s)</string>
+    <string name="import_result_failures">%1$d failure(s)</string>
+    <string name="import_found_count">%1$d aliases found</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- ALIAS SELECTION DIALOG (AliasSelectionDialog.kt)                        -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="alias_dialog_title">Choose an email alias</string>
+    <string name="alias_created_success">Alias created successfully</string>
+    <string name="alias_use_this">Use this alias</string>
+    <string name="alias_skip">Skip</string>
+    <string name="alias_use_primary">Use primary</string>
+    <string name="alias_option_new">Create new alias</string>
+    <string name="alias_option_new_desc">Generate an alias via SimpleLogin</string>
+    <string name="alias_option_existing">Choose existing alias</string>
+    <string name="alias_option_existing_desc">Select from your aliases</string>
+    <string name="alias_manual_title">Manual entry</string>
+    <string name="alias_manual_desc">Enter an email manually</string>
+    <string name="alias_creating">Creating alias…</string>
+    <string name="alias_manual_label">Email address</string>
+    <string name="alias_confirm">Confirm</string>
+    <string name="alias_search_hint">Search aliases…</string>
+    <string name="alias_no_results">No aliases found</string>
+    <string name="alias_empty_title">No aliases available</string>
+    <string name="alias_create_new">Create new alias</string>
+    <string name="alias_create_new_hint">A new alias will be generated via SimpleLogin</string>
+    <string name="alias_section_imported">Imported aliases</string>
+    <string name="alias_section_generated">Generated aliases</string>
+    <string name="alias_selection_hint">Select an alias or create a new one</string>
+    <string name="alias_used_times">Used %1$d times</string>
+
+    <!-- Alias Selection - Generator Screen (NEW for Issue #4) -->
+    <string name="alias_select_title">Select Email Alias</string>
+    <string name="alias_tap_to_change">Tap to change alias</string>
+    <string name="alias_select_prompt_title">Select an Alias</string>
+    <string name="alias_select_prompt_message">Tap to choose from your imported aliases</string>
+    <string name="alias_select_button">Select Alias</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- ALIAS HISTORY SCREEN (AliasHistoryScreen.kt)                            -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="alias_history_title">Alias history</string>
+    <string name="alias_history_clear_all">Clear all</string>
+    <string name="alias_history_empty_title">No aliases</string>
+    <string name="alias_history_empty_subtitle">Used aliases will appear here</string>
+    <string name="alias_history_clear_title">Clear history?</string>
+    <string name="alias_history_clear_message">This will delete all aliases from local history. Your SimpleLogin aliases will not be affected.</string>
+    <string name="alias_history_created_on">Created on %1$s</string>
+    <string name="alias_history_delete">Delete alias</string>
+    <string name="alias_history_clear_confirm">Clear all</string>
+    <string name="alias_history_subtitle">Manage your used aliases</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- ALIAS SETTINGS SCREEN (AliasSettingsScreen.kt)                          -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="alias_key_saved_success">API key saved</string>
+    <string name="alias_key_removed">API key removed</string>
+    <string name="alias_key_invalid">Invalid API key</string>
+    <string name="alias_settings_title">Alias settings</string>
+    <string name="alias_info_title">SimpleLogin email aliases</string>
+    <string name="alias_info_description">Create email aliases that forward to your real inbox. Protect your real email from spam and trackers.</string>
+    <string name="alias_enable_label">Enable email aliases</string>
+    <string name="alias_enable_description">Automatically generate aliases for new identities</string>
+    <string name="alias_configure_first">Configure your API key first</string>
+    <string name="alias_management_title">Alias management</string>
+    <string name="alias_import_title">Import aliases</string>
+    <string name="alias_import_subtitle">Retrieve your existing aliases from SimpleLogin</string>
+    <string name="alias_api_config_title">API Configuration</string>
+    <string name="alias_key_valid">Valid key ✓</string>
+    <string name="alias_key_validating">Validating…</string>
+    <string name="alias_key_configured">Key configured</string>
+    <string name="alias_key_hint_display">•••••••••••••••••••</string>
+    <string name="alias_key_hint_format">Starts with: %1$s…</string>
+    <string name="alias_quota_display">%1$d / %2$d aliases used</string>
+    <string name="alias_change_key">Change key</string>
+    <string name="alias_test_connection">Test connection</string>
+    <string name="alias_replace_key">Replace key</string>
+    <string name="alias_clear_title">Remove configuration?</string>
+    <string name="alias_api_key_label">SimpleLogin API key</string>
+    <string name="alias_api_key_hide">Hide key</string>
+    <string name="alias_api_key_show">Show key</string>
+    <string name="alias_api_key_hint">Paste your API key here</string>
+    <string name="alias_save_key">Save key</string>
+    <string name="alias_signup_title">No account yet?</string>
+    <string name="alias_signup_description">Create a free SimpleLogin account to start protecting your email.</string>
+    <string name="alias_security_note">Your API key is encrypted and stored locally. It is never shared.</string>
+    <string name="alias_clear_message">Your API key will be removed. You will need to reconfigure it to create new aliases.</string>
+    <string name="alias_clear_confirm">Remove</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SKILL 17: ALIAS SYNC &amp; QUOTA                                         -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="alias_sync_title">Sync with SimpleLogin</string>
+    <string name="alias_sync_subtitle">Import new aliases from your account</string>
+    <string name="alias_sync_button">Sync</string>
+    <string name="alias_syncing">Syncing…</string>
+    <string name="alias_sync_in_progress">Syncing…</string>
+    <string name="alias_sync_success">%1$d alias(es) synced</string>
+    <string name="alias_sync_uptodate">Already up to date</string>
+    <string name="alias_sync_error">Sync failed: %1$s</string>
+
+    <string name="alias_quota_title">Alias quota</string>
+    <string name="alias_quota_used">%1$d / %2$d aliases used</string>
+    <string name="alias_quota_unlimited">Unlimited (Premium)</string>
+    <string name="alias_quota_warning">Low quota: %1$d remaining</string>
+    <string name="alias_quota_limit_reached">Alias limit reached</string>
+    <string name="alias_quota_upgrade">Upgrade to premium for unlimited aliases</string>
+
+    <string name="alias_local_count">%1$d aliases in local history</string>
+    <string name="alias_clear_history">Clear history</string>
+    <string name="alias_clear_history_title">Clear history</string>
+    <string name="alias_clear_history_subtitle">Remove %1$d alias(es) from local storage</string>
+    <string name="alias_clear_history_dialog_title">Clear alias history?</string>
+    <string name="alias_clear_history_dialog_message">This will remove %1$d alias(es) from local storage. Your aliases on SimpleLogin will not be affected.</string>
+    <string name="alias_clear_history_message">This will delete all locally stored aliases. Your SimpleLogin aliases will not be affected.</string>
+    <string name="alias_clear_history_confirm">Clear history</string>
+    <string name="alias_history_cleared">Alias history cleared</string>
+
+    <string name="alias_error_no_key">API key not configured</string>
+    <string name="alias_error_invalid_key">Invalid API key</string>
+    <string name="alias_error_network">Network error. Check your connection.</string>
+    <string name="alias_error_limit">Alias limit reached. Delete old aliases or upgrade to premium.</string>
+    <string name="alias_error_create_failed">Failed to create alias</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PHONE ALIAS - MANUAL ENTRY MODE                                          -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="phone_alias_settings_title">Virtual Numbers</string>
+    <string name="phone_alias_key_configured">Numbers configured</string>
+    <string name="phone_alias_info_title">Protect your real number</string>
+    <string name="phone_alias_info_description">Use temporary virtual numbers for signups. Get them from the services below, then add them here to reuse.</string>
+
+    <string name="phone_alias_enable_label">Enable virtual numbers</string>
+    <string name="phone_alias_enable_description">Include a virtual number in generated identities</string>
+
+    <string name="phone_alias_add_title">Add a number</string>
+    <string name="phone_alias_add_hint">Enter a virtual number</string>
+    <string name="phone_alias_add_button">Add</string>
+    <string name="phone_alias_name_hint">Name (optional)</string>
+    <string name="phone_alias_name_example">Ex: Hushed, OnOff…</string>
+
+    <string name="phone_alias_services_title">Get a virtual number</string>
+    <string name="phone_alias_services_description">These services offer temporary or virtual numbers:</string>
+
+    <string name="phone_alias_service_hushed">Hushed</string>
+    <string name="phone_alias_service_hushed_desc">Private numbers with calls and SMS</string>
+    <string name="phone_alias_service_onoff">OnOff</string>
+    <string name="phone_alias_service_onoff_desc">French 2nd line, 1st month free</string>
+    <string name="phone_alias_service_textnow">TextNow</string>
+    <string name="phone_alias_service_textnow_desc">Free US/CA numbers (with ads)</string>
+    <string name="phone_alias_open_service">Open</string>
+
+    <string name="phone_alias_history_title">My numbers</string>
+    <string name="phone_alias_history_empty">No numbers saved</string>
+    <string name="phone_alias_history_empty_hint">Add your virtual numbers to easily reuse them</string>
+
+    <string name="phone_alias_primary">Primary</string>
+    <string name="phone_alias_set_primary">Set as primary</string>
+    <string name="phone_alias_used_count">Used %1$d times</string>
+    <string name="phone_alias_copied">Number copied</string>
+
+    <string name="phone_alias_delete_title">Delete this number?</string>
+    <string name="phone_alias_delete_message">Remove %1$s from your list?</string>
+    <string name="phone_alias_clear_title">Clear all numbers?</string>
+    <string name="phone_alias_clear_message">This will delete all your saved numbers.</string>
+
+    <string name="phone_alias_security_note">Your numbers are stored locally and encrypted. They are never shared.</string>
+
+    <string name="phone_alias_dialog_title">Virtual number</string>
+    <string name="phone_alias_option_new">Add new number</string>
+    <string name="phone_alias_option_new_desc">Enter a virtual number manually</string>
+    <string name="phone_alias_existing_title">Saved numbers</string>
+    <string name="phone_alias_use_primary">Use primary</string>
+    <string name="phone_alias_not_configured">No number configured</string>
+
+    <string name="phone_alias_invalid_format">Invalid number format</string>
+    <string name="phone_alias_already_exists">This number already exists</string>
+    <string name="phone_alias_added_success">Number added</string>
+    <string name="phone_alias_deleted_success">Number deleted</string>
+    <string name="phone_alias_primary_updated">Primary number updated</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PIN - Legacy string                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="pin_attempts_remaining">%1$d attempts remaining</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- COMMON ACTIONS                                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="remove">Remove</string>
+    <string name="save">Save</string>
+    <string name="change">Change</string>
+    <string name="done">Done</string>
+    <string name="configure">Configure</string>
+    <string name="generate_alias">Generate</string>
+    <string name="retry">Retry</string>
+    <string name="close">Close</string>
+    <string name="clear">Clear</string>
+    <string name="ok">OK</string>
+    <string name="error">Error</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="identity_saved_success">Identity saved successfully!</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- BIOMETRIC - ACCESSIBILITY                                                -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="unlock_icon_description">Lock icon</string>
+    <string name="unlock_biometric_button_description">Authenticate with fingerprint</string>
+    <string name="unlock_pin_button_description">Authenticate with PIN code</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- API KEY SECURITY - ACCESSIBILITY                                         -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="alias_key_status_valid">Valid API key</string>
+    <string name="alias_key_status_invalid">Invalid API key</string>
+    <string name="alias_key_masked_description">API key configured (masked for security)</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SUPPORT &amp; WHY PAGE (DONATIONS ONLY - NO AFFILIATIONS)               -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="support_title">Support &amp; Why</string>
+    <string name="support_header_title">Help keep AnonForge free</string>
+    <string name="support_header_subtitle">Privacy-focused, ad-free, community-supported</string>
+    <string name="support_section_why">Understanding privacy</string>
+    <string name="support_section_donate">Support development</string>
+
+    <string name="support_why_title">Why AnonForge?</string>
+    <string name="support_why_subtitle">Discover why privacy matters and how we protect you</string>
+
+    <string name="supporter_badge">Supporter ⭐</string>
+
+    <!-- Donations -->
+    <string name="donation_onetime">One-time</string>
+    <string name="donation_monthly">Monthly</string>
+    <string name="donation_tier_coffee">Coffee</string>
+    <string name="donation_tier_lunch">Lunch</string>
+    <string name="donation_tier_champion">Champion</string>
+    <string name="donation_tier_supporter">Supporter</string>
+    <string name="donation_tier_pro">Pro</string>
+    <string name="donation_tier_hero">Hero</string>
+    <string name="donation_custom">Custom amount</string>
+    <string name="donation_per_month">per month</string>
+    <string name="donation_button">Support AnonForge</string>
+    <string name="donation_checkout_title">Secure checkout</string>
+    <string name="donation_loading">Loading secure payment…</string>
+    <string name="donation_security_note">Secure payment by Stripe. We never see your card.</string>
+    <string name="donation_thank_you">Thank you for your support! ❤️</string>
+    <string name="donation_error">Payment could not be completed</string>
+    <string name="donation_secure_payment">Secure payment</string>
+    <string name="donation_amount_label">Amount</string>
+    <string name="donation_min_amount">Minimum amount: €1</string>
+    <string name="donation_max_onetime">Maximum one-time: €50</string>
+    <string name="donation_max_monthly">Maximum monthly: €10</string>
+    <string name="donation_processing">Processing…</string>
+    <string name="donation_success_title">Thank you! 💝</string>
+    <string name="donation_success_message">Your support helps keep AnonForge free and privacy-focused.</string>
+    <string name="donation_cancel_message">Donation cancelled</string>
+    <string name="donation_why_donate">Why donate?</string>
+    <string name="donation_why_donate_desc">Your donations help keep AnonForge free, ad-free, and privacy-focused. No data is collected.</string>
+
+    <!-- Why AnonForge Page -->
+    <string name="why_page_title">Why AnonForge?</string>
+    <string name="why_hero_title">700M+ records stolen in France alone</string>
+    <string name="why_hero_subtitle">Data breaches expose your email, phone, and identity daily. AnonForge helps you stay protected.</string>
+    <string name="why_check_hibp">Check if your data was leaked</string>
+
+    <string name="why_section_why">Why disposable identities?</string>
+    <string name="why_reason1_title">Protection against data breaches</string>
+    <string name="why_reason1_desc">When a service gets hacked, your real data stays safe because you used a disposable identity.</string>
+    <string name="why_reason2_title">Stop spam &amp; tracking</string>
+    <string name="why_reason2_desc">Use a unique email per service. Disable the alias when it gets spam.</string>
+    <string name="why_reason3_title">Verify without exposure</string>
+    <string name="why_reason3_desc">Sign up for services requiring phone verification without revealing your real number.</string>
+
+    <string name="why_section_services">Service trade-offs</string>
+    <string name="why_pros">✓ Pros</string>
+    <string name="why_cons">✗ Cons</string>
+
+    <string name="why_simplelogin_pro1">Open source &amp; audited</string>
+    <string name="why_simplelogin_pro2">Owned by Proton (privacy-focused)</string>
+    <string name="why_simplelogin_pro3">Free tier with 10 aliases</string>
+    <string name="why_simplelogin_con1">Limited aliases on free tier</string>
+    <string name="why_simplelogin_con2">Account creation required</string>
+
+    <!-- Phone Services -->
+    <string name="why_phone_services_title">Virtual number services</string>
+    <string name="why_phone_services_desc">Get a temporary number from these services, then add it to AnonForge.</string>
+
+    <string name="why_hushed_pro1">Reusable burner numbers</string>
+    <string name="why_hushed_pro2">Calls and SMS included</string>
+    <string name="why_hushed_pro3">No contract</string>
+    <string name="why_hushed_con1">Paid service</string>
+    <string name="why_hushed_con2">Mainly US/CA numbers</string>
+
+    <string name="why_onoff_pro1">French numbers available</string>
+    <string name="why_onoff_pro2">1st month free</string>
+    <string name="why_onoff_pro3">Simple app</string>
+    <string name="why_onoff_con1">Monthly subscription required</string>
+    <string name="why_onoff_con2">Limited to certain countries</string>
+
+    <string name="why_section_privacy">Our privacy promise</string>
+    <string name="why_privacy_point1">No data collection — Everything stays on your device</string>
+    <string name="why_privacy_point2">No cloud sync — Your identities never leave your phone</string>
+    <string name="why_privacy_point3">No analytics — We don\'t track your usage</string>
+    <string name="why_privacy_point4">No sharing — We don\'t sell or share anything</string>
+
+</resources>

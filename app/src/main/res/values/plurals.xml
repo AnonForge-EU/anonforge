@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PLURALS - English pluralization                                          -->
+    <!-- English CLDR: one (1), other (0, 2+)                                    -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- PIN attempts remaining -->
+    <plurals name="pin_attempts_remaining">
+        <item quantity="one">%1$d attempt remaining</item>
+        <item quantity="other">%1$d attempts remaining</item>
+    </plurals>
+
+    <!-- Lockout timer (seconds) -->
+    <plurals name="lockout_timer_seconds">
+        <item quantity="one">Try again in %1$d second</item>
+        <item quantity="other">Try again in %1$d seconds</item>
+    </plurals>
+
+    <!-- Auto-lock delay (minutes) -->
+    <plurals name="settings_autolock_minutes">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+
+    <!-- Import confirmation (identities count) -->
+    <plurals name="import_confirm_identities">
+        <item quantity="one">This will delete %1$d existing identity. This action cannot be undone.</item>
+        <item quantity="other">This will delete %1$d existing identities. This action cannot be undone.</item>
+    </plurals>
+
+    <!-- Alias history usage count -->
+    <plurals name="alias_history_used_times">
+        <item quantity="one">Used %1$d time • Last: %2$s</item>
+        <item quantity="other">Used %1$d times • Last: %2$s</item>
+    </plurals>
+
+    <!-- Age in years -->
+    <plurals name="age_years">
+        <item quantity="one">%1$d year</item>
+        <item quantity="other">%1$d years</item>
+    </plurals>
+
+    <!-- PIN digits hint -->
+    <plurals name="pin_digits">
+        <item quantity="one">%1$d digit</item>
+        <item quantity="other">%1$d digits</item>
+    </plurals>
+
+    <!-- Aliases count -->
+    <plurals name="aliases_count">
+        <item quantity="one">%1$d alias</item>
+        <item quantity="other">%1$d aliases</item>
+    </plurals>
+
+    <!-- Forwards count -->
+    <plurals name="forwards_count">
+        <item quantity="one">%1$d forward</item>
+        <item quantity="other">%1$d forwards</item>
+    </plurals>
+
+    <!-- Import success count -->
+    <plurals name="import_success_count">
+        <item quantity="one">%1$d alias imported successfully</item>
+        <item quantity="other">%1$d aliases imported successfully</item>
+    </plurals>
+
+    <!-- Import selected count -->
+    <plurals name="import_selected_count">
+        <item quantity="one">%1$d selected</item>
+        <item quantity="other">%1$d selected</item>
+    </plurals>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SKILL 17: Alias Sync & Quota plurals                                    -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Aliases synced count -->
+    <plurals name="alias_sync_count">
+        <item quantity="one">%1$d alias synced</item>
+        <item quantity="other">%1$d aliases synced</item>
+    </plurals>
+
+    <!-- Aliases remaining (quota warning) -->
+    <plurals name="alias_quota_remaining">
+        <item quantity="one">%1$d alias remaining</item>
+        <item quantity="other">%1$d aliases remaining</item>
+    </plurals>
+
+    <!-- Local alias history count -->
+    <plurals name="alias_local_history_count">
+        <item quantity="one">%1$d alias in history</item>
+        <item quantity="other">%1$d aliases in history</item>
+    </plurals>
+
+    <!-- Days until expiry -->
+    <plurals name="expiry_days_remaining">
+        <item quantity="one">Expires in %1$d day</item>
+        <item quantity="other">Expires in %1$d days</item>
+    </plurals>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PHONE ALIAS PLURALS                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Phone alias usage count -->
+    <plurals name="phone_alias_used_times">
+        <item quantity="one">Used %1$d time</item>
+        <item quantity="other">Used %1$d times</item>
+    </plurals>
+
+    <!-- Phone numbers count (for settings display) -->
+    <plurals name="phone_alias_count">
+        <item quantity="one">%1$d number saved</item>
+        <item quantity="other">%1$d numbers saved</item>
+    </plurals>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SKILL 17.2: DONATION PLURALS                                             -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Donation amount in euros -->
+    <plurals name="donation_euros">
+        <item quantity="one">%1$d euro</item>
+        <item quantity="other">%1$d euros</item>
+    </plurals>
+
+</resources>

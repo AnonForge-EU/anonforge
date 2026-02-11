@@ -1,0 +1,220 @@
+# UK Street Names - Common patterns
+# Format: StreetName (without number)
+High Street
+Station Road
+Main Street
+Park Road
+Church Lane
+Church Street
+London Road
+Victoria Road
+Green Lane
+Manor Road
+The Green
+The Avenue
+Queens Road
+New Road
+King Street
+West Street
+Mill Lane
+North Street
+South Street
+The Crescent
+Church Road
+Park Lane
+The Grove
+Bridge Street
+Hill Road
+School Lane
+George Street
+Chapel Lane
+Oak Road
+Orchard Road
+Albert Road
+Castle Street
+Brook Lane
+Union Street
+Cemetery Road
+Priory Road
+Market Street
+Water Lane
+Elm Road
+Forest Road
+Cross Street
+Garden Lane
+Queen Street
+Spring Lane
+York Road
+Bath Road
+Duke Street
+Chapel Street
+Meadow Lane
+Beach Road
+Wood Lane
+Windsor Road
+Grove Road
+Alexandra Road
+Richmond Road
+Stanley Road
+Grange Road
+Cambridge Road
+Edward Street
+Oxford Road
+Willow Road
+Chester Road
+Mill Road
+Station Lane
+Tower Road
+Lime Tree Avenue
+Western Road
+Eastern Road
+Northern Road
+Southern Road
+Crown Street
+Rose Lane
+Birch Road
+Beech Avenue
+Cedar Road
+Maple Road
+Pine Road
+Ash Grove
+Holly Road
+Hazel Lane
+Ivy Lane
+Laurel Road
+Acacia Avenue
+Poplar Road
+Sycamore Road
+Chestnut Avenue
+Mulberry Lane
+Walnut Road
+Hawthorn Road
+Elder Road
+Juniper Road
+Larch Road
+Yew Tree Lane
+Rowan Road
+Willow Lane
+Alder Road
+Magnolia Road
+Apple Tree Close
+Pear Tree Lane
+Cherry Tree Road
+Plum Road
+Damson Lane
+Apricot Close
+Peach Road
+Fig Tree Lane
+Olive Road
+Almond Road
+Grape Lane
+Raspberry Road
+Strawberry Lane
+Blueberry Road
+Blackberry Lane
+Cranberry Road
+Gooseberry Lane
+Mulberry Road
+Bilberry Lane
+Elderberry Road
+Cowslip Lane
+Primrose Road
+Daffodil Lane
+Tulip Road
+Crocus Lane
+Hyacinth Road
+Iris Lane
+Lily Road
+Rose Road
+Violet Lane
+Daisy Road
+Buttercup Lane
+Bluebell Road
+Snowdrop Lane
+Foxglove Road
+Lavender Lane
+Honeysuckle Road
+Jasmine Lane
+Clematis Road
+Wisteria Lane
+Magnolia Drive
+Camellia Close
+Gardenia Road
+Azalea Lane
+Rhododendron Road
+Heather Road
+Gorse Lane
+Broom Road
+Bracken Lane
+Fern Road
+Moss Lane
+Lichen Road
+Clover Lane
+Thistle Road
+Shamrock Lane
+Harebell Road
+Canterbury Road
+Westminster Road
+Buckingham Road
+Kensington Road
+Chelsea Road
+Knightsbridge Road
+Mayfair Road
+Belgravia Road
+Paddington Road
+Marylebone Road
+Bloomsbury Road
+Holborn Road
+Southwark Road
+Greenwich Road
+Lewisham Road
+Woolwich Road
+Deptford Road
+Camberwell Road
+Brixton Road
+Clapham Road
+Wandsworth Road
+Putney Road
+Fulham Road
+Hammersmith Road
+Shepherd Bush Road
+Notting Hill Road
+Bayswater Road
+Hyde Park Road
+Regent Road
+Baker Street
+Oxford Street
+Bond Street
+Piccadilly
+Pall Mall
+Strand
+Fleet Street
+Whitehall
+Victoria Street
+Westminster Bridge Road
+Waterloo Road
+Borough High Street
+London Bridge Street
+Tower Bridge Road
+Commercial Road
+Whitechapel Road
+Mile End Road
+Bow Road
+Stratford Road
+Leyton Road
+Walthamstow Road
+Tottenham Road
+Edmonton Road
+Enfield Road
+Barnet Road
+Finchley Road
+Hendon Road
+Golders Green Road
+Hampstead Road
+Highgate Road
+Crouch End Road
+Muswell Hill Road
+Wood Green Road
+Palmers Green Road
+Southgate Road
+Winchmore Hill Road

@@ -1,0 +1,159 @@
+[versions]
+# ═══════════════════════════════════════════════════════════════════════════
+# Build Tools - Kotlin 2.0+ with integrated Compose Compiler
+# ═══════════════════════════════════════════════════════════════════════════
+agp = "8.2.2"
+kotlin = "2.0.0"
+ksp = "2.0.0-1.0.21"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Compose - BOM manages all Compose versions
+# UPDATED: 2024.12.01 fixes UI bugs and improves performance
+# ═══════════════════════════════════════════════════════════════════════════
+composeBom = "2024.12.01"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Dependency Injection & Database
+# UPDATED: Hilt 2.52 minor fixes
+# ═══════════════════════════════════════════════════════════════════════════
+hilt = "2.52"
+room = "2.6.1"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Network (SimpleLogin API)
+# ═══════════════════════════════════════════════════════════════════════════
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# AndroidX Libraries
+# UPDATED: lifecycle 2.8.7 stability fixes
+# ═══════════════════════════════════════════════════════════════════════════
+coreKtx = "1.13.1"
+lifecycle = "2.8.7"
+activityCompose = "1.9.0"
+navigationCompose = "2.7.7"
+work = "2.9.0"
+biometric = "1.1.0"
+securityCrypto = "1.1.0"
+datastore = "1.1.1"
+hiltNavigationCompose = "1.2.0"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Kotlin Extensions
+# ═══════════════════════════════════════════════════════════════════════════
+coroutines = "1.8.1"
+datetime = "0.6.0"
+serialization = "1.6.3"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Security - Database Encryption
+# NOTE: android-database-sqlcipher is deprecated (max 4.5.4)
+# Future migration: sqlcipher-android 4.13.0 (requires code changes)
+# ═══════════════════════════════════════════════════════════════════════════
+sqlcipher = "4.5.4"
+sqliteKtx = "2.4.0"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# UI - Material Components
+# ═══════════════════════════════════════════════════════════════════════════
+material = "1.12.0"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Testing
+# ═══════════════════════════════════════════════════════════════════════════
+junit = "4.13.2"
+mockk = "1.13.11"
+turbine = "1.1.0"
+archCoreTesting = "2.2.0"
+robolectric = "4.12.2"
+
+[libraries]
+# ═══════════════════════════════════════════════════════════════════════════
+# Core AndroidX
+# ═══════════════════════════════════════════════════════════════════════════
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Jetpack Compose (managed by BOM)
+# ═══════════════════════════════════════════════════════════════════════════
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Material Components (View-based) - Required for XML themes
+# ═══════════════════════════════════════════════════════════════════════════
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Hilt Dependency Injection
+# ═══════════════════════════════════════════════════════════════════════════
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltNavigationCompose" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Room Database + SQLCipher
+# ═══════════════════════════════════════════════════════════════════════════
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+sqlcipher = { group = "net.zetetic", name = "android-database-sqlcipher", version.ref = "sqlcipher" }
+sqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "sqliteKtx" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Network - Retrofit + OkHttp
+# ═══════════════════════════════════════════════════════════════════════════
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Security
+# ═══════════════════════════════════════════════════════════════════════════
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
+biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# DataStore & WorkManager
+# ═══════════════════════════════════════════════════════════════════════════
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Kotlin Extensions
+# ═══════════════════════════════════════════════════════════════════════════
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Testing
+# ═══════════════════════════════════════════════════════════════════════════
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "archCoreTesting" }
+androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "work" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlin" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AnonForge - XML Theme Bridge
+    This theme is used by AndroidManifest before Compose takes over.
+    Security (FLAG_SECURE) is applied in MainActivity.kt, not here.
+-->
+<resources>
+
+    <!-- Base application theme -->
+    <style name="Theme.AnonForge" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand colors -->
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorPrimaryVariant">@color/primary_container_light</item>
+        <item name="colorOnPrimary">@color/on_primary_light</item>
+
+        <!-- Secondary colors -->
+        <item name="colorSecondary">@color/secondary_light</item>
+        <item name="colorSecondaryVariant">@color/secondary_container_light</item>
+        <item name="colorOnSecondary">@color/on_secondary_light</item>
+
+        <!-- Background & Surface -->
+        <item name="android:colorBackground">@color/background_light</item>
+        <item name="colorSurface">@color/surface_light</item>
+        <item name="colorOnSurface">@color/on_surface_light</item>
+
+        <!-- Error -->
+        <item name="colorError">@color/error_light</item>
+        <item name="colorOnError">@color/on_error_light</item>
+
+        <!-- Status bar & navigation bar -->
+        <item name="android:statusBarColor">@color/surface_light</item>
+        <item name="android:navigationBarColor">@color/surface_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Window configuration -->
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+</resources>

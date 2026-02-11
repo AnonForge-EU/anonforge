@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PLURALS - Pluralisation française                                        -->
+    <!-- French CLDR requires: one (0-1), many (1M+), other (2+)                  -->
+    <!-- Note: 'many' is typically same as 'other' for formatted numbers          -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- PIN attempts remaining -->
+    <plurals name="pin_attempts_remaining">
+        <item quantity="one">%1$d tentative restante</item>
+        <item quantity="many">%1$d tentatives restantes</item>
+        <item quantity="other">%1$d tentatives restantes</item>
+    </plurals>
+
+    <!-- Lockout timer (seconds) -->
+    <plurals name="lockout_timer_seconds">
+        <item quantity="one">Réessayez dans %1$d seconde</item>
+        <item quantity="many">Réessayez dans %1$d secondes</item>
+        <item quantity="other">Réessayez dans %1$d secondes</item>
+    </plurals>
+
+    <!-- Auto-lock delay (minutes) -->
+    <plurals name="settings_autolock_minutes">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="many">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+
+    <!-- Import confirmation (identities count) -->
+    <plurals name="import_confirm_identities">
+        <item quantity="one">Cela supprimera %1$d identité existante. Cette action est irréversible.</item>
+        <item quantity="many">Cela supprimera %1$d identités existantes. Cette action est irréversible.</item>
+        <item quantity="other">Cela supprimera %1$d identités existantes. Cette action est irréversible.</item>
+    </plurals>
+
+    <!-- Alias history usage count -->
+    <plurals name="alias_history_used_times">
+        <item quantity="one">Utilisé %1$d fois • Dernier : %2$s</item>
+        <item quantity="many">Utilisé %1$d fois • Dernier : %2$s</item>
+        <item quantity="other">Utilisé %1$d fois • Dernier : %2$s</item>
+    </plurals>
+
+    <!-- Age in years -->
+    <plurals name="age_years">
+        <item quantity="one">%1$d an</item>
+        <item quantity="many">%1$d ans</item>
+        <item quantity="other">%1$d ans</item>
+    </plurals>
+
+    <!-- PIN digits hint -->
+    <plurals name="pin_digits">
+        <item quantity="one">%1$d chiffre</item>
+        <item quantity="many">%1$d chiffres</item>
+        <item quantity="other">%1$d chiffres</item>
+    </plurals>
+
+    <!-- Aliases count -->
+    <plurals name="aliases_count">
+        <item quantity="one">%1$d alias</item>
+        <item quantity="many">%1$d alias</item>
+        <item quantity="other">%1$d alias</item>
+    </plurals>
+
+    <!-- Forwards count -->
+    <plurals name="forwards_count">
+        <item quantity="one">%1$d transfert</item>
+        <item quantity="many">%1$d transferts</item>
+        <item quantity="other">%1$d transferts</item>
+    </plurals>
+
+    <!-- Import success count -->
+    <plurals name="import_success_count">
+        <item quantity="one">%1$d alias importé avec succès</item>
+        <item quantity="many">%1$d alias importés avec succès</item>
+        <item quantity="other">%1$d alias importés avec succès</item>
+    </plurals>
+
+    <!-- Import selected count -->
+    <plurals name="import_selected_count">
+        <item quantity="one">%1$d sélectionné</item>
+        <item quantity="many">%1$d sélectionnés</item>
+        <item quantity="other">%1$d sélectionnés</item>
+    </plurals>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SKILL 17: Alias Sync &amp; Quota plurals                                 -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Aliases synced count -->
+    <plurals name="alias_sync_count">
+        <item quantity="one">%1$d alias synchronisé</item>
+        <item quantity="many">%1$d alias synchronisés</item>
+        <item quantity="other">%1$d alias synchronisés</item>
+    </plurals>
+
+    <!-- Aliases remaining (quota warning) -->
+    <plurals name="alias_quota_remaining">
+        <item quantity="one">%1$d alias restant</item>
+        <item quantity="many">%1$d alias restants</item>
+        <item quantity="other">%1$d alias restants</item>
+    </plurals>
+
+    <!-- Local alias history count -->
+    <plurals name="alias_local_history_count">
+        <item quantity="one">%1$d alias dans l\'historique</item>
+        <item quantity="many">%1$d alias dans l\'historique</item>
+        <item quantity="other">%1$d alias dans l\'historique</item>
+    </plurals>
+
+    <!-- Days until expiry -->
+    <plurals name="expiry_days_remaining">
+        <item quantity="one">Expire dans %1$d jour</item>
+        <item quantity="many">Expire dans %1$d jours</item>
+        <item quantity="other">Expire dans %1$d jours</item>
+    </plurals>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- PHONE ALIAS PLURALS                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Phone alias usage count -->
+    <plurals name="phone_alias_used_times">
+        <item quantity="one">Utilisé %1$d fois</item>
+        <item quantity="many">Utilisé %1$d fois</item>
+        <item quantity="other">Utilisé %1$d fois</item>
+    </plurals>
+
+    <!-- Phone numbers count (for settings display) -->
+    <plurals name="phone_alias_count">
+        <item quantity="one">%1$d numéro enregistré</item>
+        <item quantity="many">%1$d numéros enregistrés</item>
+        <item quantity="other">%1$d numéros enregistrés</item>
+    </plurals>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- SKILL 17.2: DONATION PLURALS                                             -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Donation amount in euros -->
+    <plurals name="donation_euros">
+        <item quantity="one">%1$d euro</item>
+        <item quantity="many">%1$d euros</item>
+        <item quantity="other">%1$d euros</item>
+    </plurals>
+
+</resources>
