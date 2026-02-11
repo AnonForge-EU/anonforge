@@ -1,120 +1,220 @@
-Application Android gratuite et open-source pour générer des identités jetables sécurisées (privacy tool).
-# AnonForge
+<p align="center">
+  <img src="docs/assets/anonforge_icon.png" alt="AnonForge Logo" width="120" height="120">
+</p>
 
-**Secure Disposable Identity Generator for Android**
+<h1 align="center">AnonForge</h1>
 
-AnonForge is a **100% offline, open-source Android app** that generates realistic temporary identities (names, addresses, emails, phones) to protect your privacy during low-stakes online sign-ups.
+<p align="center">
+  <strong>🛡️ Secure Disposable Identity Generator for Android</strong><br>
+  <em>Protect your privacy with realistic temporary profiles — 100% offline.</em>
+</p>
 
-**No tracking. No accounts. No data collection. Everything stays on your device.**
+<p align="center">
+  <a href="https://github.com/AnonForge-EU/anonforge/releases/latest"><img src="https://img.shields.io/github/v/release/AnonForge-EU/anonforge?style=flat-square&logo=android&color=3DDC84" alt="Latest Release"></a>
+  <a href="https://github.com/AnonForge-EU/anonforge/releases"><img src="https://img.shields.io/github/downloads/AnonForge-EU/anonforge/total?style=flat-square&color=blue" alt="Downloads"></a>
+  <a href="https://github.com/AnonForge-EU/anonforge/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
+  <img src="https://img.shields.io/badge/Android-8.0%2B-brightgreen?style=flat-square&logo=android" alt="Android 8.0+">
+  <img src="https://img.shields.io/badge/Kotlin-2.1-7F52FF?style=flat-square&logo=kotlin" alt="Kotlin 2.1">
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Downloads](https://img.shields.io/github/downloads/YourUsername/AnonForge/total.svg)](https://github.com/YourUsername/AnonForge/releases)
-[![Stars](https://img.shields.io/github/stars/YourUsername/AnonForge.svg)](https://github.com/YourUsername/AnonForge/stargazers)
-
-## Why AnonForge?
-
-In 2026, billions of personal records have been leaked worldwide — including over 700 million French records from various breaches. Sharing your real email, phone, or address with untrusted sites exposes you to spam, tracking, identity theft, and worse.
-
-AnonForge helps you:
-- Generate **realistic, disposable identities** for casual sign-ups (newsletters, forums, trials).
-- Keep your real data private.
-- Stay ethical — this tool is for **privacy protection only**, not fraud.
-
-## Features
-
-- **Offline Generation**: Weighted random names, addresses, phones, and DOB (18-85 years by default, configurable ranges).
-- **Nationality Preference**: Support for French, English, German datasets (names, streets, cities) — realistic per country.
-- **Email Aliases**: Integration with SimpleLogin API for real forwarding aliases (optional, user-configured).
-- **Phone Aliases**: Manual entry with guides for EU services (OnOff, Sonetel, Zadarma, JMP.chat).
-- **Secure Storage**: Encrypted database (SQLCipher + Android Keystore).
-- **Biometric Unlock**: Fingerprint/face ID with PIN fallback and auto-lock timeout.
-- **Export/Import**: Encrypted backups with passphrase.
-- **Auto-Cleanup**: Temporary identities expire automatically (WorkManager).
-- **No Ads, No Tracking**: Completely free and privacy-respecting.
-
-## Security & Privacy
-
-AnonForge is built with **military-grade security** and zero-knowledge principles:
-
-- **Encryption**: All data encrypted at rest with AES-256-GCM via SQLCipher and Android Keystore.
-- **Memory Safety**: Sensitive data (API keys, PINs) wiped from memory after use (CharArray.fill).
-- **No Network by Default**: Fully offline. Optional alias APIs use user-provided keys only.
-- **No Logging**: No sensitive data logged, even in debug builds.
-- **FLAG_SECURE**: Screenshots blocked on all screens.
-- **OWASP Mobile Top 10 Compliant**: Regular audits for insecure storage, weak crypto, etc.
-
-**We collect nothing. Your identities never leave your device.**
-
-## Alias Providers (Why These Choices?)
-
-We recommend **user-managed third-party services** for real forwarding aliases (no built-in backend to avoid central risks):
-
-### Email Aliases
-- **SimpleLogin** (recommended): Privacy-focused, EU-friendly, real forwarding.
-  - Pros: Open-source client, unlimited with premium, strong anti-spam.
-  - Cons: Free tier limited to 10 aliases.
-  - Setup: Create account at [simplelogin.io](https://simplelogin.io), copy API key into app Settings.
-
-### Phone Aliases (Manual Entry)
-No perfect "one-click" EU solution exists in 2026 due to regulations. Users enter numbers manually:
-
-- **OnOff** (FR/EU numbers): Reliable forwarding.
-- **Sonetel** (web-based, cheap EU numbers).
-- **Zadarma** (low-cost, EU focus).
-- **JMP.chat** (privacy-first, crypto payments).
-
-**Important**: These services may log usage on their side. Use for low-sensitivity only.
-
-## Legal & Ethical Use
-
-AnonForge is **legal** when used ethically:
-- Designed for **privacy protection** in legitimate scenarios (e.g., avoiding spam from newsletters).
-- **Not intended** for fraud, impersonation, illegal activities, or bypassing official verification (government sites, banking, etc.).
-
-**You are responsible for your usage**. Comply with all applicable laws.
-
-## Disclaimers
-
-**STRONG WARNING**:
-
-- This app is for **ethical privacy testing and protection only**.
-- Do **NOT** use for:
-  - Fraud, scams, or illegal activities.
-  - Impersonating others.
-  - Bypassing legal verification (e.g., government, financial services).
-- Generated identities are synthetic — using them fraudulently is illegal and unethical.
-- Third-party alias services (SimpleLogin, Twilio, etc.) have their own terms — read them.
-
-By using AnonForge, you agree to use it responsibly.
-
-## Installation
-
-1. Download the latest APK from [Releases](https://github.com/YourUsername/AnonForge/releases).
-2. Enable "Install from unknown sources" in Android settings.
-3. Install and launch.
-
-**Future**: Available on F-Droid (planned).
-
-## Contributing
-
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-- Report bugs
-- Suggest features
-- Improve translations (EN/FR currently)
-
-## Support the Project
-
-AnonForge is free and open-source. Voluntary donations help maintain and improve it:
-
-[Donate via Stripe](your-stripe-link-here)
-
-Thank you ❤️
-
-## License
-
-[MIT License](LICENSE) — free to use, modify, and distribute.
+<p align="center">
+  <a href="#-why-anonforge">Why?</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-download">Download</a> •
+  <a href="#%EF%B8%8F-security--privacy">Security</a> •
+  <a href="#-contributing">Contributing</a> •
+  <a href="#-support">Support</a>
+</p>
 
 ---
 
-Made with ❤️ for privacy.
+## 🎯 Why AnonForge?
+
+In 2025 alone, **over 700 million French records** were exposed through data breaches. Every time you share your real email, phone, or address with an untrusted site, you risk spam, tracking, and identity theft.
+
+AnonForge lets you **generate realistic, disposable identities** for low-stakes sign-ups — newsletters, forums, free trials — so your real data stays private.
+
+> *The best way to protect your data is to never give it away.*
+
+---
+
+## ✨ Features
+
+**🎭 Identity Generation** — Realistic names, addresses, phone numbers, and dates of birth with nationality support (FR, EN, DE). Weighted random generation for authentic-looking profiles.
+
+**📧 Email Aliases** — Real forwarding email aliases via [SimpleLogin](https://simplelogin.io) API integration. Your inbox stays clean, your identity stays hidden.
+
+**🔐 Encrypted Vault** — All identities stored in an encrypted database (SQLCipher + Android Keystore, AES-256-GCM). Biometric unlock with PIN fallback.
+
+**⏱️ Auto-Expiry** — Temporary identities self-destruct after a configurable delay via WorkManager. Set it and forget it.
+
+**📦 Secure Export/Import** — Encrypted backups with passphrase protection. Migrate between devices safely.
+
+**🌙 Dark Theme** — Full Material 3 dark mode with dynamic theming support.
+
+**🌍 Bilingual** — French and English interface.
+
+**📴 100% Offline** — No network required. No tracking. No analytics. No ads. Ever.
+
+---
+
+## 📱 Screenshots
+
+<!-- Add screenshots here when available -->
+<!-- <p align="center">
+  <img src="docs/assets/screenshot_generate.png" width="200" alt="Generate">
+  <img src="docs/assets/screenshot_vault.png" width="200" alt="Vault">
+  <img src="docs/assets/screenshot_settings.png" width="200" alt="Settings">
+</p> -->
+
+*Screenshots coming soon.*
+
+---
+
+## 📥 Download
+
+### Direct APK
+
+Download the latest release:
+
+👉 **[Download APK (latest)](https://github.com/AnonForge-EU/anonforge/releases/latest)**
+
+1. Download the `.apk` file from the release page
+2. Enable "Install from unknown sources" in Android settings
+3. Install and launch
+
+### F-Droid
+
+*Planned — coming soon.*
+
+### Build from Source
+
+```bash
+git clone https://github.com/AnonForge-EU/anonforge.git
+cd anonforge
+./gradlew assembleDebug
+```
+
+The APK will be at `app/build/outputs/apk/debug/app-debug.apk`.
+
+---
+
+## 🛡️ Security & Privacy
+
+AnonForge is built with zero-knowledge principles:
+
+| Layer | Protection |
+|-------|-----------|
+| **Storage** | AES-256-GCM encryption via SQLCipher + Android Keystore |
+| **Memory** | Sensitive data wiped after use (`CharArray.fill`) |
+| **Screen** | `FLAG_SECURE` blocks screenshots on all screens |
+| **Network** | Fully offline by default. Optional APIs use user-provided keys only |
+| **Logging** | No sensitive data logged, even in debug builds |
+| **Auth** | Biometric (fingerprint/face) with PIN fallback and auto-lock timeout |
+| **Compliance** | OWASP Mobile Top 10 audited |
+
+**We collect nothing. Your identities never leave your device.**
+
+See [SECURITY.md](SECURITY.md) for vulnerability reporting.
+
+---
+
+## 🏗️ Architecture
+
+```
+Clean Architecture — Strict layer separation
+
+┌─────────────────────────────────────┐
+│  UI (Jetpack Compose + Material 3)  │
+│  feature/generator • feature/vault  │
+├─────────────────────────────────────┤
+│  Domain (Pure Kotlin)               │
+│  UseCases • Models • Repository IF  │
+├─────────────────────────────────────┤
+│  Data (Room + SQLCipher)            │
+│  DAOs • Entities • Repo Impl       │
+├─────────────────────────────────────┤
+│  Core (Security • DI • Theme)       │
+│  Keystore • Hilt Modules • Utils    │
+└─────────────────────────────────────┘
+```
+
+### Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Language | Kotlin 2.1 |
+| UI | Jetpack Compose + Material 3 |
+| Architecture | Clean Architecture + MVVM |
+| DI | Hilt |
+| Database | Room + SQLCipher |
+| Async | Coroutines + Flow |
+| Security | Android Keystore, BiometricPrompt |
+| Background | WorkManager (auto-expiry) |
+| Min SDK | 26 (Android 8.0) |
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+Ways to help: bug reports, feature suggestions, translations (EN/FR), documentation, code improvements.
+
+```bash
+# Clone & build
+git clone https://github.com/AnonForge-EU/anonforge.git
+cd anonforge
+./gradlew assembleDebug
+
+# Run tests
+./gradlew testDebugUnitTest
+```
+
+---
+
+## ⚖️ Legal & Ethical Use
+
+AnonForge is designed for **legitimate privacy protection only** — avoiding spam, protecting personal data during sign-ups, testing applications.
+
+**Not intended for**: fraud, impersonation, bypassing legal verification (government, banking), or any illegal activity. You are solely responsible for your usage.
+
+See [DISCLAIMER.md](DISCLAIMER.md) for full terms.
+
+---
+
+## 💖 Support
+
+AnonForge is free, open-source, and ad-free. If you find it useful:
+
+- ⭐ **[Star this repo](https://github.com/AnonForge-EU/anonforge)** — visibility helps!
+- 💰 **[Donate](https://anonforge-eu.github.io/anonforge-pages/)** — voluntary contributions on our website
+- 🐛 **Report bugs** — open an issue
+- 📢 **Share** — tell privacy-conscious friends
+
+---
+
+## 📄 License
+
+```
+Copyright 2025 AnonForge-EU
+
+Licensed under the Apache License, Version 2.0
+http://www.apache.org/licenses/LICENSE-2.0
+```
+
+See [LICENSE](LICENSE) for full text.
+
+---
+
+<p align="center">
+  <strong>Built with ❤️ for privacy in the EU 🇪🇺</strong><br>
+  <sub>AnonForge does not encourage illegal activities. Use responsibly.</sub>
+</p>
+
+<p align="center">
+  <a href="https://anonforge-eu.github.io/anonforge-pages/">Website</a> •
+  <a href="PRIVACY.md">Privacy Policy</a> •
+  <a href="DISCLAIMER.md">Disclaimer</a> •
+  <a href="SECURITY.md">Security</a>
+</p>

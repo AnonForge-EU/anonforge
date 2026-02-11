@@ -1,34 +1,46 @@
-# Gradle files
+# ============================================
+# AnonForge - .gitignore
+# ============================================
+
+# Gradle
 .gradle/
 build/
+!gradle/wrapper/gradle-wrapper.jar
 
-# Local configuration file (sdk path, etc)
+# Local configuration (SDK path, etc.)
 local.properties
 
-# Log/OS Files
+# Log/OS files
 *.log
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# Android Studio generated files and folders
+# Android Studio / IntelliJ
 captures/
 .externalNativeBuild/
 .cxx/
 *.aab
 *.apk
 output-metadata.json
-
-# IntelliJ
 *.iml
 .idea/
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
+*.hprof
 
-# Keystore files
+# Signing keys — NEVER commit
 *.jks
 *.keystore
+keystore.properties
+signing.properties
 
-# Google Services (e.g. APIs or Firebase)
+# API keys & secrets — NEVER commit
+**/secrets/
+*api_key*
+*.secret
 google-services.json
 
-# Android Profiling
-*.hprof
+# Release builds (distributed via GitHub Releases)
+app/release/
