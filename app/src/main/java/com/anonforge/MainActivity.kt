@@ -10,12 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.anonforge.core.deeplink.DeepLinkManager
 import com.anonforge.navigation.AnonForgeNavGraph
+import com.anonforge.security.auth.LockManager
 import com.anonforge.ui.theme.AnonForgeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -44,7 +45,12 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var deepLinkManager: DeepLinkManager
 
+    @Inject
+    lateinit var lockManager: LockManager
+
     private val viewModel: MainViewModel by viewModels()
+
+    private var wasStopped = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             // Observe theme mode from ViewModel (Skill 18)
-            val themeMode by viewModel.themeMode.collectAsState()
+            val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
 
             AnonForgeTheme(themeMode = themeMode) {
                 Surface(
@@ -94,5 +100,26 @@ class MainActivity : AppCompatActivity() {
     private fun handleIntent(intent: Intent?) {
         val uri = intent?.data ?: return
         deepLinkManager.handleDeepLink(uri)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        wasStopped = true
+    }
+
+    /**
+     * SECURITY: When the app comes back from background, re-check whether
+     * the auth session is still valid. If it expired (autoLockMinutes elapsed),
+     * recreate the Activity so the navigation graph restarts at SPLASH and
+     * routes the user back through UNLOCK.
+     */
+    override fun onResume() {
+        super.onResume()
+        if (wasStopped) {
+            wasStopped = false
+            if (lockManager.shouldRequireAuth()) {
+                recreate()
+            }
+        }
     }
 }

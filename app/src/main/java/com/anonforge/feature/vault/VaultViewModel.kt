@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ import javax.inject.Inject
 data class VaultState(
     val identities: List<DomainIdentity> = emptyList(),
     val isLoading: Boolean = true,
+    val isRefreshing: Boolean = false,
     val revealedIdentityIds: Set<String> = emptySet(),
     val deletedMessage: String? = null,
     val snackbarMessage: String? = null
@@ -126,6 +128,24 @@ class VaultViewModel @Inject constructor(
     // ═══════════════════════════════════════════════════════════════════════
     // State Management
     // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Pull-to-refresh handler. The list is already kept in sync via Room Flow,
+     * so this is mostly visual feedback — we briefly hold the spinner so the
+     * user gets confirmation the gesture was registered.
+     */
+    fun refresh() {
+        if (_state.value.isRefreshing) return
+        viewModelScope.launch {
+            _state.update { it.copy(isRefreshing = true) }
+            delay(REFRESH_FEEDBACK_MS)
+            _state.update { it.copy(isRefreshing = false) }
+        }
+    }
+
+    private companion object {
+        const val REFRESH_FEEDBACK_MS = 600L
+    }
 
     fun clearDeletedMessage() {
         _state.update { it.copy(deletedMessage = null) }

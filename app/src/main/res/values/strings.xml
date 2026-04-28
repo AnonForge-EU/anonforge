@@ -97,6 +97,7 @@
     <string name="generator_temporary">Temporary identity</string>
     <string name="generator_include_address">Include address</string>
     <string name="generator_custom_days">Custom duration (days)</string>
+    <string name="generator_custom_days_error">Must be between 1 and 365 days</string>
     <string name="generator_gender">Gender</string>
     <string name="generator_preview">Preview</string>
     <string name="generator_refresh">Refresh</string>

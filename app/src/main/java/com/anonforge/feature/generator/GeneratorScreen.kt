@@ -60,7 +60,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -73,6 +72,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.anonforge.R
 import com.anonforge.domain.model.ExpiryDuration
 import com.anonforge.domain.model.Gender
@@ -90,7 +90,7 @@ fun GeneratorScreen(
     onNavigateToPhoneAliasSettings: (() -> Unit)? = null,
     viewModel: GeneratorViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
@@ -331,6 +331,7 @@ fun GeneratorScreen(
                         }
 
                         // Custom days input
+                        val customDaysError = state.customDays > 365
                         OutlinedTextField(
                             value = if (state.customDays > 0) state.customDays.toString() else "",
                             onValueChange = { value ->
@@ -340,7 +341,11 @@ fun GeneratorScreen(
                             label = { Text(stringResource(R.string.generator_custom_days)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            isError = customDaysError,
+                            supportingText = if (customDaysError) {
+                                { Text(stringResource(R.string.generator_custom_days_error)) }
+                            } else null
                         )
                     }
                 }
@@ -523,7 +528,7 @@ fun GeneratorScreen(
                 Button(
                     onClick = { viewModel.saveIdentity() },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !state.isSaving && state.previewIdentity != null
+                    enabled = !state.isSaving && state.previewIdentity != null && state.customDays <= 365
                 ) {
                     if (state.isSaving) {
                         CircularProgressIndicator(

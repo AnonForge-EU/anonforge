@@ -176,7 +176,7 @@ fun PhoneAliasDialog(
                     Spacer(Modifier.height(8.dp))
 
                     LazyColumn(modifier = Modifier.height(200.dp)) {
-                        items(existingAliases) { alias ->
+                        items(existingAliases, key = { it.id }) { alias ->
                             PhoneAliasItem(
                                 alias = alias,
                                 onClick = { onSelectExisting(alias) }

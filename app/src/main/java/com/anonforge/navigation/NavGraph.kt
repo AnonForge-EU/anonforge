@@ -1,9 +1,14 @@
 package com.anonforge.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -79,9 +84,26 @@ fun AnonForgeNavGraph(
     navController: NavHostController,
     startDestination: String = Routes.SPLASH
 ) {
+    val animationDuration = 250
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        enterTransition = {
+            slideInHorizontally(animationSpec = tween(animationDuration)) { it } +
+                fadeIn(animationSpec = tween(animationDuration))
+        },
+        exitTransition = {
+            slideOutHorizontally(animationSpec = tween(animationDuration)) { -it / 4 } +
+                fadeOut(animationSpec = tween(animationDuration))
+        },
+        popEnterTransition = {
+            slideInHorizontally(animationSpec = tween(animationDuration)) { -it / 4 } +
+                fadeIn(animationSpec = tween(animationDuration))
+        },
+        popExitTransition = {
+            slideOutHorizontally(animationSpec = tween(animationDuration)) { it } +
+                fadeOut(animationSpec = tween(animationDuration))
+        }
     ) {
         // ==================== Entry Flow ====================
 
@@ -232,7 +254,7 @@ fun AnonForgeNavGraph(
          */
         composable(Routes.ALIAS_IMPORT) {
             val viewModel: AliasImportViewModel = hiltViewModel()
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
 
             AliasImportDialog(
                 onDismiss = { navController.popBackStack() },
