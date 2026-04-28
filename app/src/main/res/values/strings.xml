@@ -447,6 +447,20 @@
     <string name="alias_history_delete">Delete alias</string>
     <string name="alias_history_clear_confirm">Clear all</string>
     <string name="alias_history_subtitle">Manage your used aliases</string>
+    <string name="alias_delete_title">Delete this alias?</string>
+    <string name="alias_delete_message">This alias is registered on SimpleLogin. You can either delete it on the server (the address stops forwarding) or only remove it from local history.</string>
+    <string name="alias_delete_remote">Delete on SimpleLogin</string>
+    <string name="alias_delete_local_only">Local only</string>
+    <string name="alias_instance_url_title">SimpleLogin instance</string>
+    <string name="alias_instance_url_subtitle">Leave empty for the official server (app.simplelogin.io). Use https:// for a self-hosted instance.</string>
+    <string name="alias_instance_url_hint">https://your-instance.example/</string>
+    <string name="alias_instance_url_invalid">URL must start with https:// and have a valid host</string>
+    <string name="alias_instance_url_saved">Instance URL saved</string>
+    <string name="alias_instance_url_reset">Reset to default</string>
+    <string name="alias_mode_title">Random alias mode</string>
+    <string name="alias_mode_subtitle">UUID is supported by all accounts. Word mode requires a SimpleLogin premium subscription.</string>
+    <string name="alias_mode_uuid">UUID (e.g. ab12cd34@…)</string>
+    <string name="alias_mode_word">Word (e.g. happy_panda@…)</string>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <!-- ALIAS SETTINGS SCREEN (AliasSettingsScreen.kt)                          -->

@@ -39,8 +39,51 @@ interface AliasRepository {
 
     /**
      * Fetches all aliases from SimpleLogin account.
+     * Iterates through every page until the server reports no more pages,
+     * with a hard cap to avoid runaway loops on huge accounts.
      */
     suspend fun fetchRemoteAliases(): NetworkResult<List<AliasEmail>>
+
+    /**
+     * Deletes an alias on SimpleLogin AND removes it from local history.
+     * @param simpleLoginId the SimpleLogin alias id (not the local row id)
+     */
+    suspend fun deleteRemoteAlias(simpleLoginId: Int): NetworkResult<Unit>
+
+    /**
+     * Toggles enabled/disabled state of an alias on SimpleLogin and mirrors
+     * the result locally. Returns the new enabled state on success.
+     */
+    suspend fun toggleRemoteAlias(simpleLoginId: Int): NetworkResult<Boolean>
+
+    /**
+     * Fetches live forward/block stats for a single alias.
+     */
+    suspend fun getAliasDetails(simpleLoginId: Int): NetworkResult<AliasDetails>
+
+    /**
+     * Updates the note/name of an alias on SimpleLogin.
+     * Pass null to leave a field unchanged.
+     */
+    suspend fun updateRemoteAlias(
+        simpleLoginId: Int,
+        note: String? = null,
+        name: String? = null
+    ): NetworkResult<Unit>
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // INSTANCE CONFIGURATION (self-hosted SimpleLogin)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /** Returns the configured SimpleLogin instance URL (or the official one). */
+    suspend fun getInstanceUrl(): String
+
+    /**
+     * Sets a custom SimpleLogin instance URL (self-hosted). Pass null/blank to
+     * reset to the official instance. URL must be https://. Returns false if
+     * rejected.
+     */
+    suspend fun setInstanceUrl(url: String?): Boolean
 
     // ═══════════════════════════════════════════════════════════════════════════
     // LOCAL HISTORY OPERATIONS

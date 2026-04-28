@@ -447,6 +447,20 @@
     <string name="alias_history_delete">Supprimer l\'alias</string>
     <string name="alias_history_clear_confirm">Effacer tout</string>
     <string name="alias_history_subtitle">Gérer vos alias utilisés</string>
+    <string name="alias_delete_title">Supprimer cet alias ?</string>
+    <string name="alias_delete_message">Cet alias est enregistré sur SimpleLogin. Vous pouvez le supprimer sur le serveur (l\'adresse cesse de transférer) ou seulement le retirer de l\'historique local.</string>
+    <string name="alias_delete_remote">Supprimer sur SimpleLogin</string>
+    <string name="alias_delete_local_only">Local seulement</string>
+    <string name="alias_instance_url_title">Instance SimpleLogin</string>
+    <string name="alias_instance_url_subtitle">Laissez vide pour le serveur officiel (app.simplelogin.io). Utilisez https:// pour une instance auto-hébergée.</string>
+    <string name="alias_instance_url_hint">https://votre-instance.example/</string>
+    <string name="alias_instance_url_invalid">L\'URL doit commencer par https:// et avoir un hôte valide</string>
+    <string name="alias_instance_url_saved">URL d\'instance enregistrée</string>
+    <string name="alias_instance_url_reset">Réinitialiser</string>
+    <string name="alias_mode_title">Mode des alias aléatoires</string>
+    <string name="alias_mode_subtitle">UUID est supporté par tous les comptes. Le mode Mot demande un abonnement SimpleLogin premium.</string>
+    <string name="alias_mode_uuid">UUID (ex. ab12cd34@…)</string>
+    <string name="alias_mode_word">Mot (ex. happy_panda@…)</string>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <!-- ALIAS SETTINGS SCREEN (AliasSettingsScreen.kt)                          -->

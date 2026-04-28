@@ -181,6 +181,26 @@ class SettingsDataStore @Inject constructor(
         }
     }
 
+    /**
+     * Mode for random alias generation: "uuid" (default, e.g. ab12cd34@...)
+     * or "word" (human-friendly, e.g. happy_panda@...). Word mode requires
+     * a SimpleLogin premium account.
+     */
+    val aliasMode: Flow<String> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences()) else throw exception
+        }
+        .map { prefs ->
+            prefs[KEY_ALIAS_MODE] ?: "uuid"
+        }
+
+    suspend fun setAliasMode(mode: String) {
+        val sanitized = if (mode == "word" || mode == "uuid") mode else "uuid"
+        dataStore.edit { prefs ->
+            prefs[KEY_ALIAS_MODE] = sanitized
+        }
+    }
+
     // ═══════════════════════════════════════════════════════════════════════════
     // PHONE ALIAS SETTINGS (Skill 16 - Manual Mode)
     // ═══════════════════════════════════════════════════════════════════════════
@@ -312,6 +332,7 @@ class SettingsDataStore @Inject constructor(
 
         // Alias keys
         private val KEY_ALIAS_ENABLED = booleanPreferencesKey("alias_enabled")
+        private val KEY_ALIAS_MODE = stringPreferencesKey("alias_mode")
         private val KEY_PHONE_ALIAS_ENABLED = booleanPreferencesKey("phone_alias_enabled")
 
         // Supporter key (Skill 17)

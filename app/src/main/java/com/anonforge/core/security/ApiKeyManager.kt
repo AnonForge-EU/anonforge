@@ -46,6 +46,8 @@ class ApiKeyManager @Inject constructor(
 
         private const val PREFS_FILE = "anonforge_api_keys"
         private const val STORAGE_KEY = "encrypted_api_key"
+        private const val INSTANCE_URL_KEY = "simplelogin_instance_url"
+        const val DEFAULT_INSTANCE_URL = "https://app.simplelogin.io/"
     }
 
     // Encrypted SharedPreferences for persistent storage
@@ -169,6 +171,50 @@ class ApiKeyManager @Inject constructor(
      */
     fun getMaskedDisplay(): String {
         return if (hasApiKey()) "••••••••••••••••" else ""
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // SELF-HOSTED INSTANCE URL
+    // ════════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Returns the configured SimpleLogin instance URL, or the official one.
+     * Always ends with a trailing slash so Retrofit can append paths cleanly.
+     */
+    fun getInstanceUrl(): String {
+        val stored = encryptedPrefs.getString(INSTANCE_URL_KEY, null)
+        val raw = stored?.takeIf { it.isNotBlank() } ?: DEFAULT_INSTANCE_URL
+        return if (raw.endsWith("/")) raw else "$raw/"
+    }
+
+    /**
+     * Persist a custom instance URL (for self-hosted SimpleLogin instances).
+     * The URL must use https:// and have a non-empty host. Returns true on
+     * success, false if the URL is rejected.
+     *
+     * Pass null or blank to reset to the official instance.
+     */
+    fun setInstanceUrl(url: String?): Boolean {
+        if (url.isNullOrBlank()) {
+            encryptedPrefs.edit { remove(INSTANCE_URL_KEY) }
+            return true
+        }
+        val trimmed = url.trim()
+        // SECURITY: enforce HTTPS so the API key is never sent in cleartext.
+        if (!trimmed.startsWith("https://", ignoreCase = true)) return false
+        // Reject obvious garbage; OkHttp will validate the rest at request time.
+        val host = trimmed.removePrefix("https://").substringBefore('/')
+        if (host.isBlank() || host.contains(' ')) return false
+
+        val normalized = if (trimmed.endsWith("/")) trimmed else "$trimmed/"
+        encryptedPrefs.edit { putString(INSTANCE_URL_KEY, normalized) }
+        return true
+    }
+
+    /** Whether the user has configured a non-default (self-hosted) instance. */
+    fun isUsingCustomInstance(): Boolean {
+        return encryptedPrefs.getString(INSTANCE_URL_KEY, null)
+            ?.takeIf { it.isNotBlank() } != null
     }
 
     /**

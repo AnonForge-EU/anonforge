@@ -1,6 +1,7 @@
 package com.anonforge.data.remote.di
 
 import com.anonforge.data.remote.simplelogin.SimpleLoginApi
+import com.anonforge.data.remote.simplelogin.SimpleLoginHostInterceptor
 import com.anonforge.data.remote.simplelogin.SimpleLoginInterceptor
 import dagger.Module
 import dagger.Provides
@@ -21,10 +22,14 @@ object SimpleLoginModule {
     @Singleton
     @Named("SimpleLoginClient")
     fun provideSimpleLoginOkHttpClient(
-        interceptor: SimpleLoginInterceptor
+        authInterceptor: SimpleLoginInterceptor,
+        hostInterceptor: SimpleLoginHostInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(interceptor)
+            // Host rewrite must run BEFORE the auth interceptor so the auth
+            // header is added on the final URL.
+            .addInterceptor(hostInterceptor)
+            .addInterceptor(authInterceptor)
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)

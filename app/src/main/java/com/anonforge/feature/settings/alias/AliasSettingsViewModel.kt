@@ -48,7 +48,12 @@ data class AliasSettingsState(
     val aliases: List<AliasEmail> = emptyList(),
     val aliasCount: Int = 0,
     val isSyncing: Boolean = false,
-    val syncResult: String? = null
+    val syncResult: String? = null,
+
+    // Lot 2: Self-hosted instance + alias mode
+    val instanceUrl: String = "",
+    val instanceUrlIsCustom: Boolean = false,
+    val aliasMode: String = "uuid"
 )
 
 sealed class AliasSettingsEvent {
@@ -78,6 +83,7 @@ class AliasSettingsViewModel @Inject constructor(
     init {
         loadInitialState()
         observeAliasHistory()
+        observeAliasMode()
     }
 
     private fun loadInitialState() {
@@ -91,7 +97,9 @@ class AliasSettingsViewModel @Inject constructor(
                     hasApiKey = hasKey,
                     keyHint = if (hasKey) apiKeyManager.getKeyHint() else null,
                     maskedDisplay = apiKeyManager.getMaskedDisplay(),
-                    isEditingKey = false
+                    isEditingKey = false,
+                    instanceUrl = apiKeyManager.getInstanceUrl(),
+                    instanceUrlIsCustom = apiKeyManager.isUsingCustomInstance()
                 )
             }
 
@@ -99,6 +107,42 @@ class AliasSettingsViewModel @Inject constructor(
                 checkApiKeyAndQuota()
                 loadAliasCount()
             }
+        }
+    }
+
+    private fun observeAliasMode() {
+        viewModelScope.launch {
+            settingsDataStore.aliasMode.collect { mode ->
+                _state.update { it.copy(aliasMode = mode) }
+            }
+        }
+    }
+
+    /**
+     * Persist a self-hosted SimpleLogin instance URL. Pass null/blank to
+     * fall back to the official server.
+     *
+     * @return true if the URL was accepted (https + valid host).
+     */
+    fun setInstanceUrl(url: String?): Boolean {
+        val ok = apiKeyManager.setInstanceUrl(url)
+        if (ok) {
+            _state.update {
+                it.copy(
+                    instanceUrl = apiKeyManager.getInstanceUrl(),
+                    instanceUrlIsCustom = apiKeyManager.isUsingCustomInstance(),
+                    successMessage = "Instance URL saved"
+                )
+            }
+        } else {
+            _state.update { it.copy(errorMessage = "Invalid URL") }
+        }
+        return ok
+    }
+
+    fun setAliasMode(mode: String) {
+        viewModelScope.launch {
+            settingsDataStore.setAliasMode(mode)
         }
     }
 

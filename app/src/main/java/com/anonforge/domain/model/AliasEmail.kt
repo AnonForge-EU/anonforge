@@ -8,7 +8,14 @@ data class AliasEmail(
     val id: Int,
     val email: String,
     val createdAt: Long,
-    val isEnabled: Boolean
+    val isEnabled: Boolean,
+    /**
+     * The SimpleLogin server id when the alias is managed remotely.
+     * null for purely local-history entries (e.g. when the user only typed the
+     * address manually). Use this to gate remote-only operations like toggle
+     * and remote delete.
+     */
+    val simpleLoginId: Int? = null
 ) {
     val domain: String
         get() = email.substringAfter("@", "")

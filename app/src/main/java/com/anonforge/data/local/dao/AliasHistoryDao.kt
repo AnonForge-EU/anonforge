@@ -144,6 +144,18 @@ interface AliasHistoryDao {
     suspend fun setEnabled(email: String, enabled: Boolean)
 
     /**
+     * Update alias enabled status by SimpleLogin id (used after remote toggle).
+     */
+    @Query("UPDATE alias_history SET enabled = :enabled WHERE simpleLoginId = :simpleLoginId")
+    suspend fun setEnabledBySimpleLoginId(simpleLoginId: Int, enabled: Boolean)
+
+    /**
+     * Delete alias by SimpleLogin id (used after remote delete).
+     */
+    @Query("DELETE FROM alias_history WHERE simpleLoginId = :simpleLoginId")
+    suspend fun deleteBySimpleLoginId(simpleLoginId: Int)
+
+    /**
      * Update alias tag.
      */
     @Query("UPDATE alias_history SET tag = :tag WHERE id = :aliasId")

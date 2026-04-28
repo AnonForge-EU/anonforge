@@ -30,13 +30,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -48,6 +51,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.anonforge.R
+import com.anonforge.core.network.NetworkResult
+import com.anonforge.data.local.dao.AliasHistoryDao
 import com.anonforge.domain.model.AliasEmail
 import com.anonforge.domain.repository.AliasRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,7 +83,8 @@ data class AliasHistoryState(
 
 @HiltViewModel
 class AliasHistoryViewModel @Inject constructor(
-    private val aliasRepository: AliasRepository
+    private val aliasRepository: AliasRepository,
+    private val aliasHistoryDao: AliasHistoryDao
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AliasHistoryState())
@@ -96,11 +102,64 @@ class AliasHistoryViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Delete an alias locally only (history). Use [deleteAliasEverywhere] to
+     * also remove it from SimpleLogin.
+     */
     fun deleteAlias(email: String) {
         viewModelScope.launch {
             aliasRepository.deleteFromHistory(email)
             loadAliases()
             _state.update { it.copy(message = "Alias deleted") }
+        }
+    }
+
+    /**
+     * Delete the alias on SimpleLogin AND locally. Falls back to local-only
+     * deletion when the alias has no SimpleLogin id.
+     */
+    fun deleteAliasEverywhere(email: String) {
+        viewModelScope.launch {
+            val entity = aliasHistoryDao.findByEmail(email)
+            val simpleLoginId = entity?.simpleLoginId
+            if (simpleLoginId == null) {
+                aliasRepository.deleteFromHistory(email)
+                loadAliases()
+                _state.update { it.copy(message = "Alias deleted") }
+                return@launch
+            }
+            when (val result = aliasRepository.deleteRemoteAlias(simpleLoginId)) {
+                is NetworkResult.Success -> {
+                    loadAliases()
+                    _state.update { it.copy(message = "Alias deleted") }
+                }
+                is NetworkResult.Error -> {
+                    _state.update { it.copy(message = "Delete failed: ${result.message}") }
+                }
+                NetworkResult.Loading -> Unit
+            }
+        }
+    }
+
+    /**
+     * Toggle enabled/disabled on SimpleLogin and reflect the change locally.
+     * Does nothing for aliases without a SimpleLogin id.
+     */
+    fun toggleAlias(email: String) {
+        viewModelScope.launch {
+            val entity = aliasHistoryDao.findByEmail(email) ?: return@launch
+            val simpleLoginId = entity.simpleLoginId ?: return@launch
+            when (val result = aliasRepository.toggleRemoteAlias(simpleLoginId)) {
+                is NetworkResult.Success -> {
+                    loadAliases()
+                    val msg = if (result.data) "Alias enabled" else "Alias disabled"
+                    _state.update { it.copy(message = msg) }
+                }
+                is NetworkResult.Error -> {
+                    _state.update { it.copy(message = "Toggle failed: ${result.message}") }
+                }
+                NetworkResult.Loading -> Unit
+            }
         }
     }
 
@@ -221,7 +280,9 @@ fun AliasHistoryScreen(
                     ) { alias ->
                         AliasHistoryItem(
                             alias = alias,
-                            onDelete = { viewModel.deleteAlias(alias.email) }
+                            onDeleteLocal = { viewModel.deleteAlias(alias.email) },
+                            onDeleteRemote = { viewModel.deleteAliasEverywhere(alias.email) },
+                            onToggle = { viewModel.toggleAlias(alias.email) }
                         )
                     }
                 }
@@ -257,12 +318,16 @@ fun AliasHistoryScreen(
 @Composable
 private fun AliasHistoryItem(
     alias: AliasEmail,
-    onDelete: () -> Unit
+    onDeleteLocal: () -> Unit,
+    onDeleteRemote: () -> Unit,
+    onToggle: () -> Unit
 ) {
     val dateFormat = remember { SimpleDateFormat("MMM d, yyyy", Locale.getDefault()) }
     val formattedDate = remember(alias.createdAt) {
         dateFormat.format(Date(alias.createdAt))
     }
+    var showDeleteSheet by remember { mutableStateOf(false) }
+    val isRemote = alias.simpleLoginId != null
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -281,7 +346,12 @@ private fun AliasHistoryItem(
                     text = alias.email,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = if (alias.isEnabled) {
+                        MaterialTheme.colorScheme.onSurface
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -291,7 +361,18 @@ private fun AliasHistoryItem(
                 )
             }
 
-            IconButton(onClick = onDelete) {
+            // Enable/disable switch (only for SimpleLogin-managed aliases)
+            if (isRemote) {
+                Switch(
+                    checked = alias.isEnabled,
+                    onCheckedChange = { onToggle() }
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+            }
+
+            IconButton(onClick = {
+                if (isRemote) showDeleteSheet = true else onDeleteLocal()
+            }) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.alias_history_delete),
@@ -299,5 +380,36 @@ private fun AliasHistoryItem(
                 )
             }
         }
+    }
+
+    if (showDeleteSheet) {
+        AlertDialog(
+            onDismissRequest = { showDeleteSheet = false },
+            title = { Text(stringResource(R.string.alias_delete_title)) },
+            text = { Text(stringResource(R.string.alias_delete_message)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDeleteSheet = false
+                        onDeleteRemote()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text(stringResource(R.string.alias_delete_remote))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteSheet = false
+                        onDeleteLocal()
+                    }
+                ) {
+                    Text(stringResource(R.string.alias_delete_local_only))
+                }
+            }
+        )
     }
 }

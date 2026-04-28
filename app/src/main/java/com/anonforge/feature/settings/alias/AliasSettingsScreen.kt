@@ -51,6 +51,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -829,6 +830,99 @@ fun AliasSettingsScreen(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                    }
+                }
+            }
+
+            // ─────────────────────────────────────────────────────────────────
+            // Advanced — random alias mode (UUID vs Word)
+            // ─────────────────────────────────────────────────────────────────
+            Card {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(R.string.alias_mode_title),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(R.string.alias_mode_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FilterChip(
+                            selected = state.aliasMode == "uuid",
+                            onClick = { viewModel.setAliasMode("uuid") },
+                            label = { Text(stringResource(R.string.alias_mode_uuid)) }
+                        )
+                        FilterChip(
+                            selected = state.aliasMode == "word",
+                            onClick = { viewModel.setAliasMode("word") },
+                            label = { Text(stringResource(R.string.alias_mode_word)) }
+                        )
+                    }
+                }
+            }
+
+            // ─────────────────────────────────────────────────────────────────
+            // Advanced — self-hosted instance URL
+            // ─────────────────────────────────────────────────────────────────
+            var instanceUrlInput by rememberSaveable(state.instanceUrl) {
+                mutableStateOf(if (state.instanceUrlIsCustom) state.instanceUrl else "")
+            }
+            var instanceUrlError by remember { mutableStateOf(false) }
+            Card {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(R.string.alias_instance_url_title),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(R.string.alias_instance_url_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = instanceUrlInput,
+                        onValueChange = {
+                            instanceUrlInput = it
+                            instanceUrlError = false
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        placeholder = { Text(stringResource(R.string.alias_instance_url_hint)) },
+                        isError = instanceUrlError,
+                        supportingText = if (instanceUrlError) {
+                            { Text(stringResource(R.string.alias_instance_url_invalid)) }
+                        } else null
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                val ok = viewModel.setInstanceUrl(instanceUrlInput)
+                                if (!ok) instanceUrlError = true
+                            }
+                        ) {
+                            Text(stringResource(R.string.alias_instance_url_saved))
+                        }
+                        OutlinedButton(
+                            onClick = {
+                                instanceUrlInput = ""
+                                instanceUrlError = false
+                                viewModel.setInstanceUrl(null)
+                            },
+                            enabled = state.instanceUrlIsCustom
+                        ) {
+                            Text(stringResource(R.string.alias_instance_url_reset))
+                        }
                     }
                 }
             }

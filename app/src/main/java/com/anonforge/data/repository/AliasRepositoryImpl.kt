@@ -1,17 +1,22 @@
 package com.anonforge.data.repository
 
 import com.anonforge.core.network.NetworkResult
+import com.anonforge.core.security.ApiKeyManager
 import com.anonforge.data.local.dao.AliasHistoryDao
 import com.anonforge.data.local.dao.getDefaultAlias
 import com.anonforge.data.local.dao.recordUsage
 import com.anonforge.data.local.dao.setPrimaryAlias
 import com.anonforge.data.local.dao.upsertAlias
 import com.anonforge.data.local.entity.AliasHistoryEntity
+import com.anonforge.data.local.prefs.SettingsDataStore
 import com.anonforge.data.remote.simplelogin.SimpleLoginApi
+import com.anonforge.data.remote.simplelogin.dto.UpdateAliasRequest
+import com.anonforge.domain.model.AliasDetails
 import com.anonforge.domain.model.AliasEmail
 import com.anonforge.domain.model.AliasQuota
 import com.anonforge.domain.repository.AliasRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,8 +35,15 @@ import javax.inject.Singleton
 @Singleton
 class AliasRepositoryImpl @Inject constructor(
     private val api: SimpleLoginApi,
-    private val aliasHistoryDao: AliasHistoryDao
+    private val aliasHistoryDao: AliasHistoryDao,
+    private val apiKeyManager: ApiKeyManager,
+    private val settingsDataStore: SettingsDataStore
 ) : AliasRepository {
+
+    private companion object {
+        // Hard cap to avoid unbounded paging if the server misbehaves.
+        const val MAX_ALIAS_PAGES = 50
+    }
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SIMPLELOGIN API OPERATIONS
@@ -39,7 +51,8 @@ class AliasRepositoryImpl @Inject constructor(
 
     override suspend fun createRandomAlias(): NetworkResult<AliasEmail> {
         return try {
-            val response = api.createRandomAlias()
+            val mode = settingsDataStore.aliasMode.first()
+            val response = api.createRandomAlias(mode = mode)
             if (response.isSuccessful) {
                 val dto = response.body()
                 if (dto != null) {
@@ -153,25 +166,50 @@ class AliasRepositoryImpl @Inject constructor(
 
     override suspend fun fetchRemoteAliases(): NetworkResult<List<AliasEmail>> {
         return try {
-            // API key injected by SimpleLoginInterceptor
-            val response = api.getAliases(pageId = 0)
-            if (response.isSuccessful) {
-                val dto = response.body()
-                if (dto != null) {
-                    val aliases = dto.aliases.map { aliasDto ->
-                        AliasEmail(
-                            id = aliasDto.id,
-                            email = aliasDto.email,
-                            createdAt = aliasDto.creationTimestamp ?: System.currentTimeMillis(),
-                            isEnabled = aliasDto.enabled
-                        )
-                    }
-                    NetworkResult.Success(aliases)
-                } else {
-                    NetworkResult.Error("Empty response body")
+            val collected = mutableListOf<AliasEmail>()
+            var page = 0
+            while (page < MAX_ALIAS_PAGES) {
+                val response = api.getAliases(pageId = page)
+                if (!response.isSuccessful) {
+                    return NetworkResult.Error(
+                        response.message() ?: "HTTP ${response.code()}",
+                        response.code()
+                    )
                 }
+                val body = response.body() ?: return NetworkResult.Error("Empty response body")
+                if (body.aliases.isEmpty()) break
+
+                body.aliases.forEach { aliasDto ->
+                    collected += AliasEmail(
+                        id = aliasDto.id,
+                        email = aliasDto.email,
+                        createdAt = aliasDto.creationTimestamp ?: System.currentTimeMillis(),
+                        isEnabled = aliasDto.enabled
+                    )
+                }
+                // SimpleLogin returns 20 per page; if we got fewer, this is the last one.
+                if (body.aliases.size < 20) break
+                page += 1
+            }
+            NetworkResult.Success(collected)
+        } catch (_: java.net.UnknownHostException) {
+            NetworkResult.Error("No internet connection")
+        } catch (_: java.net.SocketTimeoutException) {
+            NetworkResult.Error("Connection timed out")
+        } catch (e: Exception) {
+            NetworkResult.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    override suspend fun deleteRemoteAlias(simpleLoginId: Int): NetworkResult<Unit> {
+        return try {
+            val response = api.deleteAlias(simpleLoginId)
+            if (response.isSuccessful || response.code() == 404) {
+                // 404 = already gone on server, treat as success and clean up locally.
+                aliasHistoryDao.deleteBySimpleLoginId(simpleLoginId)
+                NetworkResult.Success(Unit)
             } else {
-                NetworkResult.Error(response.message() ?: "HTTP ${response.code()}", response.code())
+                NetworkResult.Error(httpErrorMessage(response.code(), response.message()), response.code())
             }
         } catch (_: java.net.UnknownHostException) {
             NetworkResult.Error("No internet connection")
@@ -180,6 +218,92 @@ class AliasRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             NetworkResult.Error(e.message ?: "Unknown error")
         }
+    }
+
+    override suspend fun toggleRemoteAlias(simpleLoginId: Int): NetworkResult<Boolean> {
+        return try {
+            val response = api.toggleAlias(simpleLoginId)
+            if (response.isSuccessful) {
+                val newEnabled = response.body()?.enabled ?: return NetworkResult.Error("Empty response body")
+                aliasHistoryDao.setEnabledBySimpleLoginId(simpleLoginId, newEnabled)
+                NetworkResult.Success(newEnabled)
+            } else {
+                NetworkResult.Error(httpErrorMessage(response.code(), response.message()), response.code())
+            }
+        } catch (_: java.net.UnknownHostException) {
+            NetworkResult.Error("No internet connection")
+        } catch (_: java.net.SocketTimeoutException) {
+            NetworkResult.Error("Connection timed out")
+        } catch (e: Exception) {
+            NetworkResult.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    override suspend fun getAliasDetails(simpleLoginId: Int): NetworkResult<AliasDetails> {
+        return try {
+            val response = api.getAlias(simpleLoginId)
+            if (response.isSuccessful) {
+                val dto = response.body() ?: return NetworkResult.Error("Empty response body")
+                NetworkResult.Success(
+                    AliasDetails(
+                        id = dto.id,
+                        email = dto.email,
+                        isEnabled = dto.enabled,
+                        name = dto.name,
+                        note = dto.note,
+                        createdAt = dto.creationTimestamp,
+                        forwardCount = dto.nbForward,
+                        blockCount = dto.nbBlock
+                    )
+                )
+            } else {
+                NetworkResult.Error(httpErrorMessage(response.code(), response.message()), response.code())
+            }
+        } catch (_: java.net.UnknownHostException) {
+            NetworkResult.Error("No internet connection")
+        } catch (_: java.net.SocketTimeoutException) {
+            NetworkResult.Error("Connection timed out")
+        } catch (e: Exception) {
+            NetworkResult.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    override suspend fun updateRemoteAlias(
+        simpleLoginId: Int,
+        note: String?,
+        name: String?
+    ): NetworkResult<Unit> {
+        if (note == null && name == null) return NetworkResult.Success(Unit)
+        return try {
+            val response = api.updateAlias(
+                simpleLoginId,
+                UpdateAliasRequest(note = note, name = name)
+            )
+            if (response.isSuccessful) {
+                NetworkResult.Success(Unit)
+            } else {
+                NetworkResult.Error(httpErrorMessage(response.code(), response.message()), response.code())
+            }
+        } catch (_: java.net.UnknownHostException) {
+            NetworkResult.Error("No internet connection")
+        } catch (_: java.net.SocketTimeoutException) {
+            NetworkResult.Error("Connection timed out")
+        } catch (e: Exception) {
+            NetworkResult.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    override suspend fun getInstanceUrl(): String = apiKeyManager.getInstanceUrl()
+
+    override suspend fun setInstanceUrl(url: String?): Boolean = apiKeyManager.setInstanceUrl(url)
+
+    private fun httpErrorMessage(code: Int, fallback: String?): String = when (code) {
+        401 -> "Invalid API key"
+        403 -> "Access forbidden"
+        404 -> "Alias not found"
+        429 -> "Rate limit exceeded"
+        in 500..599 -> "Server error ($code)"
+        else -> fallback ?: "HTTP $code"
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -307,7 +431,8 @@ class AliasRepositoryImpl @Inject constructor(
             id = simpleLoginId ?: id.toInt(),
             email = email,
             createdAt = createdAt,
-            isEnabled = enabled
+            isEnabled = enabled,
+            simpleLoginId = simpleLoginId
         )
     }
 }
