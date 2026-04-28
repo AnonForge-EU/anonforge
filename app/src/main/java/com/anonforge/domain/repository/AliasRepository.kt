@@ -1,6 +1,7 @@
 package com.anonforge.domain.repository
 
 import com.anonforge.core.network.NetworkResult
+import com.anonforge.domain.model.AliasDetails
 import com.anonforge.domain.model.AliasEmail
 import com.anonforge.domain.model.AliasQuota
 import kotlinx.coroutines.flow.Flow
