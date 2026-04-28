@@ -13,7 +13,7 @@
   <a href="https://github.com/AnonForge-EU/anonforge/releases/latest"><img src="https://img.shields.io/github/v/release/AnonForge-EU/anonforge?style=flat-square&logo=android&color=3DDC84" alt="Latest Release"></a>
   <a href="https://github.com/AnonForge-EU/anonforge/releases"><img src="https://img.shields.io/github/downloads/AnonForge-EU/anonforge/total?style=flat-square&color=blue" alt="Downloads"></a>
   <a href="https://github.com/AnonForge-EU/anonforge/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
-  <img src="https://img.shields.io/badge/Android-8.0%2B-brightgreen?style=flat-square&logo=android" alt="Android 8.0+">
+  <img src="https://img.shields.io/badge/Android-10%2B-brightgreen?style=flat-square&logo=android" alt="Android 10+">
   <img src="https://img.shields.io/badge/Kotlin-2.1-7F52FF?style=flat-square&logo=kotlin" alt="Kotlin 2.1">
 </p>
 
@@ -89,13 +89,17 @@ Download the latest release:
 
 ### Build from Source
 
+The recommended way to install AnonForge is from the [Releases page](https://github.com/AnonForge-EU/anonforge/releases/latest), which ships a release APK signed with the maintainer's keystore. If you'd rather build it yourself:
+
 ```bash
 git clone https://github.com/AnonForge-EU/anonforge.git
 cd anonforge
-./gradlew assembleDebug
+./gradlew assembleRelease
 ```
 
-The APK will be at `app/build/outputs/apk/debug/app-debug.apk`.
+The APK will be at `app/build/outputs/apk/release/app-release-unsigned.apk`. You'll need to provide your own signing config (keystore, passwords) — either via Android Studio's *Build → Generate Signed APK* wizard, or by adding a `signingConfigs` block to `app/build.gradle.kts`.
+
+> ⚠️ Avoid `./gradlew assembleDebug` for daily use: it produces a separate app (`com.anonforge.debug`), is not minified, and cannot be updated from the official release.
 
 ---
 
@@ -151,7 +155,7 @@ Clean Architecture — Strict layer separation
 | Async | Coroutines + Flow |
 | Security | Android Keystore, BiometricPrompt |
 | Background | WorkManager (auto-expiry) |
-| Min SDK | 26 (Android 8.0) |
+| Min SDK | 29 (Android 10) |
 
 ---
 
@@ -162,10 +166,10 @@ Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 Ways to help: bug reports, feature suggestions, translations (EN/FR), documentation, code improvements.
 
 ```bash
-# Clone & build
+# Clone & build (debug build is fine for development & PRs)
 git clone https://github.com/AnonForge-EU/anonforge.git
 cd anonforge
-./gradlew assembleDebug
+./gradlew assembleDebug   # produces com.anonforge.debug for dev work
 
 # Run tests
 ./gradlew testDebugUnitTest
