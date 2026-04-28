@@ -5,8 +5,6 @@ import android.content.ContextWrapper
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -73,7 +71,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -119,14 +116,21 @@ fun SettingsScreen(
         if (state.showBiometricVerificationPending) {
             val activity = context.findActivity()
             if (activity != null) {
-                showBiometricPrompt(
+                viewModel.getAuthManager().authenticateBiometric(
                     activity = activity,
                     title = context.getString(R.string.biometric_setup_title),
                     subtitle = context.getString(R.string.biometric_prompt_subtitle),
-                    onSuccess = { viewModel.onBiometricVerificationSuccess() },
-                    onError = { viewModel.onBiometricVerificationFailed() },
-                    onCancel = { viewModel.onBiometricVerificationCancelled() }
-                )
+                    negativeButtonText = context.getString(R.string.cancel)
+                ) { result ->
+                    when (result) {
+                        is com.anonforge.security.biometric.BiometricGate.Result.Success ->
+                            viewModel.onBiometricVerificationSuccess()
+                        is com.anonforge.security.biometric.BiometricGate.Result.Cancelled ->
+                            viewModel.onBiometricVerificationCancelled()
+                        else ->
+                            viewModel.onBiometricVerificationFailed()
+                    }
+                }
             } else {
                 android.util.Log.e("SettingsScreen", "Could not find FragmentActivity for BiometricPrompt")
                 viewModel.onBiometricVerificationCancelled()
@@ -677,51 +681,6 @@ private fun Context.findActivity(): FragmentActivity? {
         ctx = ctx.baseContext
     }
     return null
-}
-
-private fun showBiometricPrompt(
-    activity: FragmentActivity,
-    title: String,
-    subtitle: String,
-    onSuccess: () -> Unit,
-    onError: () -> Unit,
-    onCancel: () -> Unit
-) {
-    val executor = ContextCompat.getMainExecutor(activity)
-    val biometricPrompt = BiometricPrompt(
-        activity,
-        executor,
-        object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                super.onAuthenticationSucceeded(result)
-                onSuccess()
-            }
-
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                super.onAuthenticationError(errorCode, errString)
-                if (errorCode == BiometricPrompt.ERROR_USER_CANCELED ||
-                    errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON ||
-                    errorCode == BiometricPrompt.ERROR_CANCELED
-                ) {
-                    onCancel()
-                } else {
-                    onError()
-                }
-            }
-        }
-    )
-
-    val promptInfo = BiometricPrompt.PromptInfo.Builder()
-        .setTitle(title)
-        .setSubtitle(subtitle)
-        .setNegativeButtonText(activity.getString(R.string.cancel))
-        .setAllowedAuthenticators(
-            BiometricManager.Authenticators.BIOMETRIC_STRONG or
-                    BiometricManager.Authenticators.BIOMETRIC_WEAK
-        )
-        .build()
-
-    biometricPrompt.authenticate(promptInfo)
 }
 
 @Composable

@@ -13,6 +13,7 @@ import com.anonforge.domain.model.AppLanguage
 import com.anonforge.domain.model.GenderPreference
 import com.anonforge.domain.model.Nationality
 import com.anonforge.domain.model.ThemeMode
+import com.anonforge.security.auth.AuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,8 +73,13 @@ class SettingsViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val securityPreferences: SecurityPreferences,
     private val settingsDataStore: SettingsDataStore,
-    private val apiKeyManager: ApiKeyManager
+    private val apiKeyManager: ApiKeyManager,
+    private val authManager: AuthManager
 ) : ViewModel() {
+
+    /** Exposes [AuthManager] so the UI can launch biometric prompts that
+     *  require a [androidx.fragment.app.FragmentActivity]. */
+    fun getAuthManager(): AuthManager = authManager
 
     private val _state = MutableStateFlow(SettingsState())
     val state: StateFlow<SettingsState> = _state.asStateFlow()
@@ -185,9 +191,11 @@ class SettingsViewModel @Inject constructor(
                 _state.update { it.copy(showBiometricVerificationPending = true) }
             }
         } else {
-            // Disable immediately
+            // Disable immediately AND wipe the cryptographic gate so re-enabling
+            // forces a fresh setup (new key + new sentinel).
             viewModelScope.launch {
                 securityPreferences.setBiometricEnabled(false)
+                authManager.resetBiometricGate()
                 _state.update {
                     it.copy(
                         biometricEnabled = false,

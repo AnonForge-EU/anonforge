@@ -3,10 +3,9 @@ package com.anonforge.security.auth
 import android.content.Context
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.anonforge.data.local.prefs.SecurityPreferences
+import com.anonforge.security.biometric.BiometricGate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -33,7 +32,8 @@ import javax.inject.Singleton
 class AuthManager @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val securityPreferences: SecurityPreferences,
-    private val lockManager: LockManager
+    private val lockManager: LockManager,
+    private val biometricGate: BiometricGate
 ) {
     private val biometricManager = BiometricManager.from(context)
 
@@ -87,57 +87,39 @@ class AuthManager @Inject constructor(
     // ==================== Biometric Authentication ====================
 
     /**
-     * Create BiometricPrompt instance for the given activity.
+     * Run a biometric prompt that performs an actual cryptographic operation
+     * via [BiometricGate]. The first call after install (or after a biometric
+     * re-enrollment) seeds a sentinel — subsequent calls verify it.
      *
-     * @param activity FragmentActivity for prompt display
-     * @param onSuccess Called when authentication succeeds
-     * @param onError Called when error occurs (code, message)
-     * @param onFailed Called when biometric doesn't match
+     * Side effect: starts a session via [LockManager] on success.
      */
-    fun createBiometricPrompt(
+    fun authenticateBiometric(
         activity: FragmentActivity,
-        onSuccess: () -> Unit,
-        onError: (Int, String) -> Unit,
-        onFailed: () -> Unit
-    ): BiometricPrompt {
-        val executor = ContextCompat.getMainExecutor(activity)
-
-        val callback = object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                super.onAuthenticationSucceeded(result)
+        title: String,
+        subtitle: String,
+        negativeButtonText: String,
+        onResult: (BiometricGate.Result) -> Unit
+    ) {
+        biometricGate.authenticate(
+            activity = activity,
+            title = title,
+            subtitle = subtitle,
+            negativeButtonText = negativeButtonText
+        ) { result ->
+            if (result is BiometricGate.Result.Success) {
+                lockManager.resetFailedAttempts()
                 lockManager.startSession()
-                onSuccess()
             }
-
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                super.onAuthenticationError(errorCode, errString)
-                onError(errorCode, errString.toString())
-            }
-
-            override fun onAuthenticationFailed() {
-                super.onAuthenticationFailed()
-                onFailed()
-            }
+            onResult(result)
         }
-
-        return BiometricPrompt(activity, executor, callback)
     }
 
     /**
-     * Create PromptInfo for biometric dialog.
+     * Wipe the biometric gate (key + sentinel). Call when the user disables
+     * biometric so a re-enable forces a fresh setup.
      */
-    fun createPromptInfo(
-        title: String,
-        subtitle: String,
-        negativeButtonText: String
-    ): BiometricPrompt.PromptInfo {
-        return BiometricPrompt.PromptInfo.Builder()
-            .setTitle(title)
-            .setSubtitle(subtitle)
-            .setNegativeButtonText(negativeButtonText)
-            .setAllowedAuthenticators(BIOMETRIC_STRONG)
-            .setConfirmationRequired(false)
-            .build()
+    fun resetBiometricGate() {
+        biometricGate.reset()
     }
 
     // ==================== PIN Authentication ====================

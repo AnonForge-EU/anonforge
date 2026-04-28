@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,6 +37,10 @@ object SimpleLoginModule {
             // Security: Don't follow redirects to prevent URL manipulation
             .followRedirects(false)
             .followSslRedirects(false)
+            // Security: enforce TLS 1.2+ with modern ciphers. CLEARTEXT is
+            // already blocked by usesCleartextTraffic=false in the manifest;
+            // this also rules out legacy SSLv3/TLSv1/TLSv1.1.
+            .connectionSpecs(listOf(ConnectionSpec.MODERN_TLS))
             .build()
     }
     

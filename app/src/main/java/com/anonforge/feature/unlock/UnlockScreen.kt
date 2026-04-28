@@ -44,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.anonforge.R
 import com.anonforge.security.auth.AuthState
+import com.anonforge.security.biometric.BiometricGate
 import com.anonforge.ui.components.LockoutDialog
 import com.anonforge.ui.components.PinInputDialog
 import com.anonforge.ui.components.SecureScreen
@@ -278,8 +279,11 @@ private fun Context.findActivity(): FragmentActivity? {
 }
 
 /**
- * Show biometric authentication prompt.
- * Creates BiometricPrompt via AuthManager and shows system dialog.
+ * Show biometric authentication prompt via [BiometricGate] (CryptoObject-backed).
+ *
+ * The first call after install/upgrade transparently sets the gate up; from
+ * then on each call performs an actual cryptographic verification of the
+ * sentinel.
  */
 private fun showBiometricPrompt(
     activity: FragmentActivity,
@@ -288,20 +292,27 @@ private fun showBiometricPrompt(
     subtitle: String,
     negativeButton: String
 ) {
-    val authManager = viewModel.getAuthManager()
-
-    val prompt = authManager.createBiometricPrompt(
+    viewModel.getAuthManager().authenticateBiometric(
         activity = activity,
-        onSuccess = { viewModel.onBiometricSuccess() },
-        onError = { code, message -> viewModel.onBiometricError(code, message) },
-        onFailed = { viewModel.onBiometricFailed() }
-    )
-
-    val promptInfo = authManager.createPromptInfo(
         title = title,
         subtitle = subtitle,
         negativeButtonText = negativeButton
-    )
-
-    prompt.authenticate(promptInfo)
+    ) { result ->
+        when (result) {
+            is BiometricGate.Result.Success -> viewModel.onBiometricSuccess()
+            is BiometricGate.Result.Failed -> viewModel.onBiometricFailed()
+            is BiometricGate.Result.Cancelled -> viewModel.onBiometricError(
+                /* errorCode = */ androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED,
+                /* errorMessage = */ "Cancelled"
+            )
+            is BiometricGate.Result.NeedsReenrollment -> viewModel.onBiometricError(
+                androidx.biometric.BiometricPrompt.ERROR_LOCKOUT_PERMANENT,
+                "Biometric changed — please re-enable in Settings"
+            )
+            is BiometricGate.Result.Error -> viewModel.onBiometricError(
+                result.code,
+                result.message
+            )
+        }
+    }
 }
