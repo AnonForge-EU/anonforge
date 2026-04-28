@@ -5,9 +5,18 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## [1.1.0] — 2026-04-28
 
-Major security & SimpleLogin pass. Existing data (vault, alias history, settings,
-PIN, biometric flag) is preserved across the upgrade — see the migration notes
-at the bottom of this section.
+Major security & SimpleLogin pass.
+
+> ### ⚠️ Breaking — signing key rotated
+>
+> The 1.0.0 signing keystore was lost. 1.1.0 is signed with a new keystore,
+> so Android refuses an in-place update from 1.0.0 (`signature mismatch`).
+> **You must uninstall 1.0.0 before installing 1.1.0.** Uninstalling
+> wipes the encrypted vault — back it up first via the in-app *Export*
+> feature, then re-import after the fresh install.
+>
+> Future releases (1.1.x onward) will be signed with this new keystore
+> and will update normally.
 
 ### Added
 - **Pull-to-refresh** on the vault screen.
