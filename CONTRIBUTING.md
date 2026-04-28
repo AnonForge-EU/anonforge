@@ -39,7 +39,7 @@ We currently support **French** and **English**. To add a language:
 - **UI**: Jetpack Compose + Material 3 — no XML layouts
 - **DI**: Hilt for dependency injection
 - **Async**: Coroutines + Flow (no RxJava)
-- **Testing**: JUnit 5 + MockK for unit tests
+- **Testing**: JUnit 4 + MockK + Turbine + Robolectric for unit tests
 
 ### Security Rules
 
@@ -57,7 +57,7 @@ cd anonforge
 ./gradlew testDebugUnitTest
 ```
 
-Requirements: Android Studio Ladybug+, JDK 17+, Android SDK 26+.
+Requirements: Android Studio Ladybug+, JDK 17+, Android SDK 29+ (compileSdk 34).
 
 ## Priority Areas
 

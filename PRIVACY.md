@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated**: February 2025
+**Last updated**: April 2026 (v1.1.0)
 
 ## Summary
 
@@ -38,7 +38,6 @@ If you choose to use optional integrations (SimpleLogin for email aliases), thos
 |-----------|---------|-----------|
 | `USE_BIOMETRIC` | Fingerprint/face unlock | Optional |
 | `INTERNET` | SimpleLogin API only | Optional |
-| `RECEIVE_BOOT_COMPLETED` | Auto-expiry scheduling | Optional |
 
 ## Open Source
 
