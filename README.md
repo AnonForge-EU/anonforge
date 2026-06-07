@@ -14,7 +14,7 @@
   <a href="https://github.com/AnonForge-EU/anonforge/releases"><img src="https://img.shields.io/github/downloads/AnonForge-EU/anonforge/total?style=flat-square&color=blue" alt="Downloads"></a>
   <a href="https://github.com/AnonForge-EU/anonforge/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
   <img src="https://img.shields.io/badge/Android-10%2B-brightgreen?style=flat-square&logo=android" alt="Android 10+">
-  <img src="https://img.shields.io/badge/Kotlin-2.1-7F52FF?style=flat-square&logo=kotlin" alt="Kotlin 2.1">
+  <img src="https://img.shields.io/badge/Kotlin-2.3-7F52FF?style=flat-square&logo=kotlin" alt="Kotlin 2.3">
 </p>
 
 <p align="center">
@@ -147,7 +147,7 @@ Clean Architecture — Strict layer separation
 
 | Component | Technology |
 |-----------|-----------|
-| Language | Kotlin 2.1 |
+| Language | Kotlin 2.3 |
 | UI | Jetpack Compose + Material 3 |
 | Architecture | Clean Architecture + MVVM |
 | DI | Hilt |

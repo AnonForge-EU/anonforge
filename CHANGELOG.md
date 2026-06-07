@@ -3,6 +3,45 @@
 All notable changes to AnonForge are documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] — 2026-06-07
+
+Toolchain modernization + vault usability. **Signed with the same keystore as
+1.1.0 — this updates in place over 1.1.0, no uninstall, all data preserved.**
+
+### Added
+- **Vault search** — a search field filters identities in real time by name,
+  custom name, email alias, or phone number.
+- **Vault sorting** — sort by newest first (default), soonest to expire, or
+  name A–Z.
+
+### Changed — dependency & toolchain upgrades
+- **Android Gradle Plugin 8.2.2 → 9.2.0** (Gradle 9.0-milestone-1 → 9.4.1).
+  Adopts AGP's built-in Kotlin support (the standalone `kotlin-android`
+  plugin is no longer applied).
+- **Kotlin 2.0.0 → 2.3.21** (KSP → 2.3.9), compiler options migrated to the
+  modern `compilerOptions` DSL. (Held at 2.3.x rather than 2.4.0 because the
+  latest Hilt, 2.59.2, only reads Kotlin metadata up to 2.3.0.)
+- **Compose BOM 2024.12.01 → 2026.06.00**, **Hilt 2.52 → 2.59.2**,
+  **Room 2.6.1 → 2.8.4**, **OkHttp 4.12.0 → 5.3.2**,
+  **coroutines 1.8.1 → 1.11.0**, **serialization 1.6.3 → 1.11.0**.
+- **AndroidX**: core-ktx 1.19.0, lifecycle 2.10.0, activity-compose 1.13.0,
+  navigation-compose 2.9.8, work 2.11.2, datastore 1.2.1,
+  hilt-navigation/work 1.3.0, sqlite-ktx 2.6.2.
+- **targetSdk / compileSdk 34 → 35** (Android 15).
+
+### Removed
+- Deprecated `android.enableJetifier` flag (no legacy support-library deps).
+
+### Kept intentionally
+- **SQLCipher stays at `android-database-sqlcipher` 4.5.4.** The maintained
+  successor (`sqlcipher-android`) is a package migration that would risk the
+  existing encrypted vault's openability. Held back to guarantee in-place
+  upgrades preserve data; revisit as a dedicated, well-tested change.
+
+### Migration notes
+- Updates normally over 1.1.0 (same signing key). Vault, alias history,
+  settings, PIN and biometric setup all carry over untouched.
+
 ## [1.1.0] — 2026-04-28
 
 Major security & SimpleLogin pass.
