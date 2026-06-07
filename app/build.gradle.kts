@@ -4,11 +4,15 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)  // Required for Kotlin 2.0+ Compose
+    // NOTE: org.jetbrains.kotlin.android is intentionally NOT applied — AGP 9
+    // ships built-in Kotlin support and rejects the standalone plugin. The
+    // Compose/serialization plugins below still drive the KGP version on the
+    // classpath (2.4.0 via the version catalog).
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -24,14 +28,19 @@ val keystoreProps = Properties().apply {
 
 android {
     namespace = "com.anonforge"
-    compileSdk = 34
+    // compileSdk 36 is required by the latest AndroidX libs (navigation 2.9.8,
+    // lifecycle 2.10, activity 1.13). targetSdk stays at 35 (Android 15) so we
+    // don't opt into Android 16 runtime behavior changes yet — these two knobs
+    // are intentionally decoupled.
+    compileSdk = 36
+    buildToolsVersion = "36.1.0"
 
     defaultConfig {
         applicationId = "com.anonforge"
         minSdk = 29
-        targetSdk = 34
-        versionCode = 2
-        versionName = "1.1.0"
+        targetSdk = 35
+        versionCode = 3
+        versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -74,14 +83,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs += listOf(
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
-        )
-    }
-
     buildFeatures {
         compose = true
     }
@@ -94,6 +95,18 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+// Kotlin compiler options (modern DSL — `kotlinOptions` was removed in the
+// Kotlin Gradle plugin used by Kotlin 2.4 / AGP 9).
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        )
     }
 }
 
