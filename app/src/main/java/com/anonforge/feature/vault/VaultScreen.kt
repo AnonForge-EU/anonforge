@@ -26,6 +26,7 @@ import com.anonforge.ui.components.SecureScreen
 @Composable
 fun VaultScreen(
     onNavigateToGenerator: () -> Unit,
+    onNavigateToManualEntry: () -> Unit,
     onNavigateToSettings: () -> Unit,
     viewModel: VaultViewModel = hiltViewModel()
 ) {
@@ -97,16 +98,31 @@ fun VaultScreen(
                 )
             },
             floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    onClick = onNavigateToGenerator,
-                    icon = {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Secondary action: type an identity in by hand
+                    SmallFloatingActionButton(
+                        onClick = onNavigateToManualEntry,
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    ) {
                         Icon(
-                            Icons.Default.Add,
-                            contentDescription = stringResource(R.string.vault_generate)
+                            Icons.Default.Edit,
+                            contentDescription = stringResource(R.string.manual_add)
                         )
-                    },
-                    text = { Text(stringResource(R.string.vault_generate)) }
-                )
+                    }
+                    ExtendedFloatingActionButton(
+                        onClick = onNavigateToGenerator,
+                        icon = {
+                            Icon(
+                                Icons.Default.Add,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(stringResource(R.string.vault_generate)) }
+                    )
+                }
             },
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { padding ->

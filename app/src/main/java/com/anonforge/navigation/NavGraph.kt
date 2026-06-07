@@ -16,6 +16,7 @@ import com.anonforge.feature.aliasimport.AliasImportDialog
 import com.anonforge.feature.aliasimport.AliasImportViewModel
 import com.anonforge.feature.disclaimer.DisclaimerScreen
 import com.anonforge.feature.generator.GeneratorScreen
+import com.anonforge.feature.manual.ManualEntryScreen
 import com.anonforge.feature.phonealias.PhoneAliasSettingsScreen
 import com.anonforge.feature.settings.AliasHistoryScreen
 import com.anonforge.feature.settings.SettingsScreen
@@ -36,6 +37,7 @@ object Routes {
     const val UNLOCK = "unlock"
     const val VAULT = "vault"
     const val GENERATOR = "generator"
+    const val MANUAL_ENTRY = "manual_entry"
     const val SETTINGS = "settings"
     const val ALIAS_SETTINGS = "alias_settings"
     const val ALIAS_HISTORY = "alias_history"
@@ -171,9 +173,23 @@ fun AnonForgeNavGraph(
                 onNavigateToGenerator = {
                     navController.navigate(Routes.GENERATOR)
                 },
+                onNavigateToManualEntry = {
+                    navController.navigate(Routes.MANUAL_ENTRY)
+                },
                 onNavigateToSettings = {
                     navController.navigate(Routes.SETTINGS)
                 }
+            )
+        }
+
+        /**
+         * Manual Entry Screen - Create an identity by typing every field
+         * (e.g. to preserve an existing identity). Random generation untouched.
+         */
+        composable(Routes.MANUAL_ENTRY) {
+            ManualEntryScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onSaved = { navController.popBackStack() }
             )
         }
 

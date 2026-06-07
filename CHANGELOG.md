@@ -9,6 +9,10 @@ Toolchain modernization + vault usability. **Signed with the same keystore as
 1.1.0 — this updates in place over 1.1.0, no uninstall, all data preserved.**
 
 ### Added
+- **Manual identity entry** — a dedicated form (reachable from the vault)
+  lets you type every field yourself instead of generating randomly, e.g.
+  to preserve an existing identity. Only first + last name are required;
+  phone, date of birth, address, email, label and expiry are optional.
 - **Vault search** — a search field filters identities in real time by name,
   custom name, email alias, or phone number.
 - **Vault sorting** — sort by newest first (default), soonest to expire, or

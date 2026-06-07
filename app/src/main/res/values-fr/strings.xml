@@ -97,6 +97,36 @@
     <string name="vault_sort_name">Nom (A–Z)</string>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <!-- MANUAL ENTRY SCREEN                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
+    <string name="manual_add">Saisie manuelle</string>
+    <string name="manual_title">Saisie manuelle</string>
+    <string name="manual_section_identity">Identité</string>
+    <string name="manual_first_name">Prénom</string>
+    <string name="manual_last_name">Nom</string>
+    <string name="manual_middle_name">Deuxième prénom (optionnel)</string>
+    <string name="manual_gender">Genre</string>
+    <string name="manual_nationality">Nationalité</string>
+    <string name="manual_dob">Date de naissance (optionnel)</string>
+    <string name="manual_dob_day">Jour</string>
+    <string name="manual_dob_month">Mois</string>
+    <string name="manual_dob_year">Année</string>
+    <string name="manual_dob_invalid">Date invalide</string>
+    <string name="manual_section_contact">Contact</string>
+    <string name="manual_phone">Téléphone (optionnel)</string>
+    <string name="manual_phone_invalid">Format international, ex. +33612345678</string>
+    <string name="manual_email">Email (optionnel)</string>
+    <string name="manual_address">Adresse (optionnel)</string>
+    <string name="manual_street">Rue</string>
+    <string name="manual_city">Ville</string>
+    <string name="manual_zip">Code postal</string>
+    <string name="manual_country">Pays</string>
+    <string name="manual_section_other">Libellé &amp; expiration</string>
+    <string name="manual_label">Libellé (optionnel)</string>
+    <string name="manual_expiry">Expiration</string>
+    <string name="manual_save">Enregistrer l\'identité</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <!-- GENERATOR SCREEN                                                         -->
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <string name="generator_title">Générer une identité</string>

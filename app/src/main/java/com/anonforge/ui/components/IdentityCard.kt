@@ -252,13 +252,15 @@ fun IdentityCard(
                         )
                     }
 
-                    // Phone field
-                    CopyableFieldRow(
-                        icon = Icons.Default.Phone,
-                        label = stringResource(R.string.field_phone),
-                        value = identity.phone.formatted,
-                        onCopy = { onCopyField(it, identity.phone.formatted) }
-                    )
+                    // Phone field (hidden when no number was set)
+                    if (!identity.phone.isBlank) {
+                        CopyableFieldRow(
+                            icon = Icons.Default.Phone,
+                            label = stringResource(R.string.field_phone),
+                            value = identity.phone.formatted,
+                            onCopy = { onCopyField(it, identity.phone.formatted) }
+                        )
+                    }
 
                     // Date of birth
                     CopyableFieldRow(
@@ -291,9 +293,12 @@ fun IdentityCard(
                             onClick = {
                                 val fields = mutableMapOf(
                                     "Name" to identity.fullName.fullDisplay,
-                                    "Phone" to identity.phone.formatted,
                                     "DOB" to identity.dateOfBirth.displayFormat
                                 )
+                                // Add phone only if set
+                                if (!identity.phone.isBlank) {
+                                    fields["Phone"] = identity.phone.formatted
+                                }
                                 // Add email only if present
                                 identity.email?.let { email ->
                                     fields["Email"] = email.value

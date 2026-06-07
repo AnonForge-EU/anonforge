@@ -3,13 +3,20 @@ package com.anonforge.domain.model
 @JvmInline
 value class Phone(val value: String) {
     init {
-        require(value.matches(Regex("^\\+[1-9]\\d{1,14}$"))) {
+        // An empty value means "no phone" — used by manually-entered identities
+        // that omit the number. Any non-empty value must be valid E.164.
+        require(value.isEmpty() || value.matches(Regex("^\\+[1-9]\\d{1,14}$"))) {
             "Invalid E.164 phone format"
         }
     }
 
+    /** True when no phone number is set. */
+    val isBlank: Boolean
+        get() = value.isEmpty()
+
     val formatted: String
         get() {
+            if (value.isEmpty()) return ""
             val digits = value.substring(1)
             return when {
                 digits.startsWith("1") && digits.length == 11 -> {
@@ -30,6 +37,7 @@ value class Phone(val value: String) {
     @Suppress("unused") // Public API for privacy-focused UI display
     val displayMasked: String
         get() {
+            if (value.isEmpty()) return ""
             val last4 = value.takeLast(4)
             return "${value.take(2)} ****$last4"
         }
