@@ -16,14 +16,51 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/** Sort orders offered in the vault. */
+enum class VaultSortOrder { CREATED_DESC, EXPIRY_ASC, NAME_ASC }
+
 data class VaultState(
     val identities: List<DomainIdentity> = emptyList(),
     val isLoading: Boolean = true,
     val isRefreshing: Boolean = false,
     val revealedIdentityIds: Set<String> = emptySet(),
+    val searchQuery: String = "",
+    val sortOrder: VaultSortOrder = VaultSortOrder.CREATED_DESC,
     val deletedMessage: String? = null,
     val snackbarMessage: String? = null
-)
+) {
+    /**
+     * The list actually shown: [identities] filtered by [searchQuery] and
+     * ordered by [sortOrder]. Computed on read so it always reflects the
+     * latest source list without a separate sync path.
+     */
+    val displayedIdentities: List<DomainIdentity>
+        get() {
+            val needle = searchQuery.trim().lowercase()
+            val filtered = if (needle.isEmpty()) {
+                identities
+            } else {
+                identities.filter { identity ->
+                    identity.customName?.lowercase()?.contains(needle) == true ||
+                        identity.fullName.fullDisplay.lowercase().contains(needle) ||
+                        identity.email?.value?.lowercase()?.contains(needle) == true ||
+                        identity.phone.value.lowercase().contains(needle)
+                }
+            }
+            return when (sortOrder) {
+                VaultSortOrder.CREATED_DESC ->
+                    filtered.sortedByDescending { it.createdAt }
+                VaultSortOrder.EXPIRY_ASC ->
+                    filtered.sortedWith(compareBy(nullsLast()) { it.expiresAt })
+                VaultSortOrder.NAME_ASC ->
+                    filtered.sortedBy { (it.customName ?: it.fullName.fullDisplay).lowercase() }
+            }
+        }
+
+    /** True when a search is active but nothing matches (vs. an empty vault). */
+    val isEmptySearchResult: Boolean
+        get() = identities.isNotEmpty() && displayedIdentities.isEmpty()
+}
 
 @HiltViewModel
 class VaultViewModel @Inject constructor(
@@ -74,6 +111,22 @@ class VaultViewModel @Inject constructor(
 
     fun isRevealed(identityId: String): Boolean {
         return identityId in _state.value.revealedIdentityIds
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // Search & Sort
+    // ═══════════════════════════════════════════════════════════════════════
+
+    fun setSearchQuery(query: String) {
+        _state.update { it.copy(searchQuery = query) }
+    }
+
+    fun clearSearch() {
+        _state.update { it.copy(searchQuery = "") }
+    }
+
+    fun setSortOrder(order: VaultSortOrder) {
+        _state.update { it.copy(sortOrder = order) }
     }
 
     // ═══════════════════════════════════════════════════════════════════════

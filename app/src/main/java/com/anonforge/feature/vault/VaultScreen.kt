@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -30,6 +31,7 @@ fun VaultScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    var sortMenuExpanded by remember { mutableStateOf(false) }
 
     // Handle deleted message
     LaunchedEffect(state.deletedMessage) {
@@ -53,6 +55,38 @@ fun VaultScreen(
                 TopAppBar(
                     title = { Text(stringResource(R.string.vault_title)) },
                     actions = {
+                        // Sort menu — only useful once there are identities
+                        if (state.identities.isNotEmpty()) {
+                            Box {
+                                IconButton(onClick = { sortMenuExpanded = true }) {
+                                    Icon(
+                                        Icons.AutoMirrored.Filled.Sort,
+                                        contentDescription = stringResource(R.string.vault_sort)
+                                    )
+                                }
+                                DropdownMenu(
+                                    expanded = sortMenuExpanded,
+                                    onDismissRequest = { sortMenuExpanded = false }
+                                ) {
+                                    VaultSortOrder.entries.forEach { order ->
+                                        DropdownMenuItem(
+                                            text = { Text(stringResource(order.labelRes())) },
+                                            onClick = {
+                                                viewModel.setSortOrder(order)
+                                                sortMenuExpanded = false
+                                            },
+                                            leadingIcon = {
+                                                if (order == state.sortOrder) {
+                                                    Icon(Icons.Default.Check, contentDescription = null)
+                                                } else {
+                                                    Spacer(Modifier.size(24.dp))
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
                         IconButton(onClick = onNavigateToSettings) {
                             Icon(
                                 Icons.Default.Settings,
@@ -83,85 +117,138 @@ fun VaultScreen(
                     .fillMaxSize()
                     .padding(padding)
             ) {
-                when {
-                    state.isLoading -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(3) {
-                                LoadingSkeleton()
-                            }
-                        }
-                    }
-
-                    state.identities.isEmpty() -> {
-                        Column(
+                Column(modifier = Modifier.fillMaxSize()) {
+                    // Search field — shown once there's something to search
+                    if (!state.isLoading &&
+                        (state.identities.isNotEmpty() || state.searchQuery.isNotEmpty())
+                    ) {
+                        OutlinedTextField(
+                            value = state.searchQuery,
+                            onValueChange = { viewModel.setSearchQuery(it) },
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(32.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                Icons.Default.AccountBox,
-                                contentDescription = "No identities",
-                                modifier = Modifier.size(64.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(
-                                text = stringResource(R.string.vault_empty_title),
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = stringResource(R.string.vault_empty_subtitle),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(onClick = onNavigateToGenerator) {
-                                Icon(Icons.Default.Add, contentDescription = "Generate")
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(stringResource(R.string.vault_generate_first))
-                            }
-                        }
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            placeholder = { Text(stringResource(R.string.vault_search_hint)) },
+                            leadingIcon = {
+                                Icon(Icons.Default.Search, contentDescription = null)
+                            },
+                            trailingIcon = {
+                                if (state.searchQuery.isNotEmpty()) {
+                                    IconButton(onClick = { viewModel.clearSearch() }) {
+                                        Icon(
+                                            Icons.Default.Close,
+                                            contentDescription = stringResource(R.string.vault_search_clear)
+                                        )
+                                    }
+                                }
+                            },
+                            singleLine = true
+                        )
                     }
 
-                    else -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(
-                                items = state.identities,
-                                key = { it.id }
-                            ) { identity ->
-                                AnimatedVisibility(
-                                    visible = true,
-                                    enter = fadeIn(animationSpec = tween(300)) +
-                                            expandVertically(animationSpec = tween(300)),
-                                    exit = fadeOut(animationSpec = tween(300)) +
-                                            shrinkVertically(animationSpec = tween(300))
-                                ) {
-                                    IdentityCard(
-                                        identity = identity,
-                                        isRevealed = viewModel.isRevealed(identity.id),
-                                        onRevealToggle = { viewModel.toggleReveal(identity.id) },
-                                        onDelete = { viewModel.deleteIdentity(identity.id) },
-                                        onCopyField = { label, value ->
-                                            viewModel.copyField(label, value)
-                                        },
-                                        onCopyAll = { fields ->
-                                            viewModel.copyAllFields(fields)
-                                        },
-                                        onRename = { newName ->
-                                            viewModel.renameIdentity(identity.id, newName)
-                                        }
-                                    )
+                    when {
+                        state.isLoading -> {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                items(3) {
+                                    LoadingSkeleton()
+                                }
+                            }
+                        }
+
+                        state.identities.isEmpty() -> {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(32.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    Icons.Default.AccountBox,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(64.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(
+                                    text = stringResource(R.string.vault_empty_title),
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = stringResource(R.string.vault_empty_subtitle),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Button(onClick = onNavigateToGenerator) {
+                                    Icon(Icons.Default.Add, contentDescription = null)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(stringResource(R.string.vault_generate_first))
+                                }
+                            }
+                        }
+
+                        state.isEmptySearchResult -> {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(32.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    Icons.Default.SearchOff,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(56.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    text = stringResource(R.string.vault_no_results),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
+                        else -> {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                items(
+                                    items = state.displayedIdentities,
+                                    key = { it.id }
+                                ) { identity ->
+                                    AnimatedVisibility(
+                                        visible = true,
+                                        enter = fadeIn(animationSpec = tween(300)) +
+                                                expandVertically(animationSpec = tween(300)),
+                                        exit = fadeOut(animationSpec = tween(300)) +
+                                                shrinkVertically(animationSpec = tween(300))
+                                    ) {
+                                        IdentityCard(
+                                            identity = identity,
+                                            isRevealed = viewModel.isRevealed(identity.id),
+                                            onRevealToggle = { viewModel.toggleReveal(identity.id) },
+                                            onDelete = { viewModel.deleteIdentity(identity.id) },
+                                            onCopyField = { label, value ->
+                                                viewModel.copyField(label, value)
+                                            },
+                                            onCopyAll = { fields ->
+                                                viewModel.copyAllFields(fields)
+                                            },
+                                            onRename = { newName ->
+                                                viewModel.renameIdentity(identity.id, newName)
+                                            }
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -170,4 +257,11 @@ fun VaultScreen(
             }
         }
     }
+}
+
+/** Maps a sort order to its localized label resource. */
+private fun VaultSortOrder.labelRes(): Int = when (this) {
+    VaultSortOrder.CREATED_DESC -> R.string.vault_sort_created
+    VaultSortOrder.EXPIRY_ASC -> R.string.vault_sort_expiry
+    VaultSortOrder.NAME_ASC -> R.string.vault_sort_name
 }

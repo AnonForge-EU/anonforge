@@ -88,6 +88,13 @@
     <string name="vault_empty_subtitle">Générez votre première identité pour commencer</string>
     <string name="vault_generate">Générer</string>
     <string name="vault_generate_first">Générer ma première identité</string>
+    <string name="vault_search_hint">Rechercher une identité</string>
+    <string name="vault_search_clear">Effacer la recherche</string>
+    <string name="vault_no_results">Aucune identité ne correspond à votre recherche</string>
+    <string name="vault_sort">Trier</string>
+    <string name="vault_sort_created">Plus récentes d\'abord</string>
+    <string name="vault_sort_expiry">Expire bientôt</string>
+    <string name="vault_sort_name">Nom (A–Z)</string>
 
     <!-- ═══════════════════════════════════════════════════════════════════════ -->
     <!-- GENERATOR SCREEN                                                         -->
