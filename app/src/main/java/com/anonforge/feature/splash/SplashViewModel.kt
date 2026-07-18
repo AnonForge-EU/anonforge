@@ -2,6 +2,7 @@ package com.anonforge.feature.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anonforge.data.local.prefs.SecurityPreferences
 import com.anonforge.data.repository.PreferencesRepository
 import com.anonforge.data.repository.SecurityPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val preferencesRepository: PreferencesRepository,
-    private val securityPreferencesRepository: SecurityPreferencesRepository
+    private val securityPreferencesRepository: SecurityPreferencesRepository,
+    private val securityPreferences: SecurityPreferences
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SplashState())
@@ -26,7 +28,7 @@ class SplashViewModel @Inject constructor(
      * Checks initial state and determines navigation target.
      * Priority:
      * 1. Disclaimer not accepted → Show disclaimer
-     * 2. Biometric enabled → Show unlock screen
+     * 2. Any unlock method configured (biometric or PIN) → Show unlock screen
      * 3. Otherwise → Go to main
      */
     fun checkInitialState() {
@@ -44,9 +46,14 @@ class SplashViewModel @Inject constructor(
                     return@launch
                 }
 
-                // Check if biometric is enabled
+                // Route through UNLOCK if any auth method is configured.
+                // The PIN lives in SecurityPreferences (the current store used by
+                // AuthManager/SettingsViewModel) — NOT in the legacy pin fields of
+                // SecurityPreferencesRepository. Checking only the biometric flag
+                // here used to let PIN-only users straight into the vault.
                 val biometricEnabled = securityPreferencesRepository.biometricEnabledFlow.first()
-                if (biometricEnabled) {
+                val pinConfigured = securityPreferences.hasPin()
+                if (biometricEnabled || pinConfigured) {
                     _state.update {
                         it.copy(
                             isLoading = false,
