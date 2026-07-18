@@ -7,7 +7,8 @@ import kotlinx.datetime.Instant
  * Pure domain model for a generated identity.
  * Zero Android dependencies - only kotlinx.datetime.
  *
- * OWASP M1: Encrypted at data layer, never stored in plaintext.
+ * Persistence: stored in the SQLCipher-encrypted database (full-database
+ * encryption at rest); fields are not individually encrypted on top of that.
  *
  * @property email NULLABLE - only present when SimpleLogin alias is configured
  * @property customName User-defined name for easy identification (Skill 13 - Renaming)

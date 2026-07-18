@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>🛡️ Secure Disposable Identity Generator for Android</strong><br>
-  <em>Protect your privacy with realistic temporary profiles — 100% offline.</em>
+  <em>Protect your privacy with realistic temporary profiles — offline by default.</em>
 </p>
 
 <p align="center">
@@ -44,7 +44,7 @@ AnonForge lets you **generate realistic, disposable identities** for low-stakes 
 
 **📧 Email Aliases** — Real forwarding email aliases via [SimpleLogin](https://simplelogin.io) API integration. Your inbox stays clean, your identity stays hidden.
 
-**🔐 Encrypted Vault** — All identities stored in an encrypted database (SQLCipher + Android Keystore, AES-256-GCM). Biometric unlock with PIN fallback.
+**🔐 Encrypted Vault** — All identities stored in an SQLCipher-encrypted database (AES-256), with the passphrase protected by the Android Keystore. Biometric unlock with PIN fallback.
 
 **⏱️ Auto-Expiry** — Temporary identities self-destruct after a configurable delay via WorkManager. Set it and forget it.
 
@@ -54,7 +54,7 @@ AnonForge lets you **generate realistic, disposable identities** for low-stakes 
 
 **🌍 Bilingual** — French and English interface.
 
-**📴 100% Offline** — No network required. No tracking. No analytics. No ads. Ever.
+**📴 Offline by Default** — Core features need no network. The app only connects if you enable SimpleLogin aliases (with your own API key). No tracking. No analytics. No ads. Ever.
 
 ---
 
@@ -105,19 +105,19 @@ The APK will be at `app/build/outputs/apk/release/app-release-unsigned.apk`. You
 
 ## 🛡️ Security & Privacy
 
-AnonForge is built with zero-knowledge principles:
+AnonForge is built privacy-first — everything stays local, nothing is collected:
 
 | Layer | Protection |
 |-------|-----------|
-| **Storage** | AES-256-GCM encryption via SQLCipher + Android Keystore |
+| **Storage** | Vault encrypted at rest with SQLCipher (AES-256); random database passphrase protected by the Android Keystore |
 | **Memory** | Sensitive data wiped after use (`CharArray.fill`) |
 | **Screen** | `FLAG_SECURE` blocks screenshots on all screens |
 | **Network** | Fully offline by default. Optional APIs use user-provided keys only |
 | **Logging** | No sensitive data logged, even in debug builds |
 | **Auth** | Biometric (fingerprint/face) with PIN fallback and auto-lock timeout |
-| **Compliance** | OWASP Mobile Top 10 audited |
+| **Compliance** | Reviewed against the OWASP Mobile Top 10 |
 
-**We collect nothing. Your identities never leave your device.**
+**We collect nothing. Your identities never leave your device — unless you explicitly export them or enable the optional SimpleLogin integration.**
 
 See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 
