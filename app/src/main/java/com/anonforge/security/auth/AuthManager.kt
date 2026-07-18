@@ -8,7 +8,6 @@ import com.anonforge.data.local.prefs.SecurityPreferences
 import com.anonforge.security.biometric.BiometricGate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -155,7 +154,7 @@ class AuthManager @Inject constructor(
      * @param pin The PIN to verify (will be wiped after use)
      * @return AuthResult indicating success, failure, or lockout
      */
-    fun verifyPin(pin: CharArray): AuthResult {
+    suspend fun verifyPin(pin: CharArray): AuthResult {
         // Check lockout first
         if (isLockedOut()) {
             pin.fill('\u0000')
@@ -167,7 +166,7 @@ class AuthManager @Inject constructor(
             pin.fill('\u0000') // Security: wipe immediately
 
             // Use SecurityPreferences.verifyPin() which decrypts and compares
-            val isValid = runBlocking { securityPreferences.verifyPin(pinString) }
+            val isValid = securityPreferences.verifyPin(pinString)
 
             if (isValid) {
                 lockManager.resetFailedAttempts()

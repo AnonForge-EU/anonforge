@@ -188,44 +188,45 @@ class UnlockViewModel @Inject constructor(
     fun verifyPin(pin: CharArray) {
         _state.update { it.copy(isVerifyingPin = true, pinError = null) }
 
-        // PIN verification is synchronous (blocking hash comparison)
         // Note: pin is wiped inside authManager.verifyPin()
-        when (val result = authManager.verifyPin(pin)) {
-            is AuthResult.Success -> {
-                _state.update {
-                    it.copy(
-                        authState = AuthState.Authenticated,
-                        showPinDialog = false,
-                        isVerifyingPin = false,
-                        pinError = null
-                    )
+        viewModelScope.launch {
+            when (val result = authManager.verifyPin(pin)) {
+                is AuthResult.Success -> {
+                    _state.update {
+                        it.copy(
+                            authState = AuthState.Authenticated,
+                            showPinDialog = false,
+                            isVerifyingPin = false,
+                            pinError = null
+                        )
+                    }
                 }
-            }
-            is AuthResult.Failed -> {
-                _state.update {
-                    it.copy(
-                        isVerifyingPin = false,
-                        pinError = result.message,
-                        attemptsRemaining = result.attemptsRemaining
-                    )
+                is AuthResult.Failed -> {
+                    _state.update {
+                        it.copy(
+                            isVerifyingPin = false,
+                            pinError = result.message,
+                            attemptsRemaining = result.attemptsRemaining
+                        )
+                    }
                 }
-            }
-            is AuthResult.LockedOut -> {
-                _state.update {
-                    it.copy(
-                        authState = AuthState.LockedOut(authManager.getRemainingLockoutSeconds()),
-                        showPinDialog = false,
-                        showLockoutDialog = true,
-                        isVerifyingPin = false
-                    )
+                is AuthResult.LockedOut -> {
+                    _state.update {
+                        it.copy(
+                            authState = AuthState.LockedOut(authManager.getRemainingLockoutSeconds()),
+                            showPinDialog = false,
+                            showLockoutDialog = true,
+                            isVerifyingPin = false
+                        )
+                    }
                 }
-            }
-            is AuthResult.Error -> {
-                _state.update {
-                    it.copy(
-                        isVerifyingPin = false,
-                        pinError = result.message
-                    )
+                is AuthResult.Error -> {
+                    _state.update {
+                        it.copy(
+                            isVerifyingPin = false,
+                            pinError = result.message
+                        )
+                    }
                 }
             }
         }
