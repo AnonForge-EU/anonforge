@@ -34,10 +34,10 @@ class ExportCryptoManager @Inject constructor() {
         val spec = GCMParameterSpec(GCM_TAG_LENGTH, iv)
         cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(key, "AES"), spec)
         val ciphertext = cipher.doFinal(data)
-        
-        password.fill('0')
+
+        password.fill('\u0000')
         key.fill(0)
-        
+
         return salt + iv + ciphertext
     }
     
@@ -54,10 +54,10 @@ class ExportCryptoManager @Inject constructor() {
         val spec = GCMParameterSpec(GCM_TAG_LENGTH, iv)
         cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(key, "AES"), spec)
         val plaintext = cipher.doFinal(ciphertext)
-        
-        password.fill('0')
+
+        password.fill('\u0000')
         key.fill(0)
-        
+
         return plaintext
     }
     
