@@ -85,6 +85,9 @@ android {
 
     buildFeatures {
         compose = true
+        // BuildConfig is off by default since AGP 8; needed for VERSION_NAME
+        // shown on the settings/about card.
+        buildConfig = true
     }
 
     // NOTE: composeOptions block removed - Kotlin 2.0+ includes Compose Compiler

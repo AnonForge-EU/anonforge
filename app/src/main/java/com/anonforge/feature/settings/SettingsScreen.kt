@@ -75,6 +75,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.anonforge.BuildConfig
 import com.anonforge.R
 import com.anonforge.domain.model.AppLanguage
 import com.anonforge.domain.model.GenderPreference
@@ -581,7 +582,7 @@ fun SettingsScreen(
                             style = MaterialTheme.typography.titleSmall
                         )
                         Text(
-                            text = stringResource(R.string.app_version, "1.0.0"),
+                            text = stringResource(R.string.app_version, BuildConfig.VERSION_NAME),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

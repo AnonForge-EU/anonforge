@@ -10,6 +10,14 @@ Security polish and honest documentation. **Signed with the same keystore as
 No database schema change (Room stays at version 5), no storage format change.
 
 ### Fixed
+- **PIN-only lock is now enforced at launch** — the splash routing only sent
+  users to the unlock screen when *biometric* unlock was enabled, so a vault
+  protected by a PIN alone opened without ever asking for it (and the
+  auto-lock re-check took the same path). The app now routes through the
+  unlock screen whenever a PIN **or** biometric is configured.
+  ⚠️ If you set up a PIN and never saw it requested since, you will be asked
+  for it after this update — make sure you remember it (biometric users are
+  unaffected; without any PIN/biometric nothing changes).
 - **Secure clipboard everywhere** — copying from the generator screen and the
   phone-alias list now goes through the same secure clipboard as the vault:
   marked sensitive (hidden from clipboard previews on Android 13+) and
@@ -22,6 +30,9 @@ No database schema change (Room stays at version 5), no storage format change.
   proper suspend call, and the auto-lock timeout is now cached in memory
   (fail-closed while loading) instead of a blocking DataStore read on every
   foreground check.
+- **Settings/About now shows the real app version** — it displayed a
+  hard-coded "1.0.0" regardless of the installed release; it now reads
+  `BuildConfig.VERSION_NAME`.
 
 ### Changed
 - **Honest security wording** — README and in-code docs now describe exactly
