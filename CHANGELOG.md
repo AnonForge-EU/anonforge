@@ -3,6 +3,52 @@
 All notable changes to AnonForge are documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] — 2026-07-19
+
+Security polish and honest documentation. **Signed with the same keystore as
+1.1.0/1.2.0 — updates in place, no uninstall, vault/PIN/aliases preserved.**
+No database schema change (Room stays at version 5), no storage format change.
+
+### Fixed
+- **Secure clipboard everywhere** — copying from the generator screen and the
+  phone-alias list now goes through the same secure clipboard as the vault:
+  marked sensitive (hidden from clipboard previews on Android 13+) and
+  auto-cleared after 30 seconds. Previously those two paths used the raw
+  system clipboard with no auto-clear.
+- **Export password wipe** — the backup password buffer is now overwritten
+  with null characters (`\u0000`) instead of ASCII `'0'` after use. The
+  export file format itself is unchanged; existing backups import fine.
+- **PIN unlock no longer blocks the UI thread** — PIN verification became a
+  proper suspend call, and the auto-lock timeout is now cached in memory
+  (fail-closed while loading) instead of a blocking DataStore read on every
+  foreground check.
+
+### Changed
+- **Honest security wording** — README and in-code docs now describe exactly
+  what the app does: full-database encryption at rest via SQLCipher (AES-256)
+  with the passphrase in the Android Keystore. Removed the misleading
+  "field-level / never stored in plaintext" and "100% offline" phrasing
+  (the app is offline **by default**; SimpleLogin is an optional connection).
+
+### Removed
+- **Dead code**: the unused `EncryptionBridge` field-encryption layer and its
+  Hilt wiring. It was never called — identity fields were, and still are,
+  protected by the full-database SQLCipher encryption. The legacy Keystore
+  alias is still cleaned up by `clearAllKeys()` on devices where older builds
+  created it.
+
+### Internal
+- `DateOfBirthGenerator` moved from `feature.generator` to `generator`,
+  removing the domain → feature dependency.
+- Unit tests now exercise the real `ExportCryptoManager` (production
+  constants: PBKDF2-HMAC-SHA256 100k iterations, AES-256-GCM) instead of a
+  drifted mirror implementation that claimed 600k iterations, plus new
+  `PhoneGenerator` format tests (FR/UK/DE).
+
+### Migration notes
+- Updates normally over 1.2.0 / 1.1.x (same signing key). Vault, alias
+  history, settings, PIN and biometric setup all carry over untouched.
+
 ## [1.2.0] — 2026-06-07
 
 Toolchain modernization + vault usability. **Signed with the same keystore as

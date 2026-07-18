@@ -7,6 +7,12 @@
 build/
 !gradle/wrapper/gradle-wrapper.jar
 
+# Kotlin toolchain working dir
+.kotlin/
+
+# Local audit / working notes
+GROK_REVIEW_*.md
+
 # Local configuration (SDK path, etc.)
 local.properties
 
