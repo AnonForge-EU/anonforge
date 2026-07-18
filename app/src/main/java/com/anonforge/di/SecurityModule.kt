@@ -2,7 +2,6 @@ package com.anonforge.di
 
 import android.content.Context
 import com.anonforge.core.security.ApiKeyManager
-import com.anonforge.security.encryption.EncryptionBridge
 import com.anonforge.security.encryption.ExportCryptoManager
 import com.anonforge.security.encryption.KeyManager
 import dagger.Module
@@ -29,11 +28,6 @@ object SecurityModule {
     fun provideKeyManager(
         @ApplicationContext context: Context
     ): KeyManager = KeyManager(context)
-
-    @Provides
-    @Singleton
-    fun provideEncryptionBridge(keyManager: KeyManager): EncryptionBridge =
-        EncryptionBridge(keyManager)
 
     @Provides
     @Singleton

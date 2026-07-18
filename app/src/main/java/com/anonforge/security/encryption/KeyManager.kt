@@ -22,7 +22,6 @@ import javax.inject.Singleton
  * Manages cryptographic keys for AnonForge.
  *
  * Security architecture:
- * - Field encryption: Uses Android Keystore directly for AES-GCM operations
  * - Database passphrase: Random passphrase encrypted with Keystore key, stored in EncryptedSharedPreferences
  *
  * Note: Android Keystore keys don't expose raw bytes (getEncoded() returns null),
@@ -49,6 +48,9 @@ class KeyManager @Inject constructor(
     }
 
     companion object {
+        // Legacy alias: field-level encryption was never wired up, but installs
+        // that ran older builds may have generated this key. Kept only so
+        // clearAllKeys() removes it; never reuse for new features.
         private const val FIELD_ENCRYPTION_KEY_ALIAS = "anonforge_field_encryption_key"
         private const val DATABASE_PASSPHRASE_KEY_ALIAS = "anonforge_db_passphrase_key"
         private const val PREFS_NAME = "anonforge_secure_prefs"
@@ -56,15 +58,6 @@ class KeyManager @Inject constructor(
         private const val PASSPHRASE_LENGTH = 32 // 256 bits
         private const val GCM_TAG_LENGTH = 128
         private const val GCM_IV_LENGTH = 12
-    }
-
-    /**
-     * Returns the field encryption key for encrypting sensitive identity fields.
-     * Creates a new key if one doesn't exist.
-     */
-    fun getFieldEncryptionKey(): SecretKey {
-        return keyStore.getKey(FIELD_ENCRYPTION_KEY_ALIAS, null) as? SecretKey
-            ?: generateFieldEncryptionKey()
     }
 
     /**
@@ -158,19 +151,6 @@ class KeyManager @Inject constructor(
     private fun getOrCreatePassphraseKey(): SecretKey {
         return keyStore.getKey(DATABASE_PASSPHRASE_KEY_ALIAS, null) as? SecretKey
             ?: generatePassphraseKey()
-    }
-
-    /**
-     * Generates AES key for field-level encryption.
-     * Uses StrongBox if available, falls back to TEE otherwise.
-     */
-    private fun generateFieldEncryptionKey(): SecretKey {
-        return try {
-            generateAesKey(FIELD_ENCRYPTION_KEY_ALIAS, useStrongBox = true)
-        } catch (_: StrongBoxUnavailableException) {
-            // Fallback to TEE-backed key if StrongBox not available
-            generateAesKey(FIELD_ENCRYPTION_KEY_ALIAS, useStrongBox = false)
-        }
     }
 
     /**
