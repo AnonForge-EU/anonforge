@@ -1,8 +1,5 @@
 package com.anonforge.feature.generator
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -100,7 +97,7 @@ fun GeneratorScreen(
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // Collect events from ViewModel (ShowSnackbar, CopyToClipboard)
+    // Collect events from ViewModel (ShowSnackbar)
     // ═══════════════════════════════════════════════════════════════════════════
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -115,18 +112,12 @@ fun GeneratorScreen(
                         // Extract email from message "Alias created: xxx@yyy.com"
                         val email = event.message.substringAfter(": ", "")
                         if (email.isNotEmpty() && email.contains("@")) {
-                            copyToClipboard(context, email)
+                            viewModel.copyToClipboard(email)
                             snackbarHostState.showSnackbar(
                                 message = context.getString(R.string.copied_to_clipboard)
                             )
                         }
                     }
-                }
-                is GeneratorEvent.CopyToClipboard -> {
-                    copyToClipboard(context, event.text)
-                    snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.copied_to_clipboard)
-                    )
                 }
             }
         }
@@ -544,16 +535,6 @@ fun GeneratorScreen(
             }
         }
     }
-}
-
-/**
- * Copy text to system clipboard.
- * Security: Text is copied as plain text. User explicitly requested copy action.
- */
-private fun copyToClipboard(context: Context, text: String) {
-    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText("AnonForge", text)
-    clipboard.setPrimaryClip(clip)
 }
 
 /**

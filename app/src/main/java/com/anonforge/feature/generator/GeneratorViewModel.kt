@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anonforge.core.network.NetworkResult
 import com.anonforge.core.security.ApiKeyManager
+import com.anonforge.core.security.SecureClipboardManager
 import com.anonforge.data.local.prefs.SettingsDataStore
 import com.anonforge.domain.model.AliasEmail
 import com.anonforge.domain.model.DomainIdentity
@@ -99,7 +100,6 @@ data class GeneratorState(
  */
 sealed class GeneratorEvent {
     data class ShowSnackbar(val message: String, val actionLabel: String? = null) : GeneratorEvent()
-    data class CopyToClipboard(val text: String) : GeneratorEvent()
 }
 
 @HiltViewModel
@@ -112,7 +112,8 @@ class GeneratorViewModel @Inject constructor(
     private val getAliasHistoryUseCase: GetAliasHistoryUseCase,
     private val getPrimaryAliasUseCase: GetPrimaryAliasUseCase,
     private val getPhoneAliasHistoryUseCase: GetPhoneAliasHistoryUseCase,
-    private val phoneAliasRepository: PhoneAliasRepository
+    private val phoneAliasRepository: PhoneAliasRepository,
+    private val clipboardManager: SecureClipboardManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GeneratorState())
@@ -800,6 +801,14 @@ class GeneratorViewModel @Inject constructor(
 
     fun clearSavedState() {
         _state.update { it.copy(savedSuccessfully = false) }
+    }
+
+    /**
+     * Copy text to the secure clipboard (marked sensitive, auto-cleared after 30s).
+     * Same behavior as the vault copy actions.
+     */
+    fun copyToClipboard(text: String) {
+        clipboardManager.copyToClipboard(text, isSensitive = true)
     }
 
     fun clearError() {

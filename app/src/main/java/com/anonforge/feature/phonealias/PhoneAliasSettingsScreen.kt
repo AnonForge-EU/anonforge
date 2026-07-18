@@ -52,10 +52,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -86,7 +84,6 @@ fun PhoneAliasSettingsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     @Suppress("SpellCheckingInspection") // "snackbar" is correct Material Design terminology
     val snackbarHostState = remember { SnackbarHostState() }
-    val clipboardManager = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
 
     // Input state
@@ -359,8 +356,7 @@ fun PhoneAliasSettingsScreen(
                                 PhoneAliasHistoryItem(
                                     alias = alias,
                                     onCopy = {
-                                        clipboardManager.setText(AnnotatedString(alias.phoneNumber))
-                                        viewModel.showMessage(copiedMessage)
+                                        viewModel.copyPhoneNumber(alias.phoneNumber, copiedMessage)
                                     },
                                     onDelete = { viewModel.showDeleteDialog(alias) },
                                     onSetPrimary = {

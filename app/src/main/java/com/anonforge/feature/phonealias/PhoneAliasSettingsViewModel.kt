@@ -2,6 +2,7 @@ package com.anonforge.feature.phonealias
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anonforge.core.security.SecureClipboardManager
 import com.anonforge.data.local.prefs.SettingsDataStore
 import com.anonforge.domain.model.PhoneAlias
 import com.anonforge.domain.repository.PhoneAliasRepository
@@ -33,7 +34,8 @@ class PhoneAliasSettingsViewModel @Inject constructor(
     private val getPhoneAliasHistoryUseCase: GetPhoneAliasHistoryUseCase,
     private val deletePhoneAliasUseCase: DeletePhoneAliasUseCase,
     private val phoneAliasRepository: PhoneAliasRepository,
-    private val settingsDataStore: SettingsDataStore
+    private val settingsDataStore: SettingsDataStore,
+    private val clipboardManager: SecureClipboardManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PhoneAliasSettingsState())
@@ -213,6 +215,15 @@ class PhoneAliasSettingsViewModel @Inject constructor(
 
     fun dismissDeleteDialog() {
         _state.update { it.copy(aliasToDelete = null) }
+    }
+
+    /**
+     * Copy a phone number to the secure clipboard (marked sensitive,
+     * auto-cleared after 30s — same behavior as the vault) and confirm.
+     */
+    fun copyPhoneNumber(phoneNumber: String, confirmationMessage: String) {
+        clipboardManager.copyToClipboard(phoneNumber, isSensitive = true)
+        _state.update { it.copy(snackbarMessage = confirmationMessage) }
     }
 
     fun showCopiedMessage(message: String) {
