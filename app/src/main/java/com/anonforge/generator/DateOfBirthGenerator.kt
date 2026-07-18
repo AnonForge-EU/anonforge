@@ -1,4 +1,4 @@
-package com.anonforge.feature.generator
+package com.anonforge.generator
 
 import com.anonforge.data.repository.PreferencesRepository
 import com.anonforge.domain.model.DateOfBirth

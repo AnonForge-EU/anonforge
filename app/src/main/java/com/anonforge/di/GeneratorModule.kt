@@ -4,8 +4,8 @@ import android.content.Context
 import com.anonforge.data.local.datasource.AddressDataProvider
 import com.anonforge.data.local.datasource.NameDataProvider
 import com.anonforge.data.repository.PreferencesRepository
-import com.anonforge.feature.generator.DateOfBirthGenerator
 import com.anonforge.generator.AddressGenerator
+import com.anonforge.generator.DateOfBirthGenerator
 import com.anonforge.generator.NameGenerator
 import com.anonforge.generator.PhoneGenerator
 import dagger.Module
