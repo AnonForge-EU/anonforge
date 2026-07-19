@@ -3,7 +3,11 @@
 All notable changes to AnonForge are documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.1] — 2026-07-19
+
+Security polish and honest documentation. **Signed with the same keystore as
+1.1.0/1.2.0 — updates in place, no uninstall, vault/PIN/aliases preserved.**
+No database schema change (Room stays at version 5), no storage format change.
 
 ### Fixed
 - **Storage read errors can no longer bypass the lock screen** — if reading
@@ -12,14 +16,17 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   the splash and unlock screens now fail closed: any read error routes to the
   unlock screen, which keeps PIN entry available and shows an explicit error
   instead of opening the vault or crashing.
-
-## [1.2.1] — 2026-07-19
-
-Security polish and honest documentation. **Signed with the same keystore as
-1.1.0/1.2.0 — updates in place, no uninstall, vault/PIN/aliases preserved.**
-No database schema change (Room stays at version 5), no storage format change.
-
-### Fixed
+- **The vault can no longer be silently orphaned by a lost passphrase** — if
+  the encrypted database still holds data but its stored passphrase is gone
+  (e.g. after a partial device restore), the app used to generate a fresh
+  passphrase that could never open the existing file, leaving a crash-loop
+  over an intact vault. It now refuses to regenerate, and shows an explicit
+  "vault unreadable" screen (FR/EN) that never overwrites or resets the file.
+- **Device-to-device migration no longer copies a partial state** — the
+  Android 12+ transfer tool copied the preference files (including the PIN
+  hash) but not the vault, leaving a PIN prompt over an empty vault on the
+  new phone and moving a preferences file off the device. The transfer rules
+  now exclude the file domain, matching the cloud-backup rules.
 - **PIN-only lock is now enforced at launch** — the splash routing only sent
   users to the unlock screen when *biometric* unlock was enabled, so a vault
   protected by a PIN alone opened without ever asking for it (and the
