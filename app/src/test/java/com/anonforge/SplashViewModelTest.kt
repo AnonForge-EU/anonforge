@@ -3,17 +3,20 @@ package com.anonforge.feature.splash
 import com.anonforge.data.local.prefs.SecurityPreferences
 import com.anonforge.data.repository.PreferencesRepository
 import com.anonforge.data.repository.SecurityPreferencesRepository
+import com.anonforge.security.encryption.KeyManager
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -34,6 +37,7 @@ class SplashViewModelTest {
     private lateinit var preferencesRepository: PreferencesRepository
     private lateinit var securityPreferencesRepository: SecurityPreferencesRepository
     private lateinit var securityPreferences: SecurityPreferences
+    private lateinit var keyManager: KeyManager
 
     @Before
     fun setup() {
@@ -41,9 +45,11 @@ class SplashViewModelTest {
         preferencesRepository = mockk()
         securityPreferencesRepository = mockk()
         securityPreferences = mockk()
+        keyManager = mockk()
 
-        // Baseline: disclaimer accepted, no auth configured → MAIN.
+        // Baseline: vault key present, disclaimer accepted, no auth → MAIN.
         // Each test overrides only what it needs.
+        every { keyManager.isVaultKeyLost() } returns false
         coEvery { preferencesRepository.isDisclaimerAccepted() } returns true
         every { securityPreferencesRepository.biometricEnabledFlow } returns flowOf(false)
         coEvery { securityPreferences.hasPin() } returns false
@@ -57,8 +63,25 @@ class SplashViewModelTest {
     private fun buildViewModel() = SplashViewModel(
         preferencesRepository = preferencesRepository,
         securityPreferencesRepository = securityPreferencesRepository,
-        securityPreferences = securityPreferences
+        securityPreferences = securityPreferences,
+        keyManager = keyManager
     )
+
+    /**
+     * checkInitialState hops through Dispatchers.IO (vault-key check), which the
+     * test scheduler does not control — advanceUntilIdle() would assert before
+     * the IO hop completes. Instead, suspend on a real dispatcher until the
+     * ViewModel publishes a target (the real-time wrapper is the documented way
+     * to keep withTimeout from expiring in virtual time); the timeout only turns
+     * a never-emitting regression into a clean failure.
+     */
+    @Suppress("OPT_IN_USAGE") // limitedParallelism is stable enough for tests
+    private suspend fun SplashViewModel.awaitTarget(): SplashNavigationTarget =
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(10_000) {
+                state.first { it.navigationTarget != null }.navigationTarget!!
+            }
+        }
 
     // ═══════════════════════════════════════════════════════════════════════════
     // Nominal routing
@@ -70,9 +93,8 @@ class SplashViewModelTest {
 
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.DISCLAIMER, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.DISCLAIMER, viewModel.awaitTarget())
         assertFalse(viewModel.state.value.isLoading)
     }
 
@@ -82,9 +104,8 @@ class SplashViewModelTest {
 
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.awaitTarget())
     }
 
     @Test
@@ -93,18 +114,16 @@ class SplashViewModelTest {
 
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.awaitTarget())
     }
 
     @Test
     fun `no auth configured routes to MAIN`() = runTest {
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.MAIN, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.MAIN, viewModel.awaitTarget())
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -118,9 +137,8 @@ class SplashViewModelTest {
 
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.awaitTarget())
         assertFalse(viewModel.state.value.isLoading)
     }
 
@@ -133,9 +151,8 @@ class SplashViewModelTest {
 
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.awaitTarget())
     }
 
     @Test
@@ -145,9 +162,8 @@ class SplashViewModelTest {
 
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.awaitTarget())
     }
 
     @Test
@@ -157,8 +173,39 @@ class SplashViewModelTest {
 
         val viewModel = buildViewModel()
         viewModel.checkInitialState()
-        advanceUntilIdle()
 
-        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.state.value.navigationTarget)
+        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.awaitTarget())
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Lost vault key routing
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    @Test
+    fun `lost vault key routes to VAULT_UNREADABLE before anything else`() = runTest {
+        every { keyManager.isVaultKeyLost() } returns true
+        // Even with a PIN configured, the terminal error screen takes priority:
+        // unlocking would only lead to opening an unreadable database.
+        coEvery { securityPreferences.hasPin() } returns true
+
+        val viewModel = buildViewModel()
+        viewModel.checkInitialState()
+
+        assertEquals(
+            SplashNavigationTarget.VAULT_UNREADABLE,
+            viewModel.awaitTarget()
+        )
+    }
+
+    @Test
+    fun `vault key check failure routes to UNLOCK, never MAIN`() = runTest {
+        // isVaultKeyLost is designed not to throw, but if it ever does the
+        // generic fail-closed path must keep the lock screen in front.
+        every { keyManager.isVaultKeyLost() } throws IllegalStateException("keystore error")
+
+        val viewModel = buildViewModel()
+        viewModel.checkInitialState()
+
+        assertEquals(SplashNavigationTarget.UNLOCK, viewModel.awaitTarget())
     }
 }
