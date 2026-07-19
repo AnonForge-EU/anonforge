@@ -33,6 +33,14 @@ abstract class AnonForgeDatabase : RoomDatabase() {
     companion object {
         private const val DATABASE_NAME = "anonforge.db"
 
+        /**
+         * @throws com.anonforge.security.encryption.VaultKeyLostException if the
+         * database file already holds data but its passphrase is gone. The splash
+         * flow checks [KeyManager.isVaultKeyLost] before any database access and
+         * routes to an explicit "vault unreadable" screen, so this should never
+         * surface on the UI path; it remains a hard stop for background entry
+         * points (e.g. workers) instead of a silent vault reset.
+         */
         fun create(context: Context, keyManager: KeyManager): AnonForgeDatabase {
             val passphrase = keyManager.getDatabasePassphrase()
             val factory = SupportFactory(SQLiteDatabase.getBytes(passphrase))

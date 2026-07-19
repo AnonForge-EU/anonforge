@@ -45,6 +45,7 @@ fun SplashScreen(
     onNavigateToMain: () -> Unit,
     onNavigateToUnlock: () -> Unit,
     onNavigateToDisclaimer: () -> Unit,
+    onNavigateToVaultUnreadable: () -> Unit,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -75,6 +76,7 @@ fun SplashScreen(
                 SplashNavigationTarget.DISCLAIMER -> onNavigateToDisclaimer()
                 SplashNavigationTarget.UNLOCK -> onNavigateToUnlock()
                 SplashNavigationTarget.MAIN -> onNavigateToMain()
+                SplashNavigationTarget.VAULT_UNREADABLE -> onNavigateToVaultUnreadable()
             }
         }
     }
@@ -127,7 +129,14 @@ fun SplashScreen(
 enum class SplashNavigationTarget {
     DISCLAIMER,
     UNLOCK,
-    MAIN
+    MAIN,
+
+    /**
+     * The encrypted database still holds data but its passphrase is gone
+     * (see [com.anonforge.security.encryption.VaultKeyLostException]).
+     * Routes to an explanation screen instead of opening the database.
+     */
+    VAULT_UNREADABLE
 }
 
 data class SplashState(

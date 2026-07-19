@@ -755,4 +755,10 @@
     <string name="why_privacy_point3">Pas d\'analytics — Nous ne suivons pas votre utilisation</string>
     <string name="why_privacy_point4">Pas de partage — Nous ne vendons ni ne partageons rien</string>
 
+    <!-- Vault Unreadable (lost passphrase guard) -->
+    <string name="vault_unreadable_title">Coffre illisible</string>
+    <string name="vault_unreadable_explanation">Le fichier chiffré de votre coffre est toujours présent sur cet appareil, mais la clé nécessaire pour l\'ouvrir est introuvable dans le stockage sécurisé. Cela peut arriver après une restauration du téléphone depuis une sauvegarde ou un effacement des données sécurisées de l\'app.</string>
+    <string name="vault_unreadable_no_reset">Pour protéger vos données, AnonForge n\'écrasera pas et ne réinitialisera pas le coffre : sans la clé d\'origine, son contenu ne peut pas être déchiffré, et créer une nouvelle clé détruirait toute possibilité de récupération.</string>
+    <string name="vault_unreadable_next_steps">Si vous disposez d\'un fichier d\'export AnonForge, vous pouvez réinstaller l\'application puis l\'importer. Sinon, ouvrez un ticket sur le projet GitHub d\'AnonForge pour obtenir de l\'aide.</string>
+
 </resources>

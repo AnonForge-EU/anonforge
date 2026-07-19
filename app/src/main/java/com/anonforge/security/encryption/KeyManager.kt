@@ -9,6 +9,7 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
 import java.security.KeyStore
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -58,11 +59,49 @@ class KeyManager @Inject constructor(
         private const val PASSPHRASE_LENGTH = 32 // 256 bits
         private const val GCM_TAG_LENGTH = 128
         private const val GCM_IV_LENGTH = 12
+
+        // Must match AnonForgeDatabase.DATABASE_NAME (never renamed — §4 audit constraints).
+        // Duplicated here instead of referencing the data layer to avoid a
+        // security → data dependency.
+        private const val DATABASE_FILE_NAME = "anonforge.db"
+
+        /**
+         * True when the SQLCipher database file exists with actual content.
+         * An absent or empty file means there is no user data to lose.
+         */
+        internal fun databaseFileHasData(databaseFile: File): Boolean =
+            databaseFile.exists() && databaseFile.length() > 0L
+
+        /**
+         * Guard against silent passphrase regeneration: if the encrypted database
+         * already contains data while no stored passphrase can be found, a freshly
+         * generated passphrase could never open it — the vault would be lost for
+         * good even though the file is intact. Fail loudly so the UI can explain.
+         *
+         * Kept as a companion function taking the [File] directly so the guard is
+         * unit-testable on the JVM (instantiating [KeyManager] requires the real
+         * Android Keystore).
+         *
+         * @throws VaultKeyLostException when regenerating would orphan existing data
+         */
+        internal fun ensureRegenerationIsSafe(databaseFile: File) {
+            if (databaseFileHasData(databaseFile)) {
+                throw VaultKeyLostException(
+                    "No stored database passphrase, but '${databaseFile.name}' exists with " +
+                        "${databaseFile.length()} bytes. Refusing to generate a new passphrase: " +
+                        "it would make the existing vault permanently unreadable."
+                )
+            }
+        }
     }
 
     /**
      * Returns the database passphrase for SQLCipher.
      * The passphrase is randomly generated once, then encrypted and stored securely.
+     *
+     * @throws VaultKeyLostException if no passphrase is stored while the encrypted
+     * database already contains data — regenerating would orphan the vault, so the
+     * caller must surface an explicit error state instead (see [isVaultKeyLost]).
      */
     fun getDatabasePassphrase(): CharArray {
         // Try to retrieve existing passphrase
@@ -72,9 +111,34 @@ class KeyManager @Inject constructor(
             // Decrypt and return existing passphrase
             decryptPassphrase(storedPassphrase)
         } else {
+            // Regenerating is only legitimate when no vault exists yet (first
+            // launch). If the database file already holds data, the stored
+            // passphrase was lost (e.g. partial restore) and a new one would
+            // never open it — fail loudly instead of destroying access.
+            ensureRegenerationIsSafe(context.getDatabasePath(DATABASE_FILE_NAME))
+
             // Generate, encrypt, store, and return new passphrase
             generateAndStorePassphrase()
         }
+    }
+
+    /**
+     * Side-effect-free check for the situation guarded by [VaultKeyLostException]:
+     * the encrypted database contains data but its passphrase is no longer
+     * retrievable. Never generates or stores anything, so it is safe to call at
+     * startup before any database access, to route to an explicit error screen.
+     *
+     * Also treats unreadable EncryptedSharedPreferences (corrupted keyset) as a
+     * lost key when data is at stake: opening the database would fail anyway.
+     */
+    fun isVaultKeyLost(): Boolean {
+        if (!databaseFileHasData(context.getDatabasePath(DATABASE_FILE_NAME))) {
+            return false
+        }
+        val storedPassphrase = runCatching {
+            encryptedPrefs.getString(PREF_DB_PASSPHRASE, null)
+        }.getOrNull()
+        return storedPassphrase == null
     }
 
     /**

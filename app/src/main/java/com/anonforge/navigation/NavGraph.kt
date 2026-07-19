@@ -22,6 +22,7 @@ import com.anonforge.feature.settings.AliasHistoryScreen
 import com.anonforge.feature.settings.SettingsScreen
 import com.anonforge.feature.settings.alias.AliasSettingsScreen
 import com.anonforge.feature.splash.SplashScreen
+import com.anonforge.feature.splash.VaultUnreadableScreen
 import com.anonforge.feature.support.SupportScreen
 import com.anonforge.feature.support.WhyAnonForgePage
 import com.anonforge.feature.unlock.UnlockScreen
@@ -35,6 +36,7 @@ object Routes {
     const val SPLASH = "splash"
     const val DISCLAIMER = "disclaimer"
     const val UNLOCK = "unlock"
+    const val VAULT_UNREADABLE = "vault_unreadable"
     const val VAULT = "vault"
     const val GENERATOR = "generator"
     const val MANUAL_ENTRY = "manual_entry"
@@ -55,6 +57,7 @@ object Routes {
  * Navigation Flow:
  * ```
  * SPLASH -> check state
+ *     |-- Vault key lost (DB exists, passphrase gone) -> VAULT_UNREADABLE (terminal)
  *     |-- Disclaimer not accepted -> DISCLAIMER -> VAULT
  *     |-- Biometric/PIN enabled -> UNLOCK -> VAULT
  *     +-- No auth required -> VAULT
@@ -129,8 +132,23 @@ fun AnonForgeNavGraph(
                     navController.navigate(Routes.DISCLAIMER) {
                         popUpTo(Routes.SPLASH) { inclusive = true }
                     }
+                },
+                onNavigateToVaultUnreadable = {
+                    navController.navigate(Routes.VAULT_UNREADABLE) {
+                        popUpTo(Routes.SPLASH) { inclusive = true }
+                    }
                 }
             )
+        }
+
+        /**
+         * Vault Unreadable Screen - Terminal error state.
+         * Shown when the encrypted database still holds data but its passphrase
+         * is gone (lost EncryptedSharedPreferences). The database is never opened
+         * and never reset; the screen explains the situation to the user.
+         */
+        composable(Routes.VAULT_UNREADABLE) {
+            VaultUnreadableScreen()
         }
 
         /**

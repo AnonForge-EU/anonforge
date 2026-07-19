@@ -755,4 +755,10 @@
     <string name="why_privacy_point3">No analytics — We don\'t track your usage</string>
     <string name="why_privacy_point4">No sharing — We don\'t sell or share anything</string>
 
+    <!-- Vault Unreadable (lost passphrase guard) -->
+    <string name="vault_unreadable_title">Vault unreadable</string>
+    <string name="vault_unreadable_explanation">Your encrypted vault file is still on this device, but the key needed to open it could not be found in secure storage. This can happen after restoring the phone from a backup or after the app\'s secure data was cleared.</string>
+    <string name="vault_unreadable_no_reset">To protect your data, AnonForge will not overwrite or reset the vault: without the original key its content cannot be decrypted, and creating a new key would destroy any chance of recovery.</string>
+    <string name="vault_unreadable_next_steps">If you have an AnonForge export file, you can reinstall the app and import it. Otherwise, please open an issue on the AnonForge GitHub project for assistance.</string>
+
 </resources>
