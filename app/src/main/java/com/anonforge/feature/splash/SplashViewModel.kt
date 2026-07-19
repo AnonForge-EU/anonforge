@@ -30,6 +30,8 @@ class SplashViewModel @Inject constructor(
      * 1. Disclaimer not accepted → Show disclaimer
      * 2. Any unlock method configured (biometric or PIN) → Show unlock screen
      * 3. Otherwise → Go to main
+     *
+     * Any failure to read the preference stores routes to UNLOCK (fail-closed).
      */
     fun checkInitialState() {
         viewModelScope.launch {
@@ -71,11 +73,17 @@ class SplashViewModel @Inject constructor(
                     )
                 }
             } catch (_: Exception) {
-                // On error, go to main
+                // Fail-closed: if a preference store is unreadable (DataStore
+                // CorruptionException / IOException) we cannot prove the vault
+                // is unprotected, so an error must never skip the lock screen.
+                // UnlockScreen degrades safely: it keeps PIN entry available
+                // with an explicit error instead of crashing, and if no auth
+                // is actually configured it lets the user through once the
+                // store reads cleanly again.
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        navigationTarget = SplashNavigationTarget.MAIN
+                        navigationTarget = SplashNavigationTarget.UNLOCK
                     )
                 }
             }

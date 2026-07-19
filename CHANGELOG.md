@@ -3,6 +3,16 @@
 All notable changes to AnonForge are documented in this file.
 The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **Storage read errors can no longer bypass the lock screen** — if reading
+  the preference stores failed at launch (e.g. DataStore corruption or an I/O
+  error), the splash routing fell back to opening the vault directly. Both
+  the splash and unlock screens now fail closed: any read error routes to the
+  unlock screen, which keeps PIN entry available and shows an explicit error
+  instead of opening the vault or crashing.
+
 ## [1.2.1] — 2026-07-19
 
 Security polish and honest documentation. **Signed with the same keystore as

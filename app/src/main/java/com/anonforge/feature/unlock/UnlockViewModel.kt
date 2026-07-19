@@ -43,50 +43,70 @@ class UnlockViewModel @Inject constructor(
 
     /**
      * Check what authentication is needed on screen load.
+     * Fail-closed: any error reading the security state keeps the vault locked.
      */
     private fun checkAuthRequirements() {
         viewModelScope.launch {
-            // Check if any auth is configured
-            val isAuthConfigured = authManager.isAuthConfigured()
-            if (!isAuthConfigured) {
-                // No auth configured - allow immediate access
-                _state.update { it.copy(authState = AuthState.Authenticated) }
-                return@launch
-            }
+            try {
+                // Check if any auth is configured
+                val isAuthConfigured = authManager.isAuthConfigured()
+                if (!isAuthConfigured) {
+                    // No auth configured - allow immediate access
+                    _state.update { it.copy(authState = AuthState.Authenticated) }
+                    return@launch
+                }
 
-            // Check if we have an active session
-            val shouldRequireAuth = lockManager.shouldRequireAuth()
-            if (!shouldRequireAuth && lockManager.hasActiveSession()) {
-                // Active session exists - allow access
-                _state.update { it.copy(authState = AuthState.Authenticated) }
-                return@launch
-            }
+                // Check if we have an active session
+                val shouldRequireAuth = lockManager.shouldRequireAuth()
+                if (!shouldRequireAuth && lockManager.hasActiveSession()) {
+                    // Active session exists - allow access
+                    _state.update { it.copy(authState = AuthState.Authenticated) }
+                    return@launch
+                }
 
-            // Check lockout status
-            if (authManager.isLockedOut()) {
+                // Check lockout status
+                if (authManager.isLockedOut()) {
+                    _state.update {
+                        it.copy(
+                            authState = AuthState.LockedOut(authManager.getRemainingLockoutSeconds()),
+                            showLockoutDialog = true
+                        )
+                    }
+                    return@launch
+                }
+
+                // Determine available auth methods
+                val biometricEnabled = authManager.isBiometricEnabled()
+                val biometricEnrolled = authManager.isBiometricEnrolled()
+                val pinConfigured = authManager.isPinConfigured()
+                val biometricAvailable = biometricEnabled && biometricEnrolled
+
                 _state.update {
                     it.copy(
-                        authState = AuthState.LockedOut(authManager.getRemainingLockoutSeconds()),
-                        showLockoutDialog = true
+                        authState = AuthState.RequiresAuth,
+                        biometricAvailable = biometricAvailable,
+                        pinAvailable = pinConfigured,
+                        shouldTryBiometric = biometricAvailable, // Auto-trigger if available
+                        attemptsRemaining = authManager.getRemainingAttempts()
                     )
                 }
-                return@launch
-            }
-
-            // Determine available auth methods
-            val biometricEnabled = authManager.isBiometricEnabled()
-            val biometricEnrolled = authManager.isBiometricEnrolled()
-            val pinConfigured = authManager.isPinConfigured()
-            val biometricAvailable = biometricEnabled && biometricEnrolled
-
-            _state.update {
-                it.copy(
-                    authState = AuthState.RequiresAuth,
-                    biometricAvailable = biometricAvailable,
-                    pinAvailable = pinConfigured,
-                    shouldTryBiometric = biometricAvailable, // Auto-trigger if available
-                    attemptsRemaining = authManager.getRemainingAttempts()
-                )
+            } catch (_: Exception) {
+                // Fail-closed: if the security store can't be read we keep the
+                // vault locked instead of opening it or crashing (SplashViewModel
+                // routes here on the same failure). PIN entry stays available as
+                // a recovery path: a transient error recovers on a correct PIN,
+                // while a persistently unreadable store surfaces AuthManager's
+                // "Verification failed" on each attempt — never an open vault,
+                // never a crash loop.
+                _state.update {
+                    it.copy(
+                        authState = AuthState.RequiresAuth,
+                        biometricAvailable = false,
+                        pinAvailable = true,
+                        shouldTryBiometric = false,
+                        errorMessage = "Couldn't read security settings. The vault stays locked — enter your PIN or restart the app."
+                    )
+                }
             }
         }
     }
