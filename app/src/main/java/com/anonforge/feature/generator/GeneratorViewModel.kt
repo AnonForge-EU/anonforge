@@ -24,6 +24,7 @@ import com.anonforge.domain.usecase.GetAliasHistoryUseCase
 import com.anonforge.domain.usecase.GetPhoneAliasHistoryUseCase
 import com.anonforge.domain.usecase.GetPrimaryAliasUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import javax.inject.Inject
 import kotlin.time.Duration
 
@@ -176,9 +178,12 @@ class GeneratorViewModel @Inject constructor(
                 }
             }
 
-            // 5. Load phone aliases if enabled (await completion)
+            // 5. Load phone aliases if enabled (await completion). Snapshot
+            // query, NOT flow.first(): short-lived flow subscriptions churn
+            // the invalidation tracker and can stall later subscribers
+            // (Room 2.8 compat + SQLCipher).
             if (phoneEnabled) {
-                val phoneAliases = getPhoneAliasHistoryUseCase().first()
+                val phoneAliases = phoneAliasRepository.getAllAliasesList()
                 val primaryPhone = phoneAliasRepository.getPrimaryAlias()
                 _state.update {
                     it.copy(
@@ -222,9 +227,10 @@ class GeneratorViewModel @Inject constructor(
                 }
             }
 
-            // Reload phone aliases if enabled
+            // Reload phone aliases if enabled (snapshot query, see
+            // initializeAndGenerate for why not flow.first())
             if (phoneEnabled) {
-                val phoneAliases = getPhoneAliasHistoryUseCase().first()
+                val phoneAliases = phoneAliasRepository.getAllAliasesList()
                 val primaryPhone = phoneAliasRepository.getPrimaryAlias()
                 _state.update {
                     it.copy(
@@ -389,11 +395,16 @@ class GeneratorViewModel @Inject constructor(
     // Phone Alias Selection
     // ═══════════════════════════════════════════════════════════════════════════
 
+    /** Keeps a single live collector on the saved-numbers flow; reopening the
+     *  dialog must not stack a new infinite collect on top of the previous one. */
+    private var phoneAliasCollectJob: Job? = null
+
     /**
      * Load phone alias data from repository.
      */
     private fun loadPhoneAliasData() {
-        viewModelScope.launch {
+        phoneAliasCollectJob?.cancel()
+        phoneAliasCollectJob = viewModelScope.launch {
             getPhoneAliasHistoryUseCase().collect { aliases ->
                 val primary = aliases.find { it.isPrimary }
                 _state.update {
@@ -418,36 +429,90 @@ class GeneratorViewModel @Inject constructor(
     /**
      * Hide phone alias selection dialog.
      */
-    @Suppress("unused") // Public API called from PhoneAliasDialog dismiss
     fun hidePhoneAliasDialog() {
         _state.update { it.copy(showPhoneAliasDialog = false) }
     }
 
     /**
      * Select a phone alias.
+     *
+     * Defensive: building the preview [Phone] validates the number; an
+     * unexpected stored value must surface as a snackbar, never crash the
+     * dialog tap (selecting a national-format number used to throw).
      */
-    fun selectPhoneAlias(alias: PhoneAlias) {
-        _state.update {
-            it.copy(
-                selectedPhone = alias.phoneNumber,
-                showPhoneAliasDialog = false
-            )
-        }
-        updatePreviewWithPhone(alias.phoneNumber)
-
-        // Record usage
-        viewModelScope.launch {
-            phoneAliasRepository.recordUsage(alias.id)
+    fun selectPhoneAlias(alias: PhoneAlias, onInvalidNumber: String = "Invalid saved number") {
+        runCatching {
+            updatePreviewWithPhone(alias.phoneNumber)
+        }.onSuccess {
+            _state.update {
+                it.copy(
+                    selectedPhone = alias.phoneNumber,
+                    showPhoneAliasDialog = false
+                )
+            }
+            // Record usage
+            viewModelScope.launch {
+                phoneAliasRepository.recordUsage(alias.id)
+            }
+        }.onFailure {
+            viewModelScope.launch {
+                _events.emit(GeneratorEvent.ShowSnackbar(onInvalidNumber))
+            }
         }
     }
 
     /**
      * Use the primary phone alias.
      */
-    @Suppress("unused") // Public API called from PhoneAliasDialog "Use Primary" button
     fun selectPrimaryPhoneAlias() {
         _state.value.primaryPhoneAlias?.let { primary ->
             selectPhoneAlias(primary)
+        }
+    }
+
+    /**
+     * Add a new phone number from the selection dialog and use it immediately.
+     * Mirrors PhoneAliasSettingsViewModel.addPhoneAlias semantics: first saved
+     * number becomes primary and auto-enables the feature.
+     *
+     * @param onInvalidFormat Localized message when the number fails validation
+     * @param onAlreadyExists Localized message when the number is already saved
+     */
+    fun addPhoneAliasFromDialog(
+        phoneNumber: String,
+        onInvalidFormat: String,
+        onAlreadyExists: String
+    ) {
+        viewModelScope.launch {
+            val cleaned = phoneNumber.replace(Regex("[\\s()\\-]"), "")
+            if (!cleaned.matches(Regex("^\\+?[0-9]{8,15}$"))) {
+                _events.emit(GeneratorEvent.ShowSnackbar(onInvalidFormat))
+                return@launch
+            }
+
+            val existing = _state.value.phoneAliases
+            if (existing.any { it.phoneNumber == cleaned || it.phoneNumber == phoneNumber.trim() }) {
+                _events.emit(GeneratorEvent.ShowSnackbar(onAlreadyExists))
+                return@launch
+            }
+
+            val isFirst = existing.isEmpty()
+            val alias = PhoneAlias(
+                phoneNumber = phoneNumber.trim(),
+                friendlyName = "",
+                isPrimary = isFirst,
+                createdAt = Clock.System.now()
+            )
+
+            phoneAliasRepository.saveAlias(alias).onSuccess { newId ->
+                if (isFirst) {
+                    settingsDataStore.setPhoneAliasEnabled(true)
+                }
+                // Select it right away: updates the preview and closes the dialog.
+                selectPhoneAlias(alias.copy(id = newId))
+            }.onFailure { error ->
+                _events.emit(GeneratorEvent.ShowSnackbar(error.message ?: "Failed to add number"))
+            }
         }
     }
 

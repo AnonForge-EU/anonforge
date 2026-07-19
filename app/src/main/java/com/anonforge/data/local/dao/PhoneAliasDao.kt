@@ -23,6 +23,15 @@ interface PhoneAliasDao {
     fun getAllAliases(): Flow<List<PhoneAliasEntity>>
 
     /**
+     * One-shot snapshot of all phone aliases (same ordering as [getAllAliases]).
+     * Used to seed the observable flow and for callers that only need the
+     * current list — avoids subscribe/cancel churn on the invalidation
+     * tracker (same pattern as AliasHistoryDao.getAllAliasesList).
+     */
+    @Query("SELECT * FROM phone_alias_history ORDER BY is_primary DESC, usage_count DESC, created_at DESC")
+    suspend fun getAllAliasesList(): List<PhoneAliasEntity>
+
+    /**
      * Get the primary phone alias.
      */
     @Query("SELECT * FROM phone_alias_history WHERE is_primary = 1 LIMIT 1")

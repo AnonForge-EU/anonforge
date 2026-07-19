@@ -12,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -46,12 +45,16 @@ class PhoneAliasSettingsViewModel @Inject constructor(
     }
 
     private fun loadData() {
+        // Two independent collectors: a failure or slow read on the preference
+        // flow must never prevent the saved-numbers list from loading (and the
+        // toggle now stays in sync when the flag changes elsewhere, e.g. the
+        // generator dialog auto-enabling on first add).
         viewModelScope.launch {
-            // Load enabled state from preferences
-            val isEnabled = settingsDataStore.phoneAliasEnabled.first()
-            _state.update { it.copy(isEnabled = isEnabled) }
-
-            // Load existing aliases from local storage
+            settingsDataStore.phoneAliasEnabled.collect { enabled ->
+                _state.update { it.copy(isEnabled = enabled) }
+            }
+        }
+        viewModelScope.launch {
             getPhoneAliasHistoryUseCase().collect { aliases ->
                 _state.update {
                     it.copy(

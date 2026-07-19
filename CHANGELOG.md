@@ -33,6 +33,16 @@ No database schema change (Room stays at version 5), no storage format change.
 - **Settings/About now shows the real app version** — it displayed a
   hard-coded "1.0.0" regardless of the installed release; it now reads
   `BuildConfig.VERSION_NAME`.
+- **Saved virtual numbers now actually show up** — the saved-numbers list
+  and the "Virtual Numbers" status row stayed empty even with numbers in the
+  database: with Room 2.8 over the SQLCipher factory, a second concurrent
+  subscription on the same table stalled silently, and the old
+  `catch { emptyList() }` hid every error. The repository now shares one
+  upstream subscription (seeded by a direct snapshot, bounded retries,
+  errors logged), the phone-number selection dialog in the generator is
+  finally wired up, and picking a saved national-format number no longer
+  crashes (the `Phone` model accepts everything the input screen accepts —
+  strictly widening, all previously valid values stay valid).
 
 ### Changed
 - **Honest security wording** — README and in-code docs now describe exactly

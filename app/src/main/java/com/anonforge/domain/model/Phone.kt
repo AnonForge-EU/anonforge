@@ -4,9 +4,18 @@ package com.anonforge.domain.model
 value class Phone(val value: String) {
     init {
         // An empty value means "no phone" — used by manually-entered identities
-        // that omit the number. Any non-empty value must be valid E.164.
-        require(value.isEmpty() || value.matches(Regex("^\\+[1-9]\\d{1,14}$"))) {
-            "Invalid E.164 phone format"
+        // that omit the number. Non-empty values accept E.164 (generated
+        // numbers) OR the same format the saved-numbers screen validates
+        // (`+` optional, 8–15 digits): saved aliases and manual entries may
+        // be national-format, and constructing Phone from them must never
+        // throw (selecting such an alias used to crash the generator).
+        // The union keeps every previously-valid value valid.
+        require(
+            value.isEmpty() ||
+                value.matches(E164_REGEX) ||
+                value.matches(USER_ENTERED_REGEX)
+        ) {
+            "Invalid phone format"
         }
     }
 
@@ -17,6 +26,8 @@ value class Phone(val value: String) {
     val formatted: String
         get() {
             if (value.isEmpty()) return ""
+            // User-entered national numbers (no "+") are shown as saved.
+            if (!value.startsWith("+")) return value
             val digits = value.substring(1)
             return when {
                 digits.startsWith("1") && digits.length == 11 -> {
@@ -41,4 +52,12 @@ value class Phone(val value: String) {
             val last4 = value.takeLast(4)
             return "${value.take(2)} ****$last4"
         }
+
+    companion object {
+        /** Strict E.164: "+" then 2–15 digits, first digit non-zero. */
+        private val E164_REGEX = Regex("^\\+[1-9]\\d{1,14}$")
+
+        /** User-entered numbers as accepted by the saved-numbers screen. */
+        private val USER_ENTERED_REGEX = Regex("^\\+?[0-9]{8,15}$")
+    }
 }

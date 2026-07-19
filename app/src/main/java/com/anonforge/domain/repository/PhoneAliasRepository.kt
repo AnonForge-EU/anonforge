@@ -16,6 +16,9 @@ interface PhoneAliasRepository {
      */
     fun getAllAliases(): Flow<List<PhoneAlias>>
 
+    /** One-shot snapshot of the saved numbers (no flow subscription). */
+    suspend fun getAllAliasesList(): List<PhoneAlias>
+
     /**
      * Get the primary phone alias (default for new identities).
      */

@@ -180,6 +180,30 @@ fun GeneratorScreen(
         )
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // PHONE ALIAS SELECTION DIALOG
+    // Shows when user taps the phone field refresh icon and saved numbers exist
+    // ═══════════════════════════════════════════════════════════════════════════
+    if (state.showPhoneAliasDialog) {
+        val phoneInvalidFormatMessage = stringResource(R.string.phone_alias_invalid_format)
+        val phoneAlreadyExistsMessage = stringResource(R.string.phone_alias_already_exists)
+        PhoneAliasDialog(
+            existingAliases = state.phoneAliases,
+            onSelectExisting = { alias ->
+                viewModel.selectPhoneAlias(alias, onInvalidNumber = phoneInvalidFormatMessage)
+            },
+            onAddNew = { number ->
+                viewModel.addPhoneAliasFromDialog(
+                    phoneNumber = number,
+                    onInvalidFormat = phoneInvalidFormatMessage,
+                    onAlreadyExists = phoneAlreadyExistsMessage
+                )
+            },
+            onUsePrimary = { viewModel.selectPrimaryPhoneAlias() },
+            onDismiss = { viewModel.hidePhoneAliasDialog() }
+        )
+    }
+
     SecureScreen {
         Scaffold(
             topBar = {

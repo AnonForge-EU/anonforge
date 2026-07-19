@@ -13,6 +13,7 @@ import com.anonforge.domain.model.AppLanguage
 import com.anonforge.domain.model.GenderPreference
 import com.anonforge.domain.model.Nationality
 import com.anonforge.domain.model.ThemeMode
+import com.anonforge.domain.repository.PhoneAliasRepository
 import com.anonforge.security.auth.AuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -74,7 +75,8 @@ class SettingsViewModel @Inject constructor(
     private val securityPreferences: SecurityPreferences,
     private val settingsDataStore: SettingsDataStore,
     private val apiKeyManager: ApiKeyManager,
-    private val authManager: AuthManager
+    private val authManager: AuthManager,
+    private val phoneAliasRepository: PhoneAliasRepository
 ) : ViewModel() {
 
     /** Exposes [AuthManager] so the UI can launch biometric prompts that
@@ -91,6 +93,21 @@ class SettingsViewModel @Inject constructor(
 
     init {
         loadSettings()
+        observePhoneAliasConfigured()
+    }
+
+    /**
+     * Keep the "Virtual Numbers" row in sync with saved numbers. Mirrors the
+     * email-alias row semantics (configured = at least one entry saved) and
+     * stays current when the user adds/removes numbers and navigates back —
+     * loadSettings() only runs once per ViewModel lifetime.
+     */
+    private fun observePhoneAliasConfigured() {
+        viewModelScope.launch {
+            phoneAliasRepository.getAllAliases().collect { aliases ->
+                _state.update { it.copy(phoneAliasConfigured = aliases.isNotEmpty()) }
+            }
+        }
     }
 
     /**
